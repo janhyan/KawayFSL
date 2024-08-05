@@ -14,7 +14,6 @@ body {
     width: 65%;
     position: relative;
     overflow: hidden;
-
 }
 
 .img-container > .img-login {
@@ -33,8 +32,66 @@ body {
 .signin-container > .details-container {
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    flex-basis: 40%;
+    padding: 5vh 40px 5vh 40px;
+    flex-basis: 35%;
     background-color: azure;
     margin-left : -15px;
     z-index: 2;
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    height: 100;
 }
+
+.details-container > div {
+    border: 2px solid black;
+}
+
+.greetings, .forms-container {
+    text-align: center;
+    align-content: center;
+}
+
+.forms-container {
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    padding: 1.5rem;
+}
+
+input {
+    height: 50px;
+    width: 100%;
+    padding: 10px 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+input, label {
+    display: block;
+}
+
+label {
+    text-align: left;
+}
+
+#forgot-password{
+    text-align: left;
+    display: flex;
+    justify-content: end;
+}
+
+button {
+    width: 100%;
+    height: 50px;
+}
+
+
+
+
+
+

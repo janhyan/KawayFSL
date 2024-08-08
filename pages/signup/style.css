@@ -20,8 +20,12 @@ h1 {
     font-family: 'Poppins', Geneva, Tahoma, sans-serif;
 }
 
-h2, button, p, a {
+h2, button, p, a, label {
     font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+h2 {
+    font-weight: 400;
 }
 
 button {
@@ -89,6 +93,10 @@ input {
     border-radius: 8px;
 }
 
+label {
+    padding-bottom: 5px;
+}
+
 fieldset {
     border: 0;
     padding: 0;
@@ -101,6 +109,41 @@ input, label {
 
 label {
     text-align: left;
+}
+
+.signin-options {
+    display: flex;
+    flex-direction: column;
+    align-content: space-evenly;
+}
+
+.or-continue:before {
+    content:" ";
+    display: block;
+    height: 2px;
+    width: 130px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background: grey;
+}
+
+.or-continue:after {
+    content:" ";
+    display: block;
+    height: 2px;
+    width: 130px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    background: grey;
+}
+
+.or-continue {
+    position: relative;
+    /*  new lines  */
+    max-width: 500px;
+    text-align: center;
 }
 
 #forgot-password{

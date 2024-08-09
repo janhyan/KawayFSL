@@ -1,0 +1,102 @@
+/* IMPORT */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* GENERAL */
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 98%;
+    margin: 10px;
+    background-color: #8ECAE6;
+}
+
+/* SIDE NAV TAB */
+
+.side-nav {
+    background-color: #219EBC;
+}
+
+.side-nav.container {
+    width: clamp(250px, 15vw, 500px);
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: 20vh 50vh 1fr;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.header {
+    border-top-left-radius: 20px;
+}
+
+#side-nav-title {
+    position: absolute; 
+    left: 25px;
+    font-size: 3em;
+    font-family: 'Poppins';
+    color: black;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+b {
+    color: #FB8500;
+}
+
+.contents {
+    padding: 10px 10px 100px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.contents button {
+    border: none;
+    height: 50px;
+    background-color: transparent;
+    font-family: 'Inter';
+    font-size: 1.5rem;
+    text-align: left;
+}
+
+.side-nav.footer {
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    background-color: #02304734;
+    font-family: 'Inter';
+    padding: 10px;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+}
+
+.user-details {
+    line-height: 1px;
+    position: absolute;
+    left: 90px;
+}
+
+
+.username {
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.avatar {
+    object-fit: contain;
+}
+
+.user-img {
+    width: 60px;
+    border-radius: 50%;
+}
+
+/* RESET */
+

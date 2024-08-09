@@ -117,33 +117,39 @@ label {
     align-content: space-evenly;
 }
 
-.or-continue:before {
+.signin-options-lines {
+
+}
+
+#or-continue:before {
     content:" ";
     display: block;
     height: 2px;
-    width: 130px;
+    width: 30%;
     position: absolute;
     top: 50%;
     left: 0;
     background: grey;
 }
 
-.or-continue:after {
+#or-continue:after {
     content:" ";
     display: block;
     height: 2px;
-    width: 130px;
+    width: 30%;
     position: absolute;
     top: 50%;
     right: 0;
     background: grey;
 }
 
-.or-continue {
+#or-continue {
     position: relative;
     /*  new lines  */
-    max-width: 500px;
+    max-width: 100%;
     text-align: center;
+    font-size: 1.5rem;
+    justify-content: center;
 }
 
 #forgot-password{

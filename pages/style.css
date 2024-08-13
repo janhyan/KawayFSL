@@ -200,20 +200,22 @@ b {
   padding: 30px;
   min-height: 0;  
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #body-container .content-container {
   display: grid;
-  grid-template: 2fr 1fr / 6fr 1fr;
+  grid-template: 2fr 1fr / 2fr 1fr;
   gap: 20px;
   min-height: 0;  
   min-width: 0;
   height: 80%;
+  max-width: 100%;
 }
 
 #body-container .card {
-  border-radius: 20px;
-  background-color: #219ebc;
+  border: 1px solid black;
 }
 
 .title-header {
@@ -245,11 +247,53 @@ b {
   align-items: center;
 }
 
+.notif-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* MAIN CONTENT CARD */
+
+.main-content {
+  border-radius: 30px;
+  background-color: #023047;
+  display: grid;
+  grid-template: 1fr / 40% 1fr;
+  max-height: 100%;
+  max-width: 100%;
+  padding: 15px;
+  color: azure;
+  gap: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  box-shadow: 0 20px 5px -5px #666, 0 40px 5px -10px #242424;
+}
+
+.main-content img {
+  object-fit: cover;
+  width: 600px;
+  max-height: 100%;
+  border: 1px solid black;
+}
+
+.main-content-text h2 {
+  font-family: 'Poppins';
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.main-content-text p {
+  font-family: 'Inter';
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
 /* RIGHT BODY ICONS */
 
-.notif-icon {
+.notif-button::after {
   display: inline-block;
-
   width: 2.5em;
   height: 2.5em;
   vertical-align: -0.125em;

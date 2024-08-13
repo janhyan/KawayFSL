@@ -197,41 +197,56 @@ b {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   background-color: azure;
-  padding: 15px;
+  padding: 30px;
+  min-height: 0;  
+  min-width: 0;
+}
+
+#body-container .content-container {
   display: grid;
-  grid-template: 20vh 40vh 30vh / 55vw 20vw;
+  grid-template: 2fr 1fr / 6fr 1fr;
+  gap: 20px;
+  min-height: 0;  
+  min-width: 0;
+  height: 80%;
 }
 
 #body-container .card {
   border-radius: 20px;
   background-color: #219ebc;
-  gap: 20px;
 }
 
-.todo {
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 2;
-  grid-row-end: 3;
+.title-header {
+  font-family: 'Poppins';
+  display: grid;
+  grid-template-columns: 9fr 1fr;
 }
 
-.calendar {
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 3;
-  grid-row-end: 4;
+.title-header h1 {
+  font-size: 3rem;
+  margin: 10px 0;
+  font-weight: 600;
 }
 
-.main {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 3;
+.title-header h2 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  font-weight: 500;
 }
 
-.subtopic {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 3;
-  grid-row-end: 4;
+.notif-container {
+  background-color: #219ebc;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* RIGHT BODY ICONS */
+
+.notif-icon {
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  vertical-align: -0.125em;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' d='M13 3a1 1 0 1 0-2 0v.75h-.557A4.214 4.214 0 0 0 6.237 7.7l-.221 3.534a7.4 7.4 0 0 1-1.308 3.754a1.617 1.617 0 0 0 1.135 2.529l3.407.408V19a2.75 2.75 0 1 0 5.5 0v-1.075l3.407-.409a1.617 1.617 0 0 0 1.135-2.528a7.4 7.4 0 0 1-1.308-3.754l-.221-3.533a4.214 4.214 0 0 0-4.206-3.951H13zm-2.557 2.25a2.714 2.714 0 0 0-2.709 2.544l-.22 3.534a8.9 8.9 0 0 1-1.574 4.516a.117.117 0 0 0 .082.183l3.737.449c1.489.178 2.993.178 4.482 0l3.737-.449a.117.117 0 0 0 .082-.183a8.9 8.9 0 0 1-1.573-4.516l-.221-3.534a2.714 2.714 0 0 0-2.709-2.544zm1.557 15c-.69 0-1.25-.56-1.25-1.25v-.75h2.5V19c0 .69-.56 1.25-1.25 1.25' clip-rule='evenodd'/%3E%3C/svg%3E");
 }

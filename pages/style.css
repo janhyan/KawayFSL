@@ -12,11 +12,14 @@ body {
   height: 98%;
   margin: 10px;
   background-color: #8ecae6;
+  
 }
 
 #page-container {
   display: grid;
   grid-template-columns: clamp(250px, 15vw, 500px) 1fr;
+  box-shadow: 0 30px 80px -20px #535353;
+  border-radius: 20px;
 }
 
 /* SIDE NAV TAB */
@@ -28,6 +31,7 @@ body {
 .side-nav.container {
   width: clamp(250px, 15vw, 500px);
   min-height: 100%;
+  max-height: 100vh;
   display: grid;
   grid-template-rows: 20vh 55vh 1fr;
   border-top-left-radius: 20px;
@@ -201,17 +205,21 @@ b {
   min-height: 0;  
   min-width: 0;
   width: 100%;
+  max-width: 100%;
+  max-height: 100vh;
   box-sizing: border-box;
+  position: relative;
 }
 
 #body-container .content-container {
   display: grid;
-  grid-template: 2fr 1fr / 1.5fr 1fr;
+  grid-template: 1fr 1fr / 1.5fr 1fr;
   gap: 30px;
   min-height: 0;  
   min-width: 0;
   height: 80%;
   max-width: 100%;
+  position: relative;
 }
 
 #body-container .card {
@@ -301,6 +309,56 @@ b {
   font-family: 'Poppins';
   font-weight: 600;
   font-size: 1.2rem;
+}
+
+/* SUBTOPIC CARD */
+
+.subtopic {
+  box-sizing: border-box;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  max-width: 100%;
+  position: relative;
+}
+
+.subtopic.container.card > h2, h3 {
+  color: black;
+  font-family: 'Inter';
+  font-size: 2rem;
+}
+
+.cards-container h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.cards-container p {
+  color: black;
+  font-size: 1.2rem;
+  font-family: 'Inter';
+  margin: 0;
+}
+
+.cards-container > .card{
+  border-radius: 30px;
+  background-color: azure;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  max-height: 100%;
+  padding: 15px;
+  color: azure;
+  gap: 0px;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  box-shadow: 0 30px 80px -20px #535353;
 }
 
 /* RIGHT BODY ICONS */

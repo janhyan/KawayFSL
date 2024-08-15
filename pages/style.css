@@ -361,6 +361,43 @@ b {
   box-shadow: 0 30px 80px -20px #535353;
 }
 
+/* ANNOUNCEMENT */
+
+.announcement-text {
+  font-family: 'Inter';
+  font-family: 'Inter';
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+.announcement-content {
+  min-height: 100%;
+}
+
+.announcement-content ul {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 20px;
+  min-height: 100%;
+  padding: 0;
+}
+
+.announcement-content li {
+  border-radius: 30px;
+  background-color: azure;
+  max-height: 100%;
+  padding: 15px;
+  color: black;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  box-shadow: 0 30px 80px -20px #535353;
+
+  list-style: none;
+  font-family: 'Inter';
+  font-size: 1.2rem;
+}
+
 /* RIGHT BODY ICONS */
 
 .notif-button::after {

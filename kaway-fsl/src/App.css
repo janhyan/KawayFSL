@@ -1,0 +1,240 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+/* IMPORT */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* GENERAL */
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 98%;
+  margin: 10px;
+  background-color: #8ecae6;
+  
+}
+
+#page-container {
+  display: grid;
+  grid-template-columns: clamp(250px, 15vw, 500px) 1fr;
+  box-shadow: 0 30px 80px -20px #535353;
+  border-radius: 20px;
+}
+
+/* SIDE NAV TAB */
+
+.side-nav {
+  background-color: #219ebc;
+}
+
+.side-nav.container {
+  width: clamp(250px, 15vw, 500px);
+  min-height: 100%;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: 20vh 55vh 1fr;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  overflow: hidden;
+}
+
+.header {
+  border-top-left-radius: 20px;
+}
+
+#side-nav-title {
+  position: absolute;
+  left: 25px;
+  font-size: 3em;
+  font-family: "Poppins";
+  color: black;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+b {
+  color: #fb8500;
+}
+
+.contents {
+  padding: 10px 0px 100px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: end;
+}
+
+.contents button {
+  border: none;
+  height: 60px;
+  width: 95%;
+  background-color: transparent;
+  font-family: "Inter";
+  font-size: 1.5rem;
+  text-align: left;
+  color: black;
+
+  display: flex;
+  align-items: center;
+}
+
+.contents button:hover {
+  background-color: #fb8500;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.side-nav.footer {
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  background-color: #02304734;
+  font-family: "Inter";
+  padding: 10px;
+  position: relative;
+  bottom: -60%;
+  overflow: hidden;
+}
+
+.footer {
+    color: black;
+}
+
+#footer-caret {
+  cursor: pointer;
+  display: none;
+}
+
+#footer-caret ~ .slide-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: -0.125em;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' fill-rule='evenodd' d='M16.53 14.03a.75.75 0 0 1-1.06 0L12 10.56l-3.47 3.47a.75.75 0 0 1-1.06-1.06l4-4a.75.75 0 0 1 1.06 0l4 4a.75.75 0 0 1 0 1.06' clip-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+#footer-caret:checked ~ .slide-icon  {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: -0.125em;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' fill-rule='evenodd' d='M16.53 8.97a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L12 12.44l3.47-3.47a.75.75 0 0 1 1.06 0' clip-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.heading {
+  display: grid;
+  grid-template-columns: 60px 1fr 20px;
+  align-items: center;
+}
+
+.user-details {
+  line-height: 0px;
+  padding: 0 10px;
+}
+
+.username {
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.avatar {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: block;
+  margin: auto;
+  align-content: center;
+
+}
+
+.user-img {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: auto;
+  display: block;
+}
+
+/* SIDE NAV ICONS */
+
+.home::before {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: -0.125em;
+  padding-right: 10px;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.5'%3E%3Cpath d='M2.364 12.958c-.38-2.637-.57-3.956-.029-5.083s1.691-1.813 3.992-3.183l1.385-.825C9.8 2.622 10.846 2 12 2s2.199.622 4.288 1.867l1.385.825c2.3 1.37 3.451 2.056 3.992 3.183s.35 2.446-.03 5.083l-.278 1.937c-.487 3.388-.731 5.081-1.906 6.093S16.553 22 13.106 22h-2.212c-3.447 0-5.17 0-6.345-1.012s-1.419-2.705-1.906-6.093z'/%3E%3Cpath stroke-linecap='round' d='M15 18H9'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.lessons::before {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: -0.125em;
+    padding-right: 10px;
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' fill-rule='evenodd' d='M9.945 1.25h4.11c1.368 0 2.47 0 3.337.117c.9.12 1.658.38 2.26.981c.602.602.86 1.36.982 2.26c.116.867.116 1.97.116 3.337v8.11c0 1.367 0 2.47-.116 3.337c-.121.9-.38 1.658-.982 2.26s-1.36.86-2.26.982c-.867.116-1.97.116-3.337.116h-4.11c-1.367 0-2.47 0-3.337-.116c-.9-.122-1.658-.38-2.26-.982s-.86-1.36-.981-2.26a12 12 0 0 1-.082-.943a.75.75 0 0 1-.016-.392a66 66 0 0 1-.019-2.002v-8.11c0-1.367 0-2.47.117-3.337c.12-.9.38-1.658.982-2.26c.601-.602 1.36-.86 2.26-.981c.866-.117 1.969-.117 3.336-.117m-5.168 17c.015.353.039.664.076.942c.099.734.28 1.122.556 1.399c.277.277.666.457 1.4.556c.755.101 1.756.103 3.191.103h4c1.436 0 2.437-.002 3.192-.103c.734-.099 1.122-.28 1.4-.556c.276-.277.456-.665.555-1.4c.083-.615.1-1.395.102-2.441H13.75v2.808c0 .111 0 .27-.02.406a.94.94 0 0 1-.445.683a.96.96 0 0 1-.783.072c-.13-.04-.272-.109-.378-.159l-.024-.012l-1.1-.522l-1.1.522l-.024.012c-.106.05-.248.118-.378.159a.96.96 0 0 1-.783-.072a.94.94 0 0 1-.444-.683a3 3 0 0 1-.02-.406V16.75h-.353c-.978 0-1.32.006-1.582.077a2.25 2.25 0 0 0-1.54 1.422m4.973-1.5v2.21l.75-.357l.008-.004a1.1 1.1 0 0 1 .492-.13c.236 0 .443.105.492.13l.009.004l.75.356V16.75zm-1.852-1.5h-.116c-.818 0-1.376 0-1.855.128a3.8 3.8 0 0 0-1.177.548V8c0-1.435.002-2.437.103-3.192c.099-.734.28-1.122.556-1.399c.277-.277.666-.457 1.4-.556c.755-.101 1.756-.103 3.191-.103h4c1.436 0 2.437.002 3.192.103c.734.099 1.122.28 1.4.556c.276.277.456.665.555 1.4c.102.754.103 1.756.103 3.191v7.25zM7.25 7A.75.75 0 0 1 8 6.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 7m0 3.5A.75.75 0 0 1 8 9.75h5a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75' clip-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.practice::before {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: -0.125em;
+    padding-right: 10px;
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.5'%3E%3Cpath d='M13.888 9.935C14.963 10.812 15.5 11.25 15.5 12s-.537 1.188-1.612 2.065c-.297.242-.591.47-.862.66c-.237.167-.506.339-.784.508c-1.073.652-1.609.978-2.09.617c-.48-.36-.524-1.116-.612-2.628c-.024-.427-.04-.846-.04-1.222s.016-.795.04-1.222c.088-1.512.132-2.267.612-2.628c.481-.361 1.018-.035 2.09.617c.278.169.547.341.784.508c.27.19.565.418.862.66Z'/%3E%3Cpath stroke-linecap='round' d='M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.settings::before {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: -0.125em;
+    padding-right: 10px;
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' d='M7.843 20.198C9.872 21.399 10.886 22 12 22s2.128-.6 4.157-1.802l.686-.407c2.029-1.2 3.043-1.802 3.6-2.791c.557-.99.557-2.19.557-4.594M20.815 8a3.6 3.6 0 0 0-.372-1c-.557-.99-1.571-1.59-3.6-2.792l-.686-.406C14.128 2.601 13.114 2 12 2s-2.128.6-4.157 1.802l-.686.406C5.128 5.41 4.114 6.011 3.557 7C3 7.99 3 9.19 3 11.594v.812c0 2.403 0 3.605.557 4.594c.226.402.528.74.943 1.08'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+
+
+
+

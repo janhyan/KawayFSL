@@ -1,3 +1,6 @@
+import { Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+
 export default function Navbar() {
     return (
         <nav className="side-nav container">
@@ -7,10 +10,10 @@ export default function Navbar() {
             </h1>
           </div>
           <div className="side-nav contents">
-            <button className="home">Home</button>
-            <button className="lessons">Lessons</button>
-            <button className="practice">Practice</button>
-            <button className="settings">Settings</button>
+            <Button className="home buttons" as={Link} to='/'>Home</Button>
+            <Button className="lessons buttons " as={Link} to='/lessons'>Lessons</Button>
+            <Button className="practice buttons" as={Link} to='/practice'>Practice</Button>
+            <Button className="settings buttons" as={Link} to='/settings'>Settings</Button>
           </div>
           <div className="side-nav footer">
             <div className="heading">

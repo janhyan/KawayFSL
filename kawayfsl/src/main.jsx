@@ -1,15 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import Navbar from '../Components/Navbar.jsx';
-import HomeContent from '../Components/HomeContent.jsx';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App";
+import Home from "./pages/Home.jsx";
+import Practice from './pages/Practice.jsx'
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: '/practice',
+    element: <Practice />
+  }
+]);
 
 root.render(
-  <div id='page-container'>
-    <Navbar />
-    <HomeContent />
-  </div>
-)
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);

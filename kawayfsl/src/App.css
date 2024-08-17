@@ -65,7 +65,7 @@ b {
   align-items: end;
 }
 
-.contents button {
+.contents .buttons {
   border: none;
   height: 60px;
   width: 95%;
@@ -73,6 +73,7 @@ b {
   font-family: "Inter";
   font-size: 1.5rem;
   text-align: left;
+  text-decoration: none;
   color: black;
   cursor: pointer;
 
@@ -80,7 +81,7 @@ b {
   align-items: center;
 }
 
-.contents button:hover {
+.contents .buttons:hover {
   background-color: #fb8500;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;

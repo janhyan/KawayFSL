@@ -1,0 +1,6 @@
+{
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "html-css-class-completion.enableEmmetSupport": true
+}

@@ -1,11 +1,15 @@
 import user from "../src/data/user";
 import moduleOne from "../src/data/moduleOne";
 import announcements from "../src/data/announcements";
+import UserHeader from "./UserHeader";
 
 export default function HomeContent() {
   return (
     <main id="body-container">
-      <UserHeader username={user[0].username} />
+      <UserHeader
+        username={user[0].username}
+        greetings="What will you learn today?"
+      />
       <div className="content-container">
         <MainCard
           subtopic={moduleOne[0].subtopic}
@@ -16,22 +20,6 @@ export default function HomeContent() {
         <ToDoCard />
       </div>
     </main>
-  );
-}
-
-function UserHeader(props) {
-  return (
-    <header className="title-header">
-      <div className="header-text">
-        <h2>
-          Hi <span className="user">{props.username}</span>,
-        </h2>
-        <h1>What will you learn today?</h1>
-      </div>
-      <div className="notif-container">
-        <button className="notif-button" />
-      </div>
-    </header>
   );
 }
 

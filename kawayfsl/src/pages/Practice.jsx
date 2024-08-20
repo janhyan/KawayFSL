@@ -144,7 +144,8 @@ function EnableFSL() {
         );
         drawingUtils.drawLandmarks(landmarks, {
           color: "#FF0000",
-          lineWidth: 1
+          lineWidth: 1,
+          radius: 1
         });
       }
     }

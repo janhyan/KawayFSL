@@ -4,34 +4,34 @@ import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 
 import {
-  GestureRecognizer,
   FilesetResolver,
   DrawingUtils,
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+  HandLandmarker
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 
-let gestureRecognizer = GestureRecognizer;
+let handLandmarker = undefined;
 let runningMode = "IMAGE";
 let enableWebcamButton = HTMLButtonElement;
 let webcamRunning = false;
 
-// Before we can use HandLandmarker class we must wait for it to finish
-// loading. Machine Learning models can be large and take a moment to
-// get everything needed to run.
-const createGestureRecognizer = async () => {
+// Before we can use HandLandmarker class we must wait for it to finish loading. 
+const createHandLandmarker = async () => {
   const vision = await FilesetResolver.forVisionTasks(
     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
   );
-  gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+  handLandmarker = await HandLandmarker.createFromOptions(vision, {
     baseOptions: {
-      modelAssetPath:
-        "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
+      modelAssetPath:`https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
       delegate: "GPU",
     },
     runningMode: runningMode,
+    numHands: 2
   });
 };
-createGestureRecognizer();
+createHandLandmarker();
 
+
+// Main exported page 
 export default function Practice() {
   return (
     <div id="page-container">
@@ -56,6 +56,8 @@ function MainBody() {
   );
 }
 
+
+// Function to enable MediaPipe and Enable camera
 function EnableFSL() {
   const video = document.querySelector(".video");
   const canvasElement = document.querySelector(".output_canvas");
@@ -67,12 +69,10 @@ function EnableFSL() {
 
   // Check if webcam access is supported.
   function hasGetUserMedia() {
-    console.log("test")
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
   }
 
   if (hasGetUserMedia()) {
-    console.log("test")
     enableWebcamButton = document.querySelector(".enable_cam");
     enableWebcamButton.addEventListener("click", enableCam);
   } else {
@@ -81,10 +81,8 @@ function EnableFSL() {
 
   // Enable the live webcam view and start detection.
   function enableCam(event) {
-
-    
-    if (!gestureRecognizer) {
-      alert("Please wait for gestureRecognizer to load");
+    if (!handLandmarker) {
+      alert("Please wait for handLandmarker to load");
       return;
     }
 
@@ -110,58 +108,46 @@ function EnableFSL() {
 
   let lastVideoTime = -1;
   let results = undefined;
+  console.log(video);
   async function predictWebcam() {
-    const webcamElement = document.querySelector(".video");
+    canvasElement.style.width = video.videoWidth;;
+    canvasElement.style.height = video.videoHeight;
+    canvasElement.width = video.videoWidth;
+    canvasElement.height = video.videoHeight;
+    
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
       runningMode = "VIDEO";
-      await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+      await handLandmarker.setOptions({ runningMode: "VIDEO" });
     }
-    let nowInMs = Date.now();
-    if (video.currentTime !== lastVideoTime) {
+    let startTimeMs = performance.now();
+    if (lastVideoTime !== video.currentTime) {
       lastVideoTime = video.currentTime;
-      results = gestureRecognizer.recognizeForVideo(video, nowInMs);
+      results = handLandmarker.detectForVideo(video, startTimeMs);
     }
-
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     const drawingUtils = new DrawingUtils(canvasCtx);
 
-    canvasElement.style.height = videoHeight;
-    webcamElement.style.height = videoHeight;
-    canvasElement.style.width = videoWidth;
-    webcamElement.style.width = videoWidth;
 
     if (results.landmarks) {
       for (const landmarks of results.landmarks) {
         drawingUtils.drawConnectors(
           landmarks,
-          GestureRecognizer.HAND_CONNECTIONS,
+          HandLandmarker.HAND_CONNECTIONS,
           {
             color: "#00FF00",
-            lineWidth: 1
+            lineWidth: 5
           }
         );
         drawingUtils.drawLandmarks(landmarks, {
           color: "#FF0000",
-          lineWidth: 1,
-          radius: 1
+          lineWidth: 2
         });
       }
     }
     canvasCtx.restore();
-    if (results.gestures.length > 0) {
-      gestureOutput.style.display = "block";
-      gestureOutput.style.width = videoWidth;
-      const categoryName = results.gestures[0][0].categoryName;
-      const categoryScore = parseFloat(
-        results.gestures[0][0].score * 100
-      ).toFixed(2);
-      const handedness = results.handednesses[0][0].displayName;
-      gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
-    } else {
-      gestureOutput.style.display = "none";
-    }
+  
     // Call this function again to keep predicting when the browser is ready.
     if (webcamRunning === true) {
       window.requestAnimationFrame(predictWebcam);

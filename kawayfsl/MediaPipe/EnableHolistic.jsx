@@ -16,17 +16,16 @@ export default function EnableHolistic() {
   const canvasElement = document.querySelector(".output_canvas");
   const canvasCtx = canvasElement.getContext("2d");
 
-
   function onResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(
-      results.segmentationMask,
-      0,
-      0,
-      canvasElement.width,
-      canvasElement.height
-    );
+    // canvasCtx.drawImage(
+    //   results.segmentationMask,
+    //   0,
+    //   0,
+    //   canvasElement.width,
+    //   canvasElement.height
+    // );
 
     // Only overwrite existing pixels.
     canvasCtx.globalCompositeOperation = "source-in";
@@ -46,44 +45,44 @@ export default function EnableHolistic() {
     canvasCtx.globalCompositeOperation = "source-over";
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
       color: "#00FF00",
-      lineWidth: 4,
+      lineWidth: .5,
     });
     drawLandmarks(canvasCtx, results.poseLandmarks, {
       color: "#FF0000",
-      lineWidth: 2,
+      lineWidth: .5,
     });
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
       color: "#C0C0C070",
-      lineWidth: 1,
+      lineWidth: .5,
     });
     drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
       color: "#CC0000",
-      lineWidth: 5,
+      lineWidth: .5,
     });
     drawLandmarks(canvasCtx, results.leftHandLandmarks, {
       color: "#00FF00",
-      lineWidth: 2,
+      lineWidth: .5,
     });
     drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
       color: "#00CC00",
-      lineWidth: 5,
+      lineWidth: .5,
     });
     drawLandmarks(canvasCtx, results.rightHandLandmarks, {
       color: "#FF0000",
-      lineWidth: 2,
+      lineWidth: .5,
     });
     canvasCtx.restore();
   }
 
   const holistic = new Holistic({
     locateFile: (file) => {
-      return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
+      return `./node_modules/@mediapipe/holistic/${file}`;
     },
   });
   holistic.setOptions({
     modelComplexity: 1,
     smoothLandmarks: true,
-    enableSegmentation: true,
+    enableSegmentation: false,
     smoothSegmentation: true,
     refineFaceLandmarks: true,
     minDetectionConfidence: 0.5,

@@ -17,6 +17,11 @@ export default function EnableHolistic() {
   const canvasCtx = canvasElement.getContext("2d");
 
   function onResults(results) {
+    let result = results.poseLandmarks?.map(res => 
+      [res.x, res.y, res.z, res.visibility]
+    );
+    console.log(result);
+
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     // canvasCtx.drawImage(
@@ -45,31 +50,31 @@ export default function EnableHolistic() {
     canvasCtx.globalCompositeOperation = "source-over";
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
       color: "#00FF00",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     drawLandmarks(canvasCtx, results.poseLandmarks, {
       color: "#FF0000",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
       color: "#C0C0C070",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
       color: "#CC0000",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     drawLandmarks(canvasCtx, results.leftHandLandmarks, {
       color: "#00FF00",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
       color: "#00CC00",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     drawLandmarks(canvasCtx, results.rightHandLandmarks, {
       color: "#FF0000",
-      lineWidth: .5,
+      lineWidth: 0.5,
     });
     canvasCtx.restore();
   }

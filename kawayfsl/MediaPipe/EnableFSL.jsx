@@ -25,7 +25,7 @@ handLandmarker = await HandLandmarker.createFromOptions(vision, {
 };
 
 // Function to enable MediaPipe and Enable camera
-export default function EnableFSL() {
+export default function EnableHand() {
     const video = document.querySelector(".video");
     const canvasElement = document.querySelector(".output_canvas");
     const canvasCtx = canvasElement.getContext("2d");

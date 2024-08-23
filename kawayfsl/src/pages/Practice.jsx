@@ -4,6 +4,9 @@ import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
+// import EnableHand from "../../MediaPipe/EnableFSL.jsx";
+// import { CreateHandLandmarker } from "../../MediaPipe/EnableFSL.jsx";
+// CreateHandLandmarker()
 
 // Main exported page 
 export default function Practice() {

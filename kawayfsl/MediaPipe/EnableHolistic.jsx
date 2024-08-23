@@ -1,3 +1,5 @@
+import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
+
 import { drawConnectors, drawLandmarks } from "@mediapipe/drawing_utils";
 import {
   POSE_CONNECTIONS,
@@ -5,8 +7,8 @@ import {
   HAND_CONNECTIONS,
   Holistic,
 } from "@mediapipe/holistic";
+
 import { Camera } from "@mediapipe/camera_utils";
-import * as tf from "@tensorflow/tfjs";
 
 export default function EnableHolistic() {
   // Input Frames from DOM
@@ -15,15 +17,7 @@ export default function EnableHolistic() {
   const canvasCtx = canvasElement.getContext("2d");
 
   function onResults(results) {
-    let result = results.poseLandmarks?.map((res) => [
-      res.x,
-      res.y,
-      res.z,
-      res.visibility,
-    ]);
-    let newres = tf.data.array(result);
-    console.log(newres);
-
+    canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     // canvasCtx.drawImage(
     //   results.segmentationMask,
@@ -51,38 +45,34 @@ export default function EnableHolistic() {
     canvasCtx.globalCompositeOperation = "source-over";
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
       color: "#00FF00",
-      lineWidth: 5,
+      lineWidth: .5,
     });
     drawLandmarks(canvasCtx, results.poseLandmarks, {
       color: "#FF0000",
-      lineWidth: 1,
+      lineWidth: .5,
     });
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
       color: "#C0C0C070",
-      lineWidth: 1,
+      lineWidth: .5,
     });
     drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
       color: "#CC0000",
-      lineWidth: 5,
+      lineWidth: .5,
     });
     drawLandmarks(canvasCtx, results.leftHandLandmarks, {
       color: "#00FF00",
-      lineWidth: 1,
+      lineWidth: .5,
     });
     drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
       color: "#00CC00",
-      lineWidth: 5,
+      lineWidth: .5,
     });
     drawLandmarks(canvasCtx, results.rightHandLandmarks, {
       color: "#FF0000",
-      lineWidth: 1,
+      lineWidth: .5,
     });
     canvasCtx.restore();
   }
-
-  // function extractKeypoints(props){
-  //   poseKeypoints = tf.data.array([[res.x, res.y, res.z, res.visibility] for res in props.results.]);
-  // }
 
   const holistic = new Holistic({
     locateFile: (file) => {

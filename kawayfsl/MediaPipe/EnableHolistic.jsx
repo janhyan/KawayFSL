@@ -7,8 +7,8 @@ import {
   HAND_CONNECTIONS,
   Holistic,
 } from "@mediapipe/holistic";
-
 import { Camera } from "@mediapipe/camera_utils";
+import nj from "@d4c/numjs/build/module/numjs.min.js";
 
 export default function EnableHolistic() {
   // Input Frames from DOM
@@ -17,10 +17,8 @@ export default function EnableHolistic() {
   const canvasCtx = canvasElement.getContext("2d");
 
   function onResults(results) {
-    let result = results.poseLandmarks?.map(res => 
-      [res.x, res.y, res.z, res.visibility]
-    );
-    console.log(result);
+    let keypoints = extractKeypoints(results);
+    console.log(keypoints);
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -77,6 +75,40 @@ export default function EnableHolistic() {
       lineWidth: 0.5,
     });
     canvasCtx.restore();
+  }
+
+  // This function allows extraction of coordinates of each landmark using numjs
+  function extractKeypoints(results) {
+    let pose = results.poseLandmarks
+      ? nj
+          .array(
+            results.poseLandmarks?.map((res) => [
+              res.x,
+              res.y,
+              res.z,
+              res.visibility,
+            ])
+          )
+          .flatten()
+      : nj.zeros(33 * 4);
+    let face = results.faceLandmarks
+      ? nj
+          .array(results.faceLandmarks?.map((res) => [res.x, res.y, res.z]))
+          .flatten()
+      : nj.zeros(468 * 3);
+    let lh = results.leftHandLandmarks
+      ? nj
+          .array(results.leftHandLandmarks?.map((res) => [res.x, res.y, res.z]))
+          .flatten()
+      : nj.zeros(21 * 3);
+    let rh = results.rightHandLandmarks
+      ? nj
+          .array(
+            results.rightHandLandmarks?.map((res) => [res.x, res.y, res.z])
+          )
+          .flatten()
+      : nj.zeros(21 * 3);
+    return nj.concatenate([pose, face, lh, rh]);
   }
 
   const holistic = new Holistic({

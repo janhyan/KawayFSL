@@ -10,11 +10,15 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Home key={1}/>,
   },
   {
     path: '/practice',
-    element: <Practice />
+    element: <Practice key={2} />
+      // <UnmountCallback onUnmount={}>
+      //   <Practice />
+      // </UnmountCallback>
+      
   }
 ]);
 

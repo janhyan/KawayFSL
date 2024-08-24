@@ -1,5 +1,4 @@
-import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
-
+import React from "react";
 import { drawConnectors, drawLandmarks } from "@mediapipe/drawing_utils";
 import {
   POSE_CONNECTIONS,
@@ -12,7 +11,7 @@ import nj from "@d4c/numjs/build/module/numjs.min.js";
 
 export default function EnableHolistic() {
   // Input Frames from DOM
-  const videoElement = document.querySelector(".video");
+  const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
   const canvasCtx = canvasElement.getContext("2d");
 
@@ -22,13 +21,6 @@ export default function EnableHolistic() {
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    // canvasCtx.drawImage(
-    //   results.segmentationMask,
-    //   0,
-    //   0,
-    //   canvasElement.width,
-    //   canvasElement.height
-    // );
 
     // Only overwrite existing pixels.
     canvasCtx.globalCompositeOperation = "source-in";
@@ -135,4 +127,6 @@ export default function EnableHolistic() {
     height: 720,
   });
   camera.start();
+
+  return { camera, holistic };
 }

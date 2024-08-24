@@ -38,6 +38,7 @@ function MainBody(props) {
       <button className="enable_fsl" onClick={props.enable}>
         fsl
       </button>
+      <button className="record">Record</button>
       <div className="video-container" style={{ position: "relative" }}>
         <video className="video" autoPlay playsInline />
         <canvas

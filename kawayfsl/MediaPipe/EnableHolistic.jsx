@@ -17,7 +17,7 @@ export default function EnableHolistic() {
 
   function onResults(results) {
     let keypoints = extractKeypoints(results);
-    console.log(keypoints);
+    trackKeypoints(keypoints);
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -101,6 +101,16 @@ export default function EnableHolistic() {
           .flatten()
       : nj.zeros(21 * 3);
     return nj.concatenate([pose, face, lh, rh]);
+  }
+
+  let sequence = [];
+
+  function trackKeypoints(keypointArray) {
+    sequence.push(keypointArray);
+    if (sequence.length === 40) {
+      console.log(sequence);
+      sequence = [];
+    }
   }
 
   const holistic = new Holistic({

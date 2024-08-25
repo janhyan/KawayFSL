@@ -8,6 +8,7 @@ import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
 // Main exported page
 export default function Practice() {
   const holisticRef = React.useRef(null);
+  const toggleTracking = React.useRef(false) // For toggling if tracking starts
   
   React.useEffect(() => {
     return () => {
@@ -18,14 +19,19 @@ export default function Practice() {
     };
   }, []);
 
+  // Takes camera and holistic objects from EnableHolistic
   function handleEnableHolistic() {
-    holisticRef.current = EnableHolistic();
+    holisticRef.current = EnableHolistic(toggleTracking);
+  }
+
+  function toggleRecord() {
+    toggleTracking.current = !toggleTracking.current;
   }
 
   return (
     <div id="page-container">
       <Navbar />
-      <MainBody enable={handleEnableHolistic} />
+      <MainBody enable={handleEnableHolistic} toggle={toggleRecord}/>
     </div>
   );
 }
@@ -34,11 +40,10 @@ function MainBody(props) {
   return (
     <main id="body-container">
       <ModuleHeader module="1" subtopic="A" />
-      <button className="enable_cam">Enable</button>
       <button className="enable_fsl" onClick={props.enable}>
         fsl
       </button>
-      <button className="record">Record</button>
+      <button className="record" onClick={props.toggle}>Record</button>
       <div className="video-container" style={{ position: "relative" }}>
         <video className="video" autoPlay playsInline />
         <canvas

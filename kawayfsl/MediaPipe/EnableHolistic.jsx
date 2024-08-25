@@ -9,15 +9,24 @@ import {
 import { Camera } from "@mediapipe/camera_utils";
 import nj from "@d4c/numjs/build/module/numjs.min.js";
 
-export default function EnableHolistic() {
+export default function EnableHolistic(toggleTracking) {
   // Input Frames from DOM
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
   const canvasCtx = canvasElement.getContext("2d");
+  let sequence = [];
 
   function onResults(results) {
     let keypoints = extractKeypoints(results);
-    trackKeypoints(keypoints);
+
+    // Group keypoints into 40 frames to send to Lambda
+    if (toggleTracking.current) {
+      sequence.push(keypoints);
+      if (sequence.length === 40) {
+        console.log(sequence);
+        sequence = [];
+      }
+    }
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -100,19 +109,9 @@ export default function EnableHolistic() {
           )
           .flatten()
       : nj.zeros(21 * 3);
-    return nj.concatenate([pose, face, lh, rh]);
-  }
-
-  let sequence = [];
-
-  function trackKeypoints(keypointArray) {
-    sequence.push(keypointArray);
-    if (sequence.length === 40) {
-      console.log(sequence);
-      sequence = [];
+      return nj.concatenate([pose, face, lh, rh]);
     }
-  }
-
+    
   const holistic = new Holistic({
     locateFile: (file) => {
       return `./node_modules/@mediapipe/holistic/${file}`;
@@ -137,6 +136,6 @@ export default function EnableHolistic() {
     height: 720,
   });
   camera.start();
-
+  
   return { camera, holistic };
 }

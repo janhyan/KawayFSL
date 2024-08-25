@@ -15,10 +15,6 @@ const router = createBrowserRouter([
   {
     path: '/practice',
     element: <Practice key={2} />
-      // <UnmountCallback onUnmount={}>
-      //   <Practice />
-      // </UnmountCallback>
-      
   }
 ]);
 

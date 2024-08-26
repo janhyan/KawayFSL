@@ -35,4 +35,4 @@ jobs:
           
       - name: Deploy to AWS S3
         working-directory: ./kawayfsl
-        run: aws s3 sync build/ s3://kawayfsl.com --delete
+        run: aws s3 sync dist s3://kawayfsl.com --delete

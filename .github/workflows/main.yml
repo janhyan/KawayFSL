@@ -1,4 +1,4 @@
-name: Deploy Appl to AWS S3
+name: Deploy Application to AWS S3
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: NodeJS Setup
         uses: actions/setup-node@v3

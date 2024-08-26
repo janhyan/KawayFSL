@@ -22,7 +22,9 @@ jobs:
 
       - name: Application Build
         working-directory: ./kawayfsl
-        run: npm run build
+        run: |
+            npm ci
+            npm run build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1

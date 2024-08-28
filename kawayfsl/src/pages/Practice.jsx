@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
-
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
+import axios from "axios";
 
 // Main exported page
 export default function Practice() {
@@ -57,3 +57,29 @@ function MainBody(props) {
     </main>
   );
 }
+
+
+
+// async function makePredictions(keypoints) {
+//   const predictions = await fetch("https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage?value=hello");
+//   const data = await predictions.json();
+//   return data;
+// }
+
+// makePredictions("test").then(data => {
+//   console.log(data);
+// });
+
+// fetch("https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage")
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response error');  
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         console.log(data);
+//     })
+//     .catch(error => {
+//         console.error('Fetch error:', error);
+//     });

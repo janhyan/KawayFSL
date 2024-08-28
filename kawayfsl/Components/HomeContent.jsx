@@ -32,7 +32,7 @@ function MainCard(props) {
           <p>{props.description}</p>
           <button className="learn-now">Learn Now</button>
         </div>
-        <img src={"../src/assets/home.gif"} alt="GIF on Home Page" />
+        <img src={"/home.gif"} alt="GIF on Home Page" />
       </div>
     </div>
   );

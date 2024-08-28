@@ -18,7 +18,7 @@ export default function Navbar() {
           <div className="side-nav footer">
             <div className="heading">
               <div className="avatar">
-                <img className="user-img" src="assets/intro-img.png" alt="User image" />
+                <img className="user-img" src="/intro-img.png" alt="User image" />
               </div>
               <div className="user-details">
                 <p className="username">User</p>

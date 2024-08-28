@@ -114,7 +114,7 @@ export default function EnableHolistic(toggleTracking) {
     
   const holistic = new Holistic({
     locateFile: (file) => {
-      return `./node_modules/@mediapipe/holistic/${file}`;
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
     },
   });
   holistic.setOptions({

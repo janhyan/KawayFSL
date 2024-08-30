@@ -8,6 +8,7 @@ import {
 } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import nj from "@d4c/numjs/build/module/numjs.min.js";
+import axios from "axios";
 
 export default function EnableHolistic(toggleTracking) {
   // Input Frames from DOM
@@ -23,8 +24,22 @@ export default function EnableHolistic(toggleTracking) {
     if (toggleTracking.current) {
       sequence.push(keypoints);
       if (sequence.length === 40) {
+        axios
+          .post(
+            "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage",
+            sequence
+          )
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
         console.log(sequence);
+
+        // Clear the sequence and reset tracking of keypoints
         sequence = [];
+        toggleTracking.current = false;
       }
     }
 
@@ -109,9 +124,9 @@ export default function EnableHolistic(toggleTracking) {
           )
           .flatten()
       : nj.zeros(21 * 3);
-      return nj.concatenate([pose, face, lh, rh]);
-    }
-    
+    return nj.concatenate([pose, face, lh, rh]);
+  }
+
   const holistic = new Holistic({
     locateFile: (file) => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
@@ -136,6 +151,6 @@ export default function EnableHolistic(toggleTracking) {
     height: 720,
   });
   camera.start();
-  
+
   return { camera, holistic };
 }

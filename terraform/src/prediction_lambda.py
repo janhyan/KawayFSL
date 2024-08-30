@@ -43,7 +43,7 @@ def makePrediction(sequence):
     )
     model.add(Dense(16, activation="relu"))
     model.add(Dense(actions.shape[0], activation="softmax"))
-    model.load_weights('/introduction.h5')
+    model.load_weights('introduction.h5')
 
     res = model.predict(np.expand_dims(sequence, axis=0))[0]
     print(actions[np.argmax(res)])

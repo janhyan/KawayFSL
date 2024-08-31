@@ -8,7 +8,9 @@ import {
 } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import nj from "@d4c/numjs/build/module/numjs.min.js";
+
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 export default function EnableHolistic(toggleTracking) {
   // Input Frames from DOM
@@ -23,10 +25,12 @@ export default function EnableHolistic(toggleTracking) {
     // Group keypoints into 40 frames to send to Lambda
     if (toggleTracking.current) {
       sequence.push(keypoints);
+      
       if (sequence.length === 40) {
+        console.log("Shape of input data:", sequence.shape);
         axios
           .post(
-            "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage",
+            "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage/",
             sequence
           )
           .then((response) => {
@@ -93,39 +97,24 @@ export default function EnableHolistic(toggleTracking) {
     canvasCtx.restore();
   }
 
-  // This function allows extraction of coordinates of each landmark using numjs
   function extractKeypoints(results) {
     let pose = results.poseLandmarks
-      ? nj
-          .array(
-            results.poseLandmarks?.map((res) => [
-              res.x,
-              res.y,
-              res.z,
-              res.visibility,
-            ])
-          )
-          .flatten()
-      : nj.zeros(33 * 4);
+        ? nj.array(results.poseLandmarks.map((res) => [res.x, res.y, res.z, res.visibility])).flatten()
+        : nj.zeros(33 * 4);
     let face = results.faceLandmarks
-      ? nj
-          .array(results.faceLandmarks?.map((res) => [res.x, res.y, res.z]))
-          .flatten()
-      : nj.zeros(468 * 3);
+        ? nj.array(results.faceLandmarks.slice(0, 468).map((res) => [res.x, res.y, res.z])).flatten()
+        : nj.zeros(468 * 3);
     let lh = results.leftHandLandmarks
-      ? nj
-          .array(results.leftHandLandmarks?.map((res) => [res.x, res.y, res.z]))
-          .flatten()
-      : nj.zeros(21 * 3);
+        ? nj.array(results.leftHandLandmarks.map((res) => [res.x, res.y, res.z])).flatten()
+        : nj.zeros(21 * 3);
     let rh = results.rightHandLandmarks
-      ? nj
-          .array(
-            results.rightHandLandmarks?.map((res) => [res.x, res.y, res.z])
-          )
-          .flatten()
-      : nj.zeros(21 * 3);
-    return nj.concatenate([pose, face, lh, rh]);
-  }
+        ? nj.array(results.rightHandLandmarks.map((res) => [res.x, res.y, res.z])).flatten()
+        : nj.zeros(21 * 3);
+
+    let keypoints = nj.concatenate([pose, face, lh, rh]);
+    return keypoints.tolist(); // Convert to JavaScript array
+}
+
 
   const holistic = new Holistic({
     locateFile: (file) => {

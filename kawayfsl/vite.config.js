@@ -13,4 +13,7 @@ export default defineConfig({
       'Holistic'
     ]
   })],
+  server: {
+    port: 3000,
+  },
 })

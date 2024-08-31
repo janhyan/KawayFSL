@@ -1,0 +1,158 @@
+{
+    "resource": "/",
+    "path": "/",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "en-US,en;q=0.9",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-ASN": "135345",
+        "CloudFront-Viewer-Country": "PH",
+        "content-type": "application/json",
+        "Host": "kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com",
+        "origin": "http://localhost:5173",
+        "priority": "u=1, i",
+        "Referer": "http://localhost:5173/",
+        "sec-ch-ua": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0",
+        "Via": "2.0 a2e417d87c676916d4c148e947982e9e.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "X2BATefUKYXbKiwwU138a3fWcEyr46C9l0GJbnRFd9D8GcrcZyfREQ==",
+        "X-Amzn-Trace-Id": "Root=1-66cee334-0a1599f72bbb2ed8484142f6",
+        "X-Forwarded-For": "103.179.145.38, 130.176.93.80",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "application/json, text/plain, */*"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate, br, zstd"
+        ],
+        "Accept-Language": [
+            "en-US,en;q=0.9"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-ASN": [
+            "135345"
+        ],
+        "CloudFront-Viewer-Country": [
+            "PH"
+        ],
+        "content-type": [
+            "application/json"
+        ],
+        "Host": [
+            "kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com"
+        ],
+        "origin": [
+            "http://localhost:5173"
+        ],
+        "priority": [
+            "u=1, i"
+        ],
+        "Referer": [
+            "http://localhost:5173/"
+        ],
+        "sec-ch-ua": [
+            "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+        ],
+        "sec-ch-ua-mobile": [
+            "?0"
+        ],
+        "sec-ch-ua-platform": [
+            "\"Windows\""
+        ],
+        "sec-fetch-dest": [
+            "empty"
+        ],
+        "sec-fetch-mode": [
+            "cors"
+        ],
+        "sec-fetch-site": [
+            "cross-site"
+        ],
+        "User-Agent": [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+        ],
+        "Via": [
+            "2.0 a2e417d87c676916d4c148e947982e9e.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "X2BATefUKYXbKiwwU138a3fWcEyr46C9l0GJbnRFd9D8GcrcZyfREQ=="
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-66cee334-0a1599f72bbb2ed8484142f6"
+        ],
+        "X-Forwarded-For": [
+            "103.179.145.38, 130.176.93.80"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ]
+    },
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "b7le3t6cbb",
+        "resourcePath": "/",
+        "httpMethod": "POST",
+        "extendedRequestId": "dNhwQGoHNjMEQeQ=",
+        "requestTime": "28/Aug/2024:08:43:32 +0000",
+        "path": "/stage",
+        "accountId": "575108916335",
+        "protocol": "HTTP/1.1",
+        "stage": "stage",
+        "domainPrefix": "kb02bv2ra8",
+        "requestTimeEpoch": 1724834612551,
+        "requestId": "ec1c3286-5da0-4bc1-8d9e-d3b820c98632",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "103.179.145.38",
+            "principalOrgId": null,
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0",
+            "user": null
+        },
+        "domainName": "kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com",
+        "deploymentId": "d1hsz2",
+        "apiId": "kb02bv2ra8"
+    },
+    "body": "[\"[0.39831504225730896,0.2269003540277481,-0.7015851140022278,0.9965214729309082,0.4313957691192627,0.002201382303610444,0.37528809905052185,0.17785756289958954,-0.003143545240163803,0.3353119492530823,0.17999553680419922,-0.008740677498281002,0.31555435061454773,0.21024754643440247,-0.009425231255590916,0.3103886842727661,0.23861972987651825,-0.007789507042616606]\"]",
+    "isBase64Encoded": false
+}

@@ -1,4 +1,3 @@
-import React from "react";
 import { drawConnectors, drawLandmarks } from "@mediapipe/drawing_utils";
 import {
   POSE_CONNECTIONS,
@@ -68,31 +67,31 @@ export default function EnableHolistic(toggleTracking) {
     canvasCtx.globalCompositeOperation = "source-over";
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
       color: "#00FF00",
-      lineWidth: 0.5,
+      lineWidth: 0.1,
     });
     drawLandmarks(canvasCtx, results.poseLandmarks, {
       color: "#FF0000",
-      lineWidth: 0.5,
+      radius: 1,
     });
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
       color: "#C0C0C070",
-      lineWidth: 0.5,
+      lineWidth: 0.1,
     });
     drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
       color: "#CC0000",
-      lineWidth: 0.5,
+      lineWidth: 0.1,
     });
     drawLandmarks(canvasCtx, results.leftHandLandmarks, {
       color: "#00FF00",
-      lineWidth: 0.5,
+      radius: 1,
     });
     drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
       color: "#00CC00",
-      lineWidth: 0.5,
+      lineWidth: 0.1,
     });
     drawLandmarks(canvasCtx, results.rightHandLandmarks, {
       color: "#FF0000",
-      lineWidth: 0.5,
+      radius: 1,
     });
     canvasCtx.restore();
   }
@@ -127,8 +126,8 @@ export default function EnableHolistic(toggleTracking) {
     enableSegmentation: false,
     smoothSegmentation: true,
     refineFaceLandmarks: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
+    minDetectionConfidence: 0.1,
+    minTrackingConfidence: 0.1,
   });
   holistic.onResults(onResults);
 
@@ -136,10 +135,11 @@ export default function EnableHolistic(toggleTracking) {
     onFrame: async () => {
       await holistic.send({ image: videoElement });
     },
-    width: 1280,
-    height: 720,
+    width: videoElement.width,
+    height: videoElement.height,
   });
   camera.start();
+
 
   return { camera, holistic };
 }

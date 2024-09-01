@@ -5,20 +5,25 @@ from keras.layers import LSTM, Dense
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 
+ALLOWED_ORIGINS = ["http://localhost:3000", "https://dvbk4z4bhydxp.cloudfront.net"]
+
 
 def lambda_handler(event, context):
+    origin = event["headers"].get("origin", "")
+
+    headers = {
+        "Access-Control-Allow-Origin": origin if origin in ALLOWED_ORIGINS else "",
+        "Access-Control-Allow-Credentials": True,
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        "X-Requested-With": "*",
+        "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
+    }
 
     # Handle OPTIONS request for CORS preflight
     if event["httpMethod"] == "OPTIONS":
         return {
             "statusCode": 200,
-            "headers": {
-                "Access-Control-Allow-Origin": "http://localhost:3000",  # Adjust as needed
-                "Access-Control-Allow-Credentials": "true",  # Allow credentials
-                "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-                "X-Requested-With": "*",
-                "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
-            },
+            "headers": headers,
             "body": json.dumps("CORS preflight response"),
         }
 
@@ -29,10 +34,8 @@ def lambda_handler(event, context):
         try:
             # If body is a string representation of a JSON array or object
             parsed_body = json.loads(body)
-            print("Parsed body:", parsed_body)
         except json.JSONDecodeError:
             # Handle cases where the body might not be JSON (e.g., plain text)
-            print("Body is not a valid JSON:", body)
             parsed_body = body
     else:
         parsed_body = {}
@@ -42,13 +45,7 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "headers": {
-            "Access-Control-Allow-Origin": "http://localhost:3000",  # Adjust as needed
-            "Access-Control-Allow-Credentials": "true",  # Allow credentials
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-            "X-Requested-With": "*",
-            "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
-        },
+        "headers": headers,
         "body": json.dumps(prediction),  # returning the parsed prediction data
     }
 
@@ -64,6 +61,5 @@ def makePrediction(sequence):
     model.load_weights("introduction.h5")
 
     res = model.predict(np.expand_dims(sequence, axis=0))[0]
-    print(actions[np.argmax(res)])
 
     return actions[np.argmax(res)]

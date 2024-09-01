@@ -71,7 +71,7 @@ export default function EnableHolistic(toggleTracking) {
     });
     drawLandmarks(canvasCtx, results.poseLandmarks, {
       color: "#FF0000",
-      radius: 1,
+      radius: 0.5,
     });
     drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
       color: "#C0C0C070",
@@ -83,7 +83,7 @@ export default function EnableHolistic(toggleTracking) {
     });
     drawLandmarks(canvasCtx, results.leftHandLandmarks, {
       color: "#00FF00",
-      radius: 1,
+      radius: 0.5,
     });
     drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
       color: "#00CC00",
@@ -91,7 +91,7 @@ export default function EnableHolistic(toggleTracking) {
     });
     drawLandmarks(canvasCtx, results.rightHandLandmarks, {
       color: "#FF0000",
-      radius: 1,
+      radius: 0.5,
     });
     canvasCtx.restore();
   }
@@ -135,8 +135,8 @@ export default function EnableHolistic(toggleTracking) {
     onFrame: async () => {
       await holistic.send({ image: videoElement });
     },
-    width: videoElement.width,
-    height: videoElement.height,
+    width: canvasElement.width,
+    height: canvasElement.height,
   });
   camera.start();
 

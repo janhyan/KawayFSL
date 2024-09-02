@@ -7,55 +7,92 @@ import {
 } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import nj from "@d4c/numjs/build/module/numjs.min.js";
-
 import axios from "axios";
+
 axios.defaults.withCredentials = true;
 
 export default function EnableHolistic(toggleTracking, setAnswers) {
-  // Input Frames from DOM
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
   const canvasCtx = canvasElement.getContext("2d");
   let sequence = [];
 
   function onResults(results) {
-    let keypoints = extractKeypoints(results);
+    const keypoints = extractKeypoints(results);
 
-    // Group keypoints into 40 frames to send to Lambda
     if (toggleTracking.current) {
       sequence.push(keypoints);
-      
-      if (sequence.length === 40) {
-        console.log("Shape of input data:", sequence.shape);
-        axios
-          .post(
-            "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage/",
-            sequence
-          )
-          .then((response) => {
-            console.log(response.data);
-            setAnswers(prevAnswer => [...prevAnswer, response.data])
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-        console.log(sequence);
 
-        // Clear the sequence and reset tracking of keypoints
+      if (sequence.length === 40) {
+        console.log(sequence);
+        sendSequenceToAPI(sequence);
         sequence = [];
         toggleTracking.current = false;
       }
     }
 
+    drawResults(results);
+  }
+
+  function extractKeypoints(results) {
+    const pose = results.poseLandmarks
+      ? nj
+          .array(
+            results.poseLandmarks.map((res) => [
+              res.x,
+              res.y,
+              res.z,
+              res.visibility,
+            ])
+          )
+          .flatten()
+      : nj.zeros(33 * 4);
+    const face = results.faceLandmarks
+      ? nj
+          .array(
+            results.faceLandmarks
+              .slice(0, 468)
+              .map((res) => [res.x, res.y, res.z])
+          )
+          .flatten()
+      : nj.zeros(468 * 3);
+    const lh = results.leftHandLandmarks
+      ? nj
+          .array(results.leftHandLandmarks.map((res) => [res.x, res.y, res.z]))
+          .flatten()
+      : nj.zeros(21 * 3);
+    const rh = results.rightHandLandmarks
+      ? nj
+          .array(results.rightHandLandmarks.map((res) => [res.x, res.y, res.z]))
+          .flatten()
+      : nj.zeros(21 * 3);
+
+    return nj.concatenate([pose, face, lh, rh]).tolist();
+  }
+
+  function sendSequenceToAPI(sequence) {
+    axios
+      .post(
+        "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage/",
+        sequence
+      )
+      .then((response) => {
+        console.log("Sequence sent to API:", response.data);
+        setAnswers((prevAnswer) => [...prevAnswer, response.data]);
+      })
+      .catch((error) => {
+        console.error("Error sending sequence to API:", error);
+      });
+  }
+
+  function drawResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-    // Only overwrite existing pixels.
     canvasCtx.globalCompositeOperation = "source-in";
     canvasCtx.fillStyle = "#00FF00";
     canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
-    // Only overwrite missing pixels.
     canvasCtx.globalCompositeOperation = "destination-atop";
     canvasCtx.drawImage(
       results.image,
@@ -66,60 +103,46 @@ export default function EnableHolistic(toggleTracking, setAnswers) {
     );
 
     canvasCtx.globalCompositeOperation = "source-over";
-    drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-      color: "#00FF00",
-      lineWidth: 0.1,
-    });
-    drawLandmarks(canvasCtx, results.poseLandmarks, {
-      color: "#FF0000",
-      radius: 0.5,
-    });
-    drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
-      color: "#C0C0C070",
-      lineWidth: 0.1,
-    });
-    drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
-      color: "#CC0000",
-      lineWidth: 0.1,
-    });
-    drawLandmarks(canvasCtx, results.leftHandLandmarks, {
-      color: "#00FF00",
-      radius: 0.5,
-    });
-    drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
-      color: "#00CC00",
-      lineWidth: 0.1,
-    });
-    drawLandmarks(canvasCtx, results.rightHandLandmarks, {
-      color: "#FF0000",
-      radius: 0.5,
-    });
+
+    drawLandmarkConnectors(
+      results.poseLandmarks,
+      POSE_CONNECTIONS,
+      "#00FF00",
+      0.1
+    );
+    drawLandmarkConnectors(
+      results.faceLandmarks,
+      FACEMESH_TESSELATION,
+      "#C0C0C070",
+      0.1
+    );
+    drawLandmarkConnectors(
+      results.leftHandLandmarks,
+      HAND_CONNECTIONS,
+      "#CC0000",
+      0.1
+    );
+    drawLandmarkConnectors(
+      results.rightHandLandmarks,
+      HAND_CONNECTIONS,
+      "#00CC00",
+      0.1
+    );
+
     canvasCtx.restore();
   }
 
-  function extractKeypoints(results) {
-    let pose = results.poseLandmarks
-        ? nj.array(results.poseLandmarks.map((res) => [res.x, res.y, res.z, res.visibility])).flatten()
-        : nj.zeros(33 * 4);
-    let face = results.faceLandmarks
-        ? nj.array(results.faceLandmarks.slice(0, 468).map((res) => [res.x, res.y, res.z])).flatten()
-        : nj.zeros(468 * 3);
-    let lh = results.leftHandLandmarks
-        ? nj.array(results.leftHandLandmarks.map((res) => [res.x, res.y, res.z])).flatten()
-        : nj.zeros(21 * 3);
-    let rh = results.rightHandLandmarks
-        ? nj.array(results.rightHandLandmarks.map((res) => [res.x, res.y, res.z])).flatten()
-        : nj.zeros(21 * 3);
-
-    let keypoints = nj.concatenate([pose, face, lh, rh]);
-    return keypoints.tolist(); // Convert to JavaScript array
-}
-
+  function drawLandmarkConnectors(landmarks, connections, color, lineWidth) {
+    if (!landmarks) return;
+    drawConnectors(canvasCtx, landmarks, connections, { color, lineWidth });
+    if (connections != FACEMESH_TESSELATION) {
+      drawLandmarks(canvasCtx, landmarks, { color, radius: 1 });
+    }
+  }
 
   const holistic = new Holistic({
-    locateFile: (file) => {
-      return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
-    },
+    locateFile: (file) =>
+      `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
   });
   holistic.setOptions({
     modelComplexity: 1,
@@ -140,7 +163,6 @@ export default function EnableHolistic(toggleTracking, setAnswers) {
     height: canvasElement.height,
   });
   camera.start();
-
 
   return { camera, holistic };
 }

@@ -11,7 +11,7 @@ import nj from "@d4c/numjs/build/module/numjs.min.js";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-export default function EnableHolistic(toggleTracking) {
+export default function EnableHolistic(toggleTracking, setAnswers) {
   // Input Frames from DOM
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
@@ -34,6 +34,7 @@ export default function EnableHolistic(toggleTracking) {
           )
           .then((response) => {
             console.log(response.data);
+            setAnswers(prevAnswer => [...prevAnswer, response.data])
           })
           .catch((error) => {
             console.error(error);

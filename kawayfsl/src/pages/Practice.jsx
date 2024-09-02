@@ -7,6 +7,8 @@ import "./css/Practice.css";
 
 // Main exported page
 export default function Practice() {
+  const [answer, setAnswers] = React.useState(["test"]);
+
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
 
@@ -21,7 +23,7 @@ export default function Practice() {
 
   // Takes camera and holistic objects from EnableHolistic
   function handleEnableHolistic() {
-    holisticRef.current = EnableHolistic(toggleTracking);
+    holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {
@@ -31,11 +33,16 @@ export default function Practice() {
   return (
     <div id="page-container">
       <Navbar />
-      <MainBody enable={handleEnableHolistic} toggle={toggleRecord} />
+      <MainBody
+        enable={handleEnableHolistic}
+        toggle={toggleRecord}
+        answers={answer}
+      />
     </div>
   );
 }
 
+// Renders right side of the page
 function MainBody(props) {
   return (
     <main id="body-container">
@@ -56,8 +63,15 @@ function MainBody(props) {
         </div>
       </div>
       <div className="right-body">
-        
+        {props.answers.map((answer, index) => (
+          <Answers key={index} answer={answer} />
+        ))}
       </div>
     </main>
   );
+}
+
+// Render divs for answers
+function Answers(props) {
+  return <div className="answer">{props.answer}</div>;
 }

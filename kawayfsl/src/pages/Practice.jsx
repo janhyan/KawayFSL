@@ -7,7 +7,7 @@ import "./css/Practice.css";
 
 // Main exported page
 export default function Practice() {
-  const [answer, setAnswers] = React.useState(["test"]);
+  const [answer, setAnswers] = React.useState([]);
 
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
@@ -47,25 +47,27 @@ function MainBody(props) {
   return (
     <main id="body-container">
       <ModuleHeader module="1" subtopic="A" />
-      <div className="left-body">
-        <div className="video-container">
-          <video className="video" autoPlay playsInline />
-          <canvas className="output_canvas"></canvas>
-          <h1 className="gesture_output"></h1>
+      <div className="main-container">
+        <div className="left-body">
+          <div className="video-container">
+            <video className="video" autoPlay playsInline />
+            <canvas className="output_canvas"></canvas>
+            <h1 className="gesture_output"></h1>
+          </div>
+          <div className="buttons-container">
+            <button className="enable_fsl" onClick={props.enable}>
+              CAMERA
+            </button>
+            <button className="record" onClick={props.toggle}>
+              START
+            </button>
+          </div>
         </div>
-        <div className="buttons-container">
-          <button className="enable_fsl" onClick={props.enable}>
-            CAMERA
-          </button>
-          <button className="record" onClick={props.toggle}>
-            START
-          </button>
+        <div className="right-body">
+          {props.answers.map((answer, index) => (
+            <Answers key={index} answer={answer} />
+          ))}
         </div>
-      </div>
-      <div className="right-body">
-        {props.answers.map((answer, index) => (
-          <Answers key={index} answer={answer} />
-        ))}
       </div>
     </main>
   );

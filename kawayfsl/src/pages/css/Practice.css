@@ -4,12 +4,18 @@
 
 /* GENERAL */
 
-/* #body-container {
-    padding: 20px;
-} */
+#body-container {
+  padding-right: 0;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 60vw 1fr;
+  gap: 20px;
+}
 
 .video-container {
-  width: 60vw;
+  width: 100%;
   aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
@@ -59,4 +65,27 @@
 .buttons-container {
     gap: 20px;
     display: flex;    
+}
+
+.right-body {
+  display: flex;
+  align-items: end;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.answer {
+  border: none;
+  background-color: #8ecae6;
+  height: 80px;
+  width: 90%;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-size: 1vw;
+  box-shadow: 100px 20px 90px -20px #535353;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

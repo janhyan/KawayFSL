@@ -3,13 +3,15 @@ import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
-import axios from "axios";
+import "./css/Practice.css";
 
 // Main exported page
 export default function Practice() {
+  const [answer, setAnswers] = React.useState([]);
+
   const holisticRef = React.useRef(null);
-  const toggleTracking = React.useRef(false) // For toggling if tracking starts
-  
+  const toggleTracking = React.useRef(false); // For toggling if tracking starts
+
   React.useEffect(() => {
     return () => {
       if (holisticRef.current) {
@@ -21,7 +23,7 @@ export default function Practice() {
 
   // Takes camera and holistic objects from EnableHolistic
   function handleEnableHolistic() {
-    holisticRef.current = EnableHolistic(toggleTracking);
+    holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {
@@ -31,55 +33,47 @@ export default function Practice() {
   return (
     <div id="page-container">
       <Navbar />
-      <MainBody enable={handleEnableHolistic} toggle={toggleRecord}/>
+      <MainBody
+        enable={handleEnableHolistic}
+        toggle={toggleRecord}
+        answers={answer}
+      />
     </div>
   );
 }
 
+// Renders right side of the page
 function MainBody(props) {
   return (
     <main id="body-container">
       <ModuleHeader module="1" subtopic="A" />
-      <button className="enable_fsl" onClick={props.enable}>
-        fsl
-      </button>
-      <button className="record" onClick={props.toggle}>Record</button>
-      <div className="video-container" style={{ position: "relative" }}>
-        <video className="video" autoPlay playsInline />
-        <canvas
-          className="output_canvas"
-          width="1280px"
-          height="720px"
-          style={{ position: "absolute", left: 0, top: 0 }}
-        ></canvas>
-        <h1 className="gesture_output"></h1>
+      <div className="main-container">
+        <div className="left-body">
+          <div className="video-container">
+            <video className="video" autoPlay playsInline />
+            <canvas className="output_canvas"></canvas>
+            <h1 className="gesture_output"></h1>
+          </div>
+          <div className="buttons-container">
+            <button className="enable_fsl" onClick={props.enable}>
+              CAMERA
+            </button>
+            <button className="record" onClick={props.toggle}>
+              START
+            </button>
+          </div>
+        </div>
+        <div className="right-body">
+          {props.answers.map((answer, index) => (
+            <Answers key={index} answer={answer} />
+          ))}
+        </div>
       </div>
     </main>
   );
 }
 
-
-
-// async function makePredictions(keypoints) {
-//   const predictions = await fetch("https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage?value=hello");
-//   const data = await predictions.json();
-//   return data;
-// }
-
-// makePredictions("test").then(data => {
-//   console.log(data);
-// });
-
-// fetch("https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage")
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response error');  
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         console.log(data);
-//     })
-//     .catch(error => {
-//         console.error('Fetch error:', error);
-//     });
+// Render divs for answers
+function Answers(props) {
+  return <div className="answer">{props.answer}</div>;
+}

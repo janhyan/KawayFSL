@@ -7,9 +7,6 @@ export default function ModuleHeader(props) {
           </h2>
           <h1>Subtopic: {props.subtopic}</h1>
         </div>
-        <div className="notif-container">
-          <button className="notif-button" />
-        </div>
       </header>
     );
   }

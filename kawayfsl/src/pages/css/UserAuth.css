@@ -18,6 +18,7 @@ body {
 
 h1 {
     font-family: 'Poppins', Geneva, Tahoma, sans-serif;
+    font-size: 2vw;
 }
 
 h2, button, p, a, label {
@@ -26,9 +27,10 @@ h2, button, p, a, label {
 
 h2 {
     font-weight: 400;
+    font-size: 1.5vw;
 }
 
-button {
+.submit-button {
     background-color: #219EBC;
     color: azure;
     font-size: 1rem;
@@ -69,8 +71,17 @@ span {
     height: 90vh;
 }
 
-.details-container > div {
-    /* border: 2px solid black; */
+.signin-container > .signup-container {
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    padding: 5vh 40px 5vh 40px;
+    flex-basis: 35%;
+    background-color: azure;
+    margin-left : -15px;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: min(300px, 20%) min(600px, 80%);
+    height: 90vh;
 }
 
 .greetings, .forms-container {
@@ -85,7 +96,7 @@ span {
 }
 
 input {
-    height: 50px;
+    height: 4vh;
     width: 100%;
     padding: 10px 10px;
     margin-bottom: 20px;
@@ -125,6 +136,11 @@ button {
     justify-content: end;
 }
 
+.forms-container a {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
 
 
 

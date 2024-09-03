@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./css/UserAuth.css";
 import SignIn from "../../Components/SignIn";
+import SignUp from "../../Components/SignUp";
 
 export default function UserAuth() {
+  const [isSignUp, setIsSignUp] = React.useState(true);
+
   return (
     <main>
       <div className="signin-container">
@@ -17,7 +20,7 @@ export default function UserAuth() {
             alt="Gif of students"
           />
         </div>
-        <SignIn />
+        {(!isSignUp) ? <SignIn setIsSignUp={setIsSignUp} /> : <SignUp setIsSignUp={setIsSignUp} />}
       </div>
     </main>
   );

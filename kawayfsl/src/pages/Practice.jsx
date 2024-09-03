@@ -45,7 +45,7 @@ export default function Practice() {
 // Renders right side of the page
 function MainBody(props) {
   return (
-    <main id="body-container">
+    <main id="body-container" style={{paddingRight: "0px"}}>
       <ModuleHeader module="1" subtopic="A" />
       <div className="main-container">
         <div className="left-body">

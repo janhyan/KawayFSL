@@ -1,4 +1,4 @@
-export default function SignIn() {
+export default function SignIn(props) {
     return (
         <div className="details-container">
         <div className="greetings">
@@ -29,13 +29,13 @@ export default function SignIn() {
                   Forgot password?
                 </a>
               </p>
-              <button type="submit">Sign in</button>
+              <button className="submit-button" type="submit">Sign in</button>
             </form>
           </fieldset>
           <div className="signin-options">
             <p className="sign-up-text">
               Don't have an account?{" "}
-              <a href="signup.html" className="sign-up">
+              <a onClick={() => props.setIsSignUp((prev) => !prev)} className="sign-up">
                 Sign Up
               </a>
             </p>

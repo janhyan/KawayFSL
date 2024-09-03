@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import '../App';
+import '../App.css';
 import Navbar from '../../Components/Navbar.jsx';
 import HomeContent from '../../Components/HomeContent.jsx';
 

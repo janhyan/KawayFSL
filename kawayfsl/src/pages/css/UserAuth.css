@@ -34,6 +34,7 @@ h2 {
     background-color: #219EBC;
     color: azure;
     font-size: 1rem;
+    cursor: pointer;
 }
 
 span {
@@ -136,10 +137,15 @@ button {
     justify-content: end;
 }
 
-.forms-container a {
+.forms-container a, .signin-container a {
     color: -webkit-link;
     cursor: pointer;
     text-decoration: underline;
+}
+
+.result-message {
+    font-size: 1vw;
+    text-align: start;
 }
 
 

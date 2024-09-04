@@ -5,7 +5,7 @@ import SignIn from "../../Components/SignIn";
 import SignUp from "../../Components/SignUp";
 
 export default function UserAuth() {
-  const [isSignUp, setIsSignUp] = React.useState(true);
+  const [isSignUp, setIsSignUp] = React.useState(false);
 
   return (
     <main>

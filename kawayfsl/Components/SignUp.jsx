@@ -1,5 +1,6 @@
 import React from "react";
-import { userPool } from "../src/auth/UserPool";
+import userSignUp from "../src/auth/userSignUp";
+import ConfirmSignUp from "./ConfirmSignUp";
 
 export default function SignUp(props) {
   const [password, setPassword] = React.useState("");
@@ -25,26 +26,9 @@ export default function SignUp(props) {
   };
 
   if (success) {
-    console.log("test2");
     return (
-      <div className="signup-container" style={{ display: "flex" }}>
-        <div className="greetings">
-          <h1 className="greetings welcome">SignUp successful!</h1>
-          <h2 className="greetings details">
-            Please check your email for the confirmation code.
-          </h2>
-          <p className="sign-up-text">
-            Account verified?{" "}
-            <a
-              onClick={() => props.setIsSignUp((prev) => !prev)}
-              className="sign-up"
-            >
-              Sign In
-            </a>
-          </p>
-        </div>
-      </div>
-    );
+      <ConfirmSignUp setIsSignUp={props.setIsSignUp} />
+    )
   }
 
   return (
@@ -125,33 +109,3 @@ export default function SignUp(props) {
   );
 }
 
-function userSignUp(email, password, firstName, middleName, lastName) {
-  return new Promise((resolve, reject) => {
-    userPool.signUp(
-      email,
-      password,
-      [
-        {
-          Name: "family_name",
-          Value: lastName,
-        },
-        {
-          Name: "given_name",
-          Value: firstName,
-        },
-        {
-          Name: "middle_name",
-          Value: middleName,
-        },
-      ],
-      null,
-      (err, result) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(result.user);
-      }
-    );
-  });
-}

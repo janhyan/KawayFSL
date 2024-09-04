@@ -32,8 +32,9 @@ h2 {
 
 .submit-button {
     background-color: #219EBC;
-    color: azure;
+    color: black;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
 }
 

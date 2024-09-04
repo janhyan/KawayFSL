@@ -1,45 +1,74 @@
-import { Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import getCurrentUser from "../src/auth/getCurrentUser";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
-    return (
-        <nav className="side-nav container">
-          <div className="side-nav header">
-            <h1 id="side-nav-title" href="#HOME">
-              Kaway<b className="title-period">.</b>
-            </h1>
-          </div>
-          <div className="side-nav contents">
-            <Button className="home buttons" as={Link} to='/'>Home</Button>
-            <Button className="lessons buttons " as={Link} to='/lessons'>Lessons</Button>
-            <Button className="practice buttons" as={Link} to='/practice'>Practice</Button>
-            <Button className="settings buttons" as={Link} to='/settings'>Settings</Button>
-          </div>
-          <div className="side-nav footer">
-            <div className="heading">
-              <div className="avatar">
-                <img className="user-img" src="/intro-img.png" alt="User image" />
-              </div>
-              <div className="user-details">
-                <p className="username">User</p>
-                <p className="role">Admin</p>
-              </div>
-              <div className="footer-toggle">
-                <input type="checkbox" name="footer-checkbox" id="footer-caret" onClick={slideFooter} />
-                <label htmlFor="footer-caret" className="slide-icon" />
-              </div>
-            </div>
-            <div className="footer content">
-              <p>
-                ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </nav>
-    )
-  }
+  const [user, setUser] = useState();
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getCurrentUser()
+        setUser(user)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    fetchUser()
+  }, [])
+
+  return (
+    <nav className="side-nav container">
+      <div className="side-nav header">
+        <h1 id="side-nav-title" href="#HOME">
+          Kaway<b className="title-period">.</b>
+        </h1>
+      </div>
+      <div className="side-nav contents">
+        <Button className="home buttons" as={Link} to="/">
+          Home
+        </Button>
+        <Button className="lessons buttons " as={Link} to="/lessons">
+          Lessons
+        </Button>
+        <Button className="practice buttons" as={Link} to="/practice">
+          Practice
+        </Button>
+        <Button className="settings buttons" as={Link} to="/settings">
+          Settings
+        </Button>
+      </div>
+      <div className="side-nav footer">
+        <div className="heading">
+          <div className="avatar">
+            <img className="user-img" src="/intro-img.png" alt="User image" />
+          </div>
+          <div className="user-details">
+            <p className="username">{user.email}</p>
+            <p className="role">Admin</p>
+          </div>
+          <div className="footer-toggle">
+            <input
+              type="checkbox"
+              name="footer-checkbox"
+              id="footer-caret"
+              onClick={slideFooter}
+            />
+            <label htmlFor="footer-caret" className="slide-icon" />
+          </div>
+        </div>
+        <div className="footer content">
+          <p>
+            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+      </div>
+    </nav>
+  );
+}
 
 /* Function to slide the side-nav footer */
 function slideFooter() {
@@ -58,7 +87,6 @@ function slideFooter() {
   }
 
   function slideUp() {
-
     if (initialUp == 0) {
       clearInterval(id);
     } else {
@@ -68,7 +96,6 @@ function slideFooter() {
   }
 
   function slideDown() {
-
     if (initialDown == -60) {
       clearInterval(id);
     } else {

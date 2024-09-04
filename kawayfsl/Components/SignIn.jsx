@@ -1,6 +1,6 @@
-import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
+import { userSignIn } from "../src/auth/userSignIn";
 import { useState } from "react";
-import { userPool } from "../src/auth/UserPool";
+
 import Home from "../src/pages/Home";
 
 export default function SignIn(props) {
@@ -23,7 +23,9 @@ export default function SignIn(props) {
   };
 
   if (success) {
-    <Home />;
+    return (
+      <Home />
+    )
   }
 
   return (
@@ -80,25 +82,4 @@ export default function SignIn(props) {
   );
 }
 
-function userSignIn(email, password) {
-  return new Promise((resolve, reject) => {
-    const authenticatinDetails = new AuthenticationDetails({
-      Username: email,
-      Password: password,
-    });
 
-    const cognitoUser = new CognitoUser({
-      Username: email,
-      Pool: userPool,
-    });
-
-    cognitoUser.authenticateUser(authenticatinDetails, {
-      onSuccess: (result) => {
-        resolve(result);
-      },
-      onFailure: (err) => {
-        reject(err);
-      },
-    });
-  });
-}

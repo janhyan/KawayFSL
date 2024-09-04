@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import dotenv from 'dotenv';
 import react from '@vitejs/plugin-react'
 import { mediapipe } from 'vite-plugin-mediapipe';
 
@@ -13,6 +14,9 @@ export default defineConfig({
       'Holistic'
     ]
   })],
+  define: {
+    global: 'globalThis'
+  },
   server: {
     port: 3000,
   },

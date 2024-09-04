@@ -4,10 +4,6 @@
 
 /* GENERAL */
 
-#body-container {
-  padding-right: 0;
-}
-
 .main-container {
   display: grid;
   grid-template-columns: 60vw 1fr;

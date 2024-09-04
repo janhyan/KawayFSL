@@ -2,12 +2,17 @@ import user from "../src/data/user";
 import moduleOne from "../src/data/moduleOne";
 import announcements from "../src/data/announcements";
 import UserHeader from "./UserHeader";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../src/auth/authContext";
 
 export default function HomeContent() {
+  const { user } = useContext(AuthContext);
+
   return (
     <main id="body-container">
       <UserHeader
-        username={user[0].username}
+        username={user.given_name}
         greetings="What will you learn today?"
       />
       <div className="content-container">

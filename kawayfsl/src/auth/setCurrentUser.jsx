@@ -1,6 +1,6 @@
 import { userPool } from "./UserPool"
 
-export default async function getCurrentUser() {
+export default async function setCurrentUser() {
     return new Promise((resolve, reject) => {
         const cognitoUser = userPool.getCurrentUser()
 
@@ -23,12 +23,10 @@ export default async function getCurrentUser() {
 
                 const userData = attributes.reduce((acc, attribute) => {
                     acc[attribute.Name] = attribute.Value
-                    console.log(attribute.Name, attribute.Value)
                     return acc
-                }
-                , {})
+                }, {})
 
-                resolve({ ...userData, username:cognitoUser.username})
+                resolve({ ...userData, username: cognitoUser.username})
             })
         })
     }

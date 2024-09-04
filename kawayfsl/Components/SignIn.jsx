@@ -1,7 +1,6 @@
-import { userSignIn } from "../src/auth/userSignIn";
-import { useState } from "react";
-
-import Home from "../src/pages/Home";
+import { useState, useContext } from "react";
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from "../src/auth/authContext";
 
 export default function SignIn(props) {
   const [email, setEmail] = useState("");
@@ -9,12 +8,14 @@ export default function SignIn(props) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  const { user, signIn } = useContext(AuthContext);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setError("");
 
     try {
-      await userSignIn(email, password);
+      await signIn(email, password);
       setSuccess(true);
     } catch (err) {
       console.log(err);
@@ -22,10 +23,8 @@ export default function SignIn(props) {
     }
   };
 
-  if (success) {
-    return (
-      <Home />
-    )
+  if (user || success) {
+    return <Navigate to="/" />
   }
 
   return (

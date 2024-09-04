@@ -1,23 +1,15 @@
 import { Button } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import getCurrentUser from "../src/auth/getCurrentUser";
-import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../src/auth/authContext";
 
 export default function Navbar() {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getCurrentUser()
-        setUser(user)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    fetchUser()
-  }, [])
+  const {user, signOut } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const goSignOut = () => {
+    signOut();
+    navigate("/signin");
+  }
 
   return (
     <nav className="side-nav container">
@@ -39,6 +31,9 @@ export default function Navbar() {
         <Button className="settings buttons" as={Link} to="/settings">
           Settings
         </Button>
+        <Button className="signout buttons" onClick={() => goSignOut()}>
+          Sign Out
+        </Button>
       </div>
       <div className="side-nav footer">
         <div className="heading">
@@ -46,7 +41,7 @@ export default function Navbar() {
             <img className="user-img" src="/intro-img.png" alt="User image" />
           </div>
           <div className="user-details">
-            <p className="username">{user.email}</p>
+            <p className="username">{user?.given_name}</p>
             <p className="role">Admin</p>
           </div>
           <div className="footer-toggle">
@@ -104,3 +99,5 @@ function slideFooter() {
     }
   }
 }
+
+

@@ -1,38 +1,44 @@
 import { useState, useContext } from "react";
-import { Navigate, Link } from 'react-router-dom';
+import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../src/auth/authContext";
-import UserForgetPassword from "../src/pages/UserForgetPassword";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { userPool } from "../src/auth/UserPool";
+import ConfirmPassword from "./ConfirmPassword";
 
 export default function SignIn(props) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const { user, signIn } = useContext(AuthContext);
+  // Check if user is logged in, redirect to home page
+  const { user } = useContext(AuthContext);
+  if (user) {
+    return <Navigate to="/" />;
+  }
 
   const onSubmit = async (event) => {
     event.preventDefault();
     setError("");
 
     try {
-      await signIn(email, password);
+      await forgotPassword(email);
       setSuccess(true);
     } catch (err) {
-      console.log(err);
       setError(err.message);
     }
   };
 
-  if (user || success) {
-    return <Navigate to="/" />
+  if (success) {
+    return <ConfirmPassword />;
   }
 
   return (
     <div className="details-container">
       <div className="greetings">
-        <h1 className="greetings welcome">Welcome Back!</h1>
-        <h2 className="greetings details">Please enter login details below</h2>
+        <h1 className="greetings welcome">Forgot your password?</h1>
+        <h2 className="greetings details">
+          Please enter your email below to reset your password
+        </h2>
       </div>
       <div className="forms-container">
         <fieldset>
@@ -46,35 +52,20 @@ export default function SignIn(props) {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
-            <label htmlFor="user-password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="user-password"
-              placeholder="********"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <p id="forgot-password">
-              <Link to="/forget-password">Forgot password?</Link>
-            </p>
             <p className="result-message" style={{ color: "red" }}>
               {error}
             </p>
             <button className="submit-button" type="submit">
-              Sign in
+              Reset Password
             </button>
           </form>
         </fieldset>
         <div className="signin-options">
           <p className="sign-up-text">
-            Don't have an account?{" "}
-            <a
-              onClick={() => props.setIsSignUp((prev) => !prev)}
-              className="sign-up"
-            >
-              Sign Up
-            </a>
+            Ready to sign in?{" "}
+            <Link to="/signin" className="sign-up">
+              Sign In
+            </Link>
           </p>
         </div>
       </div>
@@ -82,4 +73,20 @@ export default function SignIn(props) {
   );
 }
 
+function forgotPassword(email) {
+  return new Promise((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
 
+    cognitoUser.forgotPassword({
+      onSuccess: (data) => {
+        resolve(data);
+      },
+      onFailure: (err) => {
+        reject(err);
+      },
+    });
+  });
+}

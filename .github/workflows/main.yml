@@ -4,6 +4,10 @@ on:
     branches:
       - main
 
+env:
+  VITE_APP_USER_POOL_ID: ${{ secrets.import.meta.env.VITE_APP_USER_POOL_ID }}
+  VITE_APP_CLIENT_ID: ${{ secrets.import.meta.env.VITE_APP_CLIENT_ID }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

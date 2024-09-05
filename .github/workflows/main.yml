@@ -5,8 +5,8 @@ on:
       - main
 
 env:
-  VITE_APP_USER_POOL_ID: ${{ secrets.import.meta.env.VITE_APP_USER_POOL_ID }}
-  VITE_APP_CLIENT_ID: ${{ secrets.import.meta.env.VITE_APP_CLIENT_ID }}
+  VITE_APP_USER_POOL_ID: ${{ secrets.VITE_APP_USER_POOL_ID }}
+  VITE_APP_CLIENT_ID: ${{ secrets.VITE_APP_CLIENT_ID }}
 
 jobs:
   deploy:

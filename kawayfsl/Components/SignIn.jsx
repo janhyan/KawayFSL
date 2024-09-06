@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { Navigate, Link } from 'react-router-dom';
 import { AuthContext } from "../src/auth/authContext";
-import UserForgetPassword from "../src/pages/UserForgetPassword";
 
 export default function SignIn(props) {
   const [email, setEmail] = useState("");

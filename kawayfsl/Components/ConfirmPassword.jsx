@@ -3,9 +3,8 @@ import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../src/auth/authContext";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { userPool } from "../src/auth/UserPool";
-import ConfirmPassword from "./ConfirmPassword";
 
-export default function SignIn(props) {
+export default function SignIn() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");

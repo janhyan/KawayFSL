@@ -1,8 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import "./css/UserAuth.css";
-import SignIn from "../../Components/SignIn";
-import SignUp from "../../Components/SignUp";
 import ForgetPassword from "../../Components/ForgetPassword";
 
 export default function UserAuth() {

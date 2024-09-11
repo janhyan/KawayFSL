@@ -2,7 +2,9 @@ import Navbar from "../../Components/Navbar";
 import UserHeader from "../../Components/UserHeader";
 import { AuthContext } from "../auth/authContext";
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import "./css/Modules.css";
 
 export default function Modules() {
   const { user } = useContext(AuthContext);
@@ -57,7 +59,7 @@ function ModulesCard(props) {
   // Map the fetched modules into cards
   return props.fetchedData.map((module) => (
     <div key={module.module_id} className="module-card">
-      <h3>{module.module_title}</h3>
+      <h3><a className="module-title" href="">{module.module_title}</a></h3>
       <p>{module.module_description}</p>
       <p>Status: {module.status}</p>
     </div>

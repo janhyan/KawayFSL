@@ -7,6 +7,7 @@ import UserAuth from "./pages/UserAuth.jsx";
 import UserForgotPassword from "./pages/UserForgetPassword.jsx";
 import Modules from "./pages/Modules.jsx";
 import { AuthProvider } from "./auth/authContext.jsx";
+import Lessons from "./pages/Lessons.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path:"/modules",
     element: <Modules key={5} />
+  },
+  {
+    path:"/lessons",
+    element: <Lessons key={6} />
   }
 ]);
 

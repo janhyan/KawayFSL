@@ -20,7 +20,6 @@ export default function Modules() {
     axios
       .get("http://localhost:8080/v1/modules")
       .then((response) => {
-        console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules
       })
       .catch((error) => {
@@ -58,27 +57,41 @@ function ModulesCard(props) {
   }
 
   // Map the fetched modules into cards
-  return props.fetchedData.map((module) => (
-      (module.status)
-        ? <UnlockedModule module={module} />
-        : <LockedModule module={module} />
-  ));
+  return props.fetchedData.map((module) =>
+    module.status ? (
+      <UnlockedModule module={module} key={module.module_id} />
+    ) : (
+      <LockedModule module={module} key={module.module_id} />
+    )
+  );
 }
 
 function UnlockedModule(props) {
   return (
     <div key={props.module.module_id} className="unlocked-module-card">
-      <h3><Link className="module-title" to="/lessons">{props.module.module_title}</Link></h3>
+      <h3>
+        <Link className="module-title" to="/lessons" state={props.module}>
+          {props.module.module_title}
+        </Link>
+      </h3>
       <p>{props.module.module_description}</p>
     </div>
-  )
+  );
 }
 
 function LockedModule(props) {
   return (
     <div key={props.module.module_id} className="locked-module-card">
-      <h3><Link className="disabled-title" to="/lessons" onClick={(event) => event.preventDefault()}>{props.module.module_title}</Link></h3>
+      <h3>
+        <Link
+          className="disabled-title"
+          to="/lessons"
+          onClick={(event) => event.preventDefault()}
+        >
+          {props.module.module_title}
+        </Link>
+      </h3>
       <p>{props.module.module_description}</p>
     </div>
-  )
+  );
 }

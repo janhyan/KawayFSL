@@ -30,7 +30,7 @@ app.get("/v1/modules", cors(corsOptions), (req, res) => {
     });
 });
 
-app.get("/v1/:module/lessons",
+app.get("/v1/:module/lessons", cors(corsOptions),
   (req, res) => {
     db.any("SELECT * FROM Lessons WHERE module_id = $1", [req.params.module])
       .then((data) => {

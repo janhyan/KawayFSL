@@ -59,15 +59,26 @@ function ModulesCard(props) {
 
   // Map the fetched modules into cards
   return props.fetchedData.map((module) => (
-    <div key={module.module_id} className="module-card">
-      <h3>{
-      (module.status) 
-      ? <Link className="module-title" to="/lessons">{module.module_title}</Link>
-      : <Link className="disabled-title" to="/lessons" onClick={(event) => event.preventDefault()}>{module.module_title}</Link>
-      }
-      </h3>
-      <p>{module.module_description}</p>
-      <p>Status: {module.status}</p>
-    </div>
+      (module.status)
+        ? <UnlockedModule module={module} />
+        : <LockedModule module={module} />
   ));
+}
+
+function UnlockedModule(props) {
+  return (
+    <div key={props.module.module_id} className="unlocked-module-card">
+      <h3><Link className="module-title" to="/lessons">{props.module.module_title}</Link></h3>
+      <p>{props.module.module_description}</p>
+    </div>
+  )
+}
+
+function LockedModule(props) {
+  return (
+    <div key={props.module.module_id} className="locked-module-card">
+      <h3><Link className="disabled-title" to="/lessons" onClick={(event) => event.preventDefault()}>{props.module.module_title}</Link></h3>
+      <p>{props.module.module_description}</p>
+    </div>
+  )
 }

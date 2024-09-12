@@ -21,7 +21,7 @@ const db = pgp(connection);
 const PORT = 8080;
 
 app.get("/v1/modules", cors(corsOptions), (req, res) => {
-  db.any("SELECT * FROM Modules")
+  db.any("SELECT * FROM Modules ORDER BY module_id ASC")
     .then((data) => {
       return res.json(data);
     })

@@ -20,6 +20,7 @@ export default function Modules() {
     axios
       .get("http://localhost:8080/v1/modules")
       .then((response) => {
+        console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules
       })
       .catch((error) => {
@@ -59,7 +60,12 @@ function ModulesCard(props) {
   // Map the fetched modules into cards
   return props.fetchedData.map((module) => (
     <div key={module.module_id} className="module-card">
-      <h3><Link className="module-title" to="/lessons">{module.module_title}</Link></h3>
+      <h3>{
+      (module.status) 
+      ? <Link className="module-title" to="/lessons">{module.module_title}</Link>
+      : <Link className="disabled-title" to="/lessons" onClick={(event) => event.preventDefault()}>{module.module_title}</Link>
+      }
+      </h3>
       <p>{module.module_description}</p>
       <p>Status: {module.status}</p>
     </div>

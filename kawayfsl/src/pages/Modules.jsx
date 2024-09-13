@@ -20,6 +20,7 @@ export default function Modules() {
     axios
       .get("http://localhost:8080/v1/modules")
       .then((response) => {
+        console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules
       })
       .catch((error) => {

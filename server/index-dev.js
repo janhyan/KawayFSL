@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require('cors')
 require("dotenv").config();
+const dbConfig = require("./db.config");
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -11,11 +12,11 @@ const corsOptions = {
 
 const pgp = require("pg-promise")();
 const connection = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DATABASE,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  host: dbConfig.HOST,
+  port: dbConfig.PORT,
+  database: dbConfig.DB,
+  user: dbConfig.USER,
+  password: dbConfig.PASSWORD,
 };
 const db = pgp(connection);
 const PORT = 8080;

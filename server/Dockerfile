@@ -1,21 +1,16 @@
 # syntax=docker/dockerfile:1
 
 ARG NODE_VERSION=22.6.0
-# ARG DATABASE_HOST
-# ARG PORT
-# ARG DATABASE
-# ARG DB_USER
-# ARG DB_PASSWORD
 
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
 ENV NODE_ENV production 
-# ENV DATABASE_HOST=db
-# ENV PORT=5432
-# ENV DATABASE=kawaydb
-# ENV DB_USER=admin
-# ENV DB_PASSWORD=example
+ENV DATABASE_HOST=$DB_HOST
+ENV PORT=$DB_PORT
+ENV DATABASE=$DB_NAME
+ENV DB_USER=$DB_USER
+ENV DB_PASSWORD=$DB_PASSWORD
 
 WORKDIR /usr/src/app
 
@@ -38,4 +33,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the application.
-CMD ["node", "index-dev.js"]
+CMD ["node", "index-prod.js"]

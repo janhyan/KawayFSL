@@ -18,7 +18,7 @@ export default function Modules() {
   // Get data from the database
   const getModules = () => {
     axios
-      .get("http://localhost:6868/v1/modules")
+      .get("http://3.112.93.28:8080/v1/modules")
       .then((response) => {
         console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules

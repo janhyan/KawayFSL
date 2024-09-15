@@ -21,21 +21,31 @@ except psycopg2.Error as e:
     logging.error(e)
     sys.exit()
 
-def handler(event, context):
-    origin = event["headers"].get("origin", "")
-    
-    headers = {
-        "Access-Control-Allow-Origin": origin if origin in ALLOWED_ORIGINS else "",
-        "Access-Control-Allow-Credentials": True,
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-        "X-Requested-With": "*",
-        "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
-    }
+logging.info("Successfully connected to the database")
 
+def handler(event, context):
+    # origin = event["headers"].get("origin", "")
     
+    # headers = {
+    #     "Access-Control-Allow-Origin": origin if origin in ALLOWED_ORIGINS else "",
+    #     "Access-Control-Allow-Credentials": True,
+    #     "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+    #     "X-Requested-With": "*",
+    #     "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
+    # }
+    items = []
+    with conn.cursor() as cur:
+        cur.execute("SELECT * FROM Lessons")
+        logging.info("Executed query. Results:")
+        for row in cur.fetchall():
+            logging.info(row)
+            items.append(row)
+    conn.commit()
+    
+
     
     return {
         "statusCode": 200,
-        "headers": headers,
-        "body": json.dumps()
+        # "headers": headers,
+        "body": json.dumps(items)
     }

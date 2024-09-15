@@ -22,7 +22,7 @@ export default function Navbar() {
         <Button className="home buttons" as={Link} to="/">
           Home
         </Button>
-        <Button className="lessons buttons " as={Link} to="/lessons">
+        <Button className="lessons buttons " as={Link} to="/modules">
           Lessons
         </Button>
         <Button className="practice buttons" as={Link} to="/practice">

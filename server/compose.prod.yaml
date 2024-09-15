@@ -1,0 +1,16 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=db
+      - PORT=$PORT
+      - DATABASE=$DATABASE
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+    ports:
+      - 6868:8080
+
+      
+

@@ -1,0 +1,51 @@
+.modules {
+    display: flex;
+    gap: 20px;
+}
+
+.unlocked-module-card {
+    border-radius: 20px;
+    background-color: #8ecae6;
+    padding: 10px;
+    width: 300px;
+    height: 300px;
+    box-shadow: 0 30px 80px -30px #535353;
+    transition: margin 0.2s ease-in-out;
+}
+
+.unlocked-module-card:hover {
+    margin-top: -6px;
+}
+
+.locked-module-card {
+    color: grey;
+    background-color: #8ecae660;
+    border-radius: 20px;
+    padding: 10px;
+    width: 300px;
+    height: 300px;
+    box-shadow: 0 30px 80px -30px #535353;
+    transition: margin 0.2s ease-in-out;
+}
+
+.locked-module-card:hover {
+    margin-top: -2px;
+}
+
+.module-title {
+    color: black;
+    font-family: "Inter";
+    font-size: 2rem;
+    margin-top: 0;
+    text-decoration: none;
+}
+
+.disabled-title {
+    cursor: default;
+    color: grey;
+    font-family: "Inter";
+    font-size: 2rem;
+    margin-top: 0;
+    text-decoration: none;
+}
+

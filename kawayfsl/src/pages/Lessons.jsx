@@ -21,7 +21,7 @@ export default function Lessons() {
 
   const getLessons = (module_id) => {
     axios
-      .get(`http://3.112.93.28:8080/v1/${module_id}/lessons`)
+      .get(`https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`)
       .then((response) => {
         setFetchedLessons(response.data);
         console.log(response.data);

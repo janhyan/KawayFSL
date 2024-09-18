@@ -276,8 +276,14 @@ b {
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+  transition: margin 0.2s ease-in-out;
 
   box-shadow: 0 20px 1px -10px #056da1, 0 40px 1px -20px #07a6f57c;
+}
+
+.main-content:hover {
+  margin-top: -10px;
+  box-shadow: 0 25px 1px -13px #056da1, 0 45px 1px -23px #07a6f57c;
 }
 
 .main-content img {
@@ -360,8 +366,13 @@ h3 {
   gap: 0px;
   box-sizing: border-box;
   overflow: hidden;
+  transition: margin 0.2s ease-in-out;
 
   box-shadow: 0 30px 80px -20px #535353;
+}
+
+.cards-container > .card:hover {
+  margin-top: -6px;
 }
 
 /* ANNOUNCEMENT */

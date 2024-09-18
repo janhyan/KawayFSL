@@ -22,9 +22,9 @@ const connection = {
   },
 };
 const db = pgp(connection);
-const PORT = 8080;
+const PORT = process.env.SERVER_PORT;
 
-app.get("/nodejs/health/check", function (req, res, next) {
+app.get("/nodejs/health/check", (req, res, next) => {
   res.send("Health check confirmed");
 });
 
@@ -50,7 +50,4 @@ app.get("/v1/:module/lessons", cors(corsOptions), (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  console.log(
-    `${dbConfig.DB}, ${dbConfig.HOST}, ${dbConfig.PASSWORD}, ${dbConfig.PORT}, ${dbConfig.USER},`
-  );
 });

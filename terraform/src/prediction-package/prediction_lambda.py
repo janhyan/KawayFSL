@@ -5,7 +5,7 @@ from keras.layers import LSTM, Dense
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 
-ALLOWED_ORIGINS = ["http://localhost:3000", "https://kawayfsl.com"]
+ALLOWED_ORIGINS = ["http://localhost:3000", "https://www.kawayfsl.com"]
 
 
 def lambda_handler(event, context):

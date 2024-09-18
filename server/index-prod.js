@@ -17,6 +17,9 @@ const connection = {
   database: dbConfig.DB,
   user: dbConfig.USER,
   password: dbConfig.PASSWORD,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 const db = pgp(connection);
 const PORT = 8080;

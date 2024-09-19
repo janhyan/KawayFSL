@@ -29,4 +29,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the application.
-CMD ["node", "index-prod.js"]
+CMD ["node", "index-dev.js"]

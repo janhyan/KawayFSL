@@ -8,6 +8,8 @@ import UserForgotPassword from "./pages/UserForgetPassword.jsx";
 import Modules from "./pages/Modules.jsx";
 import { AuthProvider } from "./auth/authContext.jsx";
 import Lessons from "./pages/Lessons.jsx";
+import Content from "./pages/Content.jsx";
+import Assessment from "./pages/Assessment.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
   {
     path:"/lessons",
     element: <Lessons key={6} />
+  },
+  {
+    path:"/lesson-content",
+    element: <Content key={7} />
+  },
+  {
+    path:"/assessment",
+    element: <Assessment key={8} />
   }
 ]);
 

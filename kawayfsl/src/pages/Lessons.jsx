@@ -21,7 +21,7 @@ export default function Lessons() {
 
   const getLessons = (module_id) => {
     axios
-      .get(`http://localhost:6868/v1/${module_id}/lessons`)
+      .get(`https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`)
       .then((response) => {
         setFetchedLessons(response.data);
         console.log(response.data);
@@ -74,7 +74,7 @@ function UnlockedLesson(props) {
   return (
     <div className="unlocked-lesson-card">
       <h3>
-        <Link className="lesson-title" to="/lesson-content" >
+        <Link className="lesson-title" to="/lesson-content" state={props.lesson}>
           {props.lesson.lesson_title}
         </Link>
       </h3>

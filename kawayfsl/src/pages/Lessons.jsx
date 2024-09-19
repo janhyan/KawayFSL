@@ -51,7 +51,7 @@ function LessonList(props) {
         username={props.user}
       />
       <div className="lessons-list">
-        <LessonsCard lessons={props.lessons} />
+        <LessonsCard lessons={props.lessons} module_id={props.module} />
       </div>
     </div>
   );
@@ -62,7 +62,7 @@ function LessonsCard(props) {
     <div className="lessons-container">
       {props.lessons.map((lesson) =>
         lesson.status ? (
-          <UnlockedLesson lesson={lesson} key={lesson.lesson_id} />
+          <UnlockedLesson lesson={lesson} key={lesson.lesson_id} module_id={props.module_id} />
         ) : (
           <LockedLesson lesson={lesson} key={lesson.lesson_id} />
         )
@@ -75,7 +75,7 @@ function UnlockedLesson(props) {
   return (
     <div className="unlocked-lesson-card">
       <h3>
-        <Link className="lesson-title" to="/">
+        <Link className="lesson-title" to="/assessment" state={props.module_id}>
           {props.lesson.lesson_title}
         </Link>
       </h3>

@@ -18,6 +18,7 @@ export default function Content() {
         subtopic={contentData.lesson_title}
         video={contentData.video_url}
         description={contentData.lesson_content}
+        state={contentData}
       />
     </div>
   );
@@ -33,7 +34,7 @@ function ContentBody(props) {
           description={props.description}
           subtopic={props.subtopic}
         />
-        <NextPageBtn page="/assessment" btnText="Practice Now" />
+        <NextPageBtn page="/assessment" btnText="Practice Now" state={props.state}/>
       </div>
     </main>
   );

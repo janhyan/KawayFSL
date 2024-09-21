@@ -5,7 +5,7 @@ export default function ModuleHeader(props) {
           <h2>
             Module: <span className="module-header">{props.module}</span>
           </h2>
-          <h1>Subtopic: {props.subtopic}</h1>
+          <h1>{props.subtopic}</h1>
         </div>
       </header>
     );

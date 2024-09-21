@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
@@ -7,6 +7,9 @@ import "./css/Practice.css";
 
 // Main exported page
 export default function Assessment() {
+  const location = useLocation();
+  const contentData = location.state;
+
   const [answer, setAnswers] = React.useState([]);
 
   const holisticRef = React.useRef(null);
@@ -37,6 +40,8 @@ export default function Assessment() {
         enable={handleEnableHolistic}
         toggle={toggleRecord}
         answers={answer}
+        module={contentData.module_id}
+        subtopic={contentData.lesson_title}
       />
     </div>
   );
@@ -46,7 +51,7 @@ export default function Assessment() {
 function MainBody(props) {
   return (
     <main id="body-container" style={{paddingRight: "0px"}}>
-      <ModuleHeader module="1" subtopic="A" />
+      <ModuleHeader module={props.module} subtopic={props.subtopic} />
       <div className="main-container">
         <div className="left-body">
           <div className="video-container">

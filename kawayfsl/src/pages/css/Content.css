@@ -1,0 +1,16 @@
+.button-element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    background-color: #fb8500;
+    height: 80px;
+    width: 200px;
+    border-radius: 20px;
+    font-family: "Poppins";
+    font-weight: 600;
+    font-size: 1.2rem;
+    cursor: pointer;
+    /* text-align: center; */
+    text-decoration: none;
+  }

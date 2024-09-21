@@ -3,6 +3,8 @@ import ModuleHeader from "../../Components/ModuleHeader";
 import { AuthContext } from "../auth/authContext";
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import NextPageBtn from "../../Components/NextPageBtn";
+import "./css/Content.css"
 
 export default function Content() {
   const location = useLocation();
@@ -26,6 +28,12 @@ function ContentBody(props) {
     <main id="body-container">
       <div className="content">
         <ModuleHeader module={props.module} subtopic={props.subtopic} />
+        <VideoContent video={props.video} />
+        <TextContent
+          description={props.description}
+          subtopic={props.subtopic}
+        />
+        <NextPageBtn page="/assessment" btnText="Practice Now" />
       </div>
     </main>
   );
@@ -43,4 +51,3 @@ function TextContent(props) {
     </div>
   );
 }
-

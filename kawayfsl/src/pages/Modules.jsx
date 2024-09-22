@@ -19,6 +19,7 @@ export default function Modules() {
   const getModules = () => {
     axios
       .get("https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/modules")
+      // .get("http://localhost:6868/v1/modules")
       .then((response) => {
         console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules

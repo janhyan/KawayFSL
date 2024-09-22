@@ -5,7 +5,7 @@ require("dotenv").config();
 const dbConfig = require("./db.config");
 
 const corsOptions = {
-  origin: "https://www.kawayfsl.com",
+  origin: ["https://www.kawayfsl.com", "http://localhost:3000"],
   optionSuccessStatus: 200,
   credentials: true,
 };

@@ -5,7 +5,7 @@ require("dotenv").config();
 const dbConfig = require("./db.config");
 
 const corsOptions = {
-  origin: ["https://www.kawayfsl.com", "http://localhost:3000"],
+  origin: "https://www.kawayfsl.com",
   optionSuccessStatus: 200,
   credentials: true,
 };
@@ -31,6 +31,7 @@ app.get("/nodejs/health/check", (req, res, next) => {
 app.get("/v1/modules", cors(corsOptions), (req, res) => {
   db.any("SELECT * FROM Modules ORDER BY module_id ASC")
     .then((data) => {
+      console.log(req.params.user)
       return res.json(data);
     })
     .catch((err) => {

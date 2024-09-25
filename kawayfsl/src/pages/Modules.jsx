@@ -20,7 +20,7 @@ export default function Modules() {
     axios
       .get(
         "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/modules",
-        { params: { user: user.sub } }
+        { params: { user: user?.sub } }
       )
       // .get("http://localhost:6868/v1/modules", { params: { user: user.sub } })
       .then((response) => {

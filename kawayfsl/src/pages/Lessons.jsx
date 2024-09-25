@@ -5,7 +5,7 @@ import { AuthContext } from "../auth/authContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./css/Lessons.css"
+import "./css/Lessons.css";
 
 export default function Lessons() {
   const { user } = useContext(AuthContext);
@@ -21,7 +21,10 @@ export default function Lessons() {
 
   const getLessons = (module_id) => {
     axios
-      .get(`https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`)
+      .get(
+        `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`,
+        { params: { user: user.sub } }
+      )
       // .get(`http://localhost:6868/v1/${module_id}/lessons`)
       .then((response) => {
         setFetchedLessons(response.data);
@@ -35,10 +38,7 @@ export default function Lessons() {
   return (
     <div id="page-container">
       <Navbar />
-      <LessonList
-        user={user?.given_name}
-        lessons={fetchedLessons}
-      />
+      <LessonList user={user?.given_name} lessons={fetchedLessons} />
     </div>
   );
 }
@@ -75,7 +75,11 @@ function UnlockedLesson(props) {
   return (
     <div className="unlocked-lesson-card">
       <h3>
-        <Link className="lesson-title" to="/lesson-content" state={props.lesson}>
+        <Link
+          className="lesson-title"
+          to="/lesson-content"
+          state={props.lesson}
+        >
           {props.lesson.lesson_title}
         </Link>
       </h3>

@@ -38,16 +38,16 @@ app.get("/v1/modules", cors(corsOptions), (req, res) => {
 
   db.any(
     `
-  SELECT 
-    m.module_id, 
-    m.module_title, 
-    COALESCE(ump.status, m.status) AS status
-  FROM Modules m
-  LEFT JOIN UsersModuleProgress ump
-    ON m.module_id = ump.module_id
-    AND ump.user_id = $1
-  ORDER BY m.module_id;
-  `,
+    SELECT 
+      m.module_id, 
+      m.module_title, 
+      COALESCE(ump.status, m.status) AS status
+    FROM Modules m
+    LEFT JOIN UsersModuleProgress ump
+      ON m.module_id = ump.module_id
+      AND ump.user_id = $1
+    ORDER BY m.module_id;
+    `,
     [userId]
   )
     .then((data) => {
@@ -94,7 +94,6 @@ app.get("/v1/:module/lessons", cors(corsOptions), (req, res) => {
       return res.status(500).send(err); // Return an error message on failure
     });
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

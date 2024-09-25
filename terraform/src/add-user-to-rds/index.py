@@ -24,12 +24,12 @@ def lambda_handler(event, context):
 
     # Extracting user attributes from the event
     user = event['request']['userAttributes']
-    user_display_name = user.get('given_name', 'Default Name')
-    user_email = user.get('email', 'default@example.com')
-    user_id = user.get('sub')  # Assuming user_id is provided as a string (UUID)
-    module_id = 1  # Static for now; should be dynamic in a real app
-    lesson_id = 1  # Static for now; should be dynamic in a real app
-    status = True  # Assume status is boolean
+    user_display_name = user.get('given_name')
+    user_email = user.get('email')
+    user_id = user.get('sub')  
+    module_id = 1  
+    lesson_id = 1  
+    status = True  
 
     try:
         # Start a new database transaction

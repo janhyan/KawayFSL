@@ -81,8 +81,8 @@ app.get("/v1/:module/lessons", cors(corsOptions), (req, res) => {
     FROM Lessons l
     LEFT JOIN UsersLessonsProgress ulp
       ON l.lesson_id = ulp.lesson_id
-      AND ulp.user_id = $2  -- Use $2 for userId
-    WHERE l.module_id = $1  -- Use $1 for moduleId
+      AND ulp.user_id = $2
+    WHERE l.module_id = $1 
     ORDER BY l.lesson_id;
     `,
     [moduleId, userId] // Pass moduleId and userId as parameters to the query

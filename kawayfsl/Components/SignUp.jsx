@@ -12,7 +12,6 @@ export default function SignUp(props) {
   const [success, setSuccess] = React.useState(false);
 
   const onSubmit = async (event) => {
-    console.log("test");
     event.preventDefault();
     setError("");
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
+import EnableStatic from "../../MediaPipe/EnableStatic.jsx";
 import "./css/Practice.css";
 
 // Main exported page

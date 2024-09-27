@@ -1,6 +1,5 @@
 import { drawLandmarks } from "@mediapipe/drawing_utils";
 import {
-  POSE_CONNECTIONS,
   FACEMESH_TESSELATION,
   HAND_CONNECTIONS,
   Holistic,
@@ -11,7 +10,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export default function EnableStatic() {
+export default function EnableStatic(toggleTracking, setAnswers) {
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
   const canvasCtx = canvasElement.getContext("2d");
@@ -25,7 +24,6 @@ export default function EnableStatic() {
 
       if (sequence.length === 40) {
         console.log(sequence);
-        sendSequenceToAPI(sequence);
         sequence = [];
         toggleTracking.current = false;
       }

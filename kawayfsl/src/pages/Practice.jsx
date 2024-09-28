@@ -24,7 +24,7 @@ export default function Practice() {
 
   // Takes camera and holistic objects from EnableHolistic
   function handleEnableHolistic() {
-    holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
+    holisticRef.current = EnableStatic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {

@@ -34,16 +34,8 @@ export default function EnableStatic(toggleTracking, setAnswers) {
 
   function extractKeypoints(results) {
     const lh = results.leftHandLandmarks
-      ? nj
-          .array(results.leftHandLandmarks.map((res) => [res.x, res.y, res.z]))
-          .flatten()
-      : nj.zeros(21 * 3);
     const rh = results.rightHandLandmarks
-      ? nj
-          .array(results.rightHandLandmarks.map((res) => [res.x, res.y, res.z]))
-          .flatten()
-      : nj.zeros(21 * 3);
-    return nj.concatenate([lh, rh]).tolist();
+    return {lh, rh};
   }
 
   function drawResults(results) {

@@ -44,13 +44,13 @@ def lambda_handler(event, context):
     data_aux = []
     x_ = []
     y_ = []
+    predicted_answer = []
 
     if results:
-        landmarks = results.get('landmarks', {})
-        lh_landmarks = landmarks.get('lh', [])  # Use an empty list if 'lh' doesn't exist
-        rh_landmarks = landmarks.get('rh', [])  # Use an empty list if 'rh' doesn't exist
-
         for landmarks in results:
+            lh_landmarks = landmarks.get('lh', [])  # Use an empty list if 'lh' doesn't exist
+            rh_landmarks = landmarks.get('rh', [])  # Use an empty list if 'rh' doesn't exist
+
             if len(lh_landmarks) > len(rh_landmarks):
                 for i in range(len(lh_landmarks)):
                     x = lh_landmarks[i]['x']
@@ -78,15 +78,16 @@ def lambda_handler(event, context):
                     data_aux.append(x - min(x_))
                     data_aux.append(y - min(y_))
 
-        prediction = model.predict([np.asarray(data_aux)])
+            prediction = model.predict([np.asarray(data_aux)])
 
-        predicted_character = labels_dict[int(prediction[0])]
+            predicted_character = labels_dict[int(prediction[0])]
+            predicted_answer.append(predicted_character)
 
     return {
         "statusCode": 200,
         "headers": headers,
         "body": json.dumps({
-            "message": predicted_character,
+            "message": predicted_answer,
         }),
 }
     

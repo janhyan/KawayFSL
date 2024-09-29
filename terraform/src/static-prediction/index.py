@@ -41,13 +41,13 @@ def lambda_handler(event, context):
         parsed_body = {}
 
     results = parsed_body
-    data_aux = []
-    x_ = []
-    y_ = []
     predicted_answer = []
 
     if results:
         for landmarks in results:
+            data_aux = []
+            x_ = []
+            y_ = []
             lh_landmarks = landmarks.get('lh', [])  # Use an empty list if 'lh' doesn't exist
             rh_landmarks = landmarks.get('rh', [])  # Use an empty list if 'rh' doesn't exist
 

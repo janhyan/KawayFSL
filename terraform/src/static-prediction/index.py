@@ -49,28 +49,28 @@ def lambda_handler(event, context):
         for landmarks in results:
             if len(landmarks['lh']) > len(landmarks['rh']):
                 for i in range(len(landmarks['lh'])):
-                    x = landmarks['lh'][i].x
-                    y = landmarks['lh'][i].y
+                    x = landmarks['lh'][i]['x']
+                    y = landmarks['lh'][i]['y']
 
                     x_.append(x)
                     y_.append(y)
 
                 for i in range(len(landmarks['lh'])):
-                    x = landmarks['lh'][i].x
-                    y = landmarks['lh'][i].y
+                    x = landmarks['lh'][i]['x']
+                    y = landmarks['lh'][i]['y']
                     data_aux.append(x - min(x_))
                     data_aux.append(y - min(y_))
             else:
                 for i in range(len(landmarks['rh'])):
-                    x = landmarks['rh'][i].x
-                    y = landmarks['rh'][i].y
+                    x = landmarks['rh'][i]['x']
+                    y = landmarks['rh'][i]['y']
 
                     x_.append(x)
                     y_.append(y)
 
                 for i in range(len(landmarks['rh'])):
-                    x = landmarks['rh'][i].x
-                    y = landmarks['rh'][i].y
+                    x = landmarks['rh'][i]['x']
+                    y = landmarks['rh'][i]['y']
                     data_aux.append(x - min(x_))
                     data_aux.append(y - min(y_))
 
@@ -80,7 +80,7 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "header"
+        "headers": headers,
         "body": json.dumps({
             "message": predicted_character,
         }),

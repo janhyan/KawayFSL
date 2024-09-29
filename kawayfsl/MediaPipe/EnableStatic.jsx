@@ -22,8 +22,9 @@ export default function EnableStatic(toggleTracking, setAnswers) {
     if (toggleTracking.current) {
       sequence.push(keypoints);
 
-      if (sequence.length === 40) {
+      if (sequence.length === 15) {
         console.log(sequence);
+        sendSequenceToAPI(sequence);
         sequence = [];
         toggleTracking.current = false;
       }
@@ -79,6 +80,21 @@ export default function EnableStatic(toggleTracking, setAnswers) {
     if (connections != FACEMESH_TESSELATION) {
       drawLandmarks(canvasCtx, landmarks, { color, radius: 1 });
     }
+  }
+
+  function sendSequenceToAPI(sequence) {
+    axios
+      .post(
+        "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage/static",
+        sequence
+      )
+      .then((response) => {
+        console.log("Sequence sent to API:", response.data);
+        setAnswers((prevAnswer) => [...prevAnswer, response.data]);
+      })
+      .catch((error) => {
+        console.error("Error sending sequence to API:", error);
+      });
   }
 
   const holistic = new Holistic({

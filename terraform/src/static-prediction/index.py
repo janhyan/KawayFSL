@@ -46,31 +46,35 @@ def lambda_handler(event, context):
     y_ = []
 
     if results:
+        landmarks = results.get('landmarks', {})
+        lh_landmarks = landmarks.get('lh', [])  # Use an empty list if 'lh' doesn't exist
+        rh_landmarks = landmarks.get('rh', [])  # Use an empty list if 'rh' doesn't exist
+
         for landmarks in results:
-            if len(landmarks['lh']) > len(landmarks['rh']):
-                for i in range(len(landmarks['lh'])):
-                    x = landmarks['lh'][i]['x']
-                    y = landmarks['lh'][i]['y']
+            if len(lh_landmarks) > len(rh_landmarks):
+                for i in range(len(lh_landmarks)):
+                    x = lh_landmarks[i]['x']
+                    y = lh_landmarks[i]['y']
 
                     x_.append(x)
                     y_.append(y)
 
-                for i in range(len(landmarks['lh'])):
-                    x = landmarks['lh'][i]['x']
-                    y = landmarks['lh'][i]['y']
+                for i in range(len(lh_landmarks)):
+                    x = lh_landmarks[i]['x']
+                    y = lh_landmarks[i]['y']
                     data_aux.append(x - min(x_))
                     data_aux.append(y - min(y_))
             else:
-                for i in range(len(landmarks['rh'])):
-                    x = landmarks['rh'][i]['x']
-                    y = landmarks['rh'][i]['y']
+                for i in range(len(rh_landmarks)):
+                    x = rh_landmarks[i]['x']
+                    y = rh_landmarks[i]['y']
 
                     x_.append(x)
                     y_.append(y)
 
-                for i in range(len(landmarks['rh'])):
-                    x = landmarks['rh'][i]['x']
-                    y = landmarks['rh'][i]['y']
+                for i in range(len(rh_landmarks)):
+                    x = rh_landmarks[i]['x']
+                    y = rh_landmarks[i]['y']
                     data_aux.append(x - min(x_))
                     data_aux.append(y - min(y_))
 

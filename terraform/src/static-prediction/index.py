@@ -1,6 +1,7 @@
 import pickle
 import json
 import numpy as np
+from statistics import mode
 
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
@@ -83,11 +84,15 @@ def lambda_handler(event, context):
             predicted_character = labels_dict[int(prediction[0])]
             predicted_answer.append(predicted_character)
 
+        checked_frames = predicted_answer[-int(len(predicted_answer)/3):]
+        user_answer = mode(checked_frames)
+
+
     return {
         "statusCode": 200,
         "headers": headers,
         "body": json.dumps({
-            "message": predicted_answer,
+            "message": user_answer,
         }),
 }
     

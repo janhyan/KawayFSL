@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
+import EnableStatic from "../../MediaPipe/EnableStatic.jsx";
 import "./css/Practice.css";
 
 // Main exported page
@@ -24,9 +25,10 @@ export default function Assessment() {
     };
   }, []);
 
-  // Takes camera and holistic objects from EnableHolistic
+  // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
-    holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
+    holisticRef.current = contentData.assessment_id === 1 ? EnableStatic(toggleTracking, setAnswers) : EnableHolistic(toggleTracking, setAnswers);
+    // holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {

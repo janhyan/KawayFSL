@@ -87,6 +87,9 @@ def lambda_handler(event, context):
         checked_frames = predicted_answer[-int(len(predicted_answer)/3):]
         user_answer = mode(checked_frames)
 
+        if 'N' in predicted_answer:
+            if user_answer == 'G':
+                user_answer = 'NG'
 
     return {
         "statusCode": 200,

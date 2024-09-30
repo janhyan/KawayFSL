@@ -50,15 +50,16 @@ def lambda_handler(event, context):
             # Select hand with the most landmarks
             chosen_hand = lh_landmarks if len(lh_landmarks) > len(rh_landmarks) else rh_landmarks
 
+            # Left hand landmarks need to be flipped for accurate detection
             for i in range(len(chosen_hand)):
-                x = chosen_hand[i]['x']
+                x = chosen_hand[i]['x'] if chosen_hand == rh_landmarks else 1 - chosen_hand[i]['x']
                 y = chosen_hand[i]['y']
 
                 x_.append(x)
                 y_.append(y)
 
             for i in range(len(chosen_hand)):
-                x = chosen_hand[i]['x']
+                x = chosen_hand[i]['x'] if chosen_hand == rh_landmarks else 1 - chosen_hand[i]['x']
                 y = chosen_hand[i]['y']
                 data_aux.append(x - min(x_))
                 data_aux.append(y - min(y_))

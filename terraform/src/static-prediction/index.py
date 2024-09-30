@@ -30,16 +30,7 @@ def lambda_handler(event, context):
 
     # Ensure that body exists and is properly decoded
     body = event.get("body", "")
-
-    if body:
-        try:
-            # If body is a string representation of a JSON array or object
-            parsed_body = json.loads(body)
-        except json.JSONDecodeError:
-            # Handle cases where the body might not be JSON (e.g., plain text)
-            parsed_body = body
-    else:
-        parsed_body = {}
+    parsed_body = json.loads(body) if body else {}
 
     results = parsed_body
     predicted_answer = []
@@ -49,47 +40,45 @@ def lambda_handler(event, context):
             data_aux = []
             x_ = []
             y_ = []
-            lh_landmarks = landmarks.get('lh', [])  # Use an empty list if 'lh' doesn't exist
-            rh_landmarks = landmarks.get('rh', [])  # Use an empty list if 'rh' doesn't exist
+            lh_landmarks = landmarks.get('lh', [])  
+            rh_landmarks = landmarks.get('rh', [])  
 
-            if len(lh_landmarks) > len(rh_landmarks):
-                for i in range(len(lh_landmarks)):
-                    x = lh_landmarks[i]['x']
-                    y = lh_landmarks[i]['y']
+            # Skip if both are empty
+            if not lh_landmarks and not rh_landmarks:
+                continue
 
-                    x_.append(x)
-                    y_.append(y)
+            # Select hand with the most landmarks
+            chosen_hand = lh_landmarks if len(lh_landmarks) > len(rh_landmarks) else rh_landmarks
 
-                for i in range(len(lh_landmarks)):
-                    x = lh_landmarks[i]['x']
-                    y = lh_landmarks[i]['y']
-                    data_aux.append(x - min(x_))
-                    data_aux.append(y - min(y_))
-            else:
-                for i in range(len(rh_landmarks)):
-                    x = rh_landmarks[i]['x']
-                    y = rh_landmarks[i]['y']
+            for i in range(len(chosen_hand)):
+                x = chosen_hand[i]['x']
+                y = chosen_hand[i]['y']
 
-                    x_.append(x)
-                    y_.append(y)
+                x_.append(x)
+                y_.append(y)
 
-                for i in range(len(rh_landmarks)):
-                    x = rh_landmarks[i]['x']
-                    y = rh_landmarks[i]['y']
-                    data_aux.append(x - min(x_))
-                    data_aux.append(y - min(y_))
+            for i in range(len(chosen_hand)):
+                x = chosen_hand[i]['x']
+                y = chosen_hand[i]['y']
+                data_aux.append(x - min(x_))
+                data_aux.append(y - min(y_))
 
             prediction = model.predict([np.asarray(data_aux)])
 
             predicted_character = labels_dict[int(prediction[0])]
             predicted_answer.append(predicted_character)
 
-        checked_frames = predicted_answer[-int(len(predicted_answer)/3):]
-        user_answer = mode(checked_frames)
+        # Ensure we have enough predictions to calculate mode
+        if predicted_answer:
+            # Check last third of frames
+            checked_frames = predicted_answer[-int(len(predicted_answer) / 3):]
+            user_answer = mode(checked_frames)
 
-        if 'N' in predicted_answer:
-            if user_answer == 'G':
+            # Handle special case for 'NG'
+            if 'N' in predicted_answer and user_answer == 'G':
                 user_answer = 'NG'
+        else:
+            user_answer = "No prediction made"
 
     return {
         "statusCode": 200,

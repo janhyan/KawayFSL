@@ -22,7 +22,7 @@ export default function EnableStatic(toggleTracking, setAnswers) {
     if (toggleTracking.current) {
       sequence.push(keypoints);
 
-      if (sequence.length === 40) {
+      if (sequence.length === 30) {
         console.log(sequence);
         sendSequenceToAPI(sequence);
         sequence = [];

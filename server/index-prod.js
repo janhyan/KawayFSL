@@ -41,6 +41,7 @@ app.get("/v1/modules", cors(corsOptions), (req, res) => {
     SELECT 
       m.module_id, 
       m.module_title, 
+      m.module_description,
       COALESCE(ump.status, m.status) AS status
     FROM Modules m
     LEFT JOIN UsersModuleProgress ump

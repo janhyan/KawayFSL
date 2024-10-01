@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
@@ -83,4 +84,12 @@ function MainBody(props) {
 // Render divs for answers
 function Answers(props) {
   return <div className="answer">{props.answer}</div>;
+}
+
+function ResultButton(props) {
+  return (
+    <div className="button-container">
+      <Button className={props.btnName} as={Link} to={props.page} state={props.state} >{props.btnText}</Button>
+    </div>
+  )
 }

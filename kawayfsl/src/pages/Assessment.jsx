@@ -20,6 +20,8 @@ export default function Assessment() {
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
   const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
+  const counterRef = React.useRef(counter);
+  const isCounterRef = React.useRef(false);
 
   // Countdown logic for state updates
   React.useEffect(() => {
@@ -28,6 +30,7 @@ export default function Assessment() {
         () => setCounter((prevCounter) => prevCounter - 1),
         1000
       );
+      counterRef.current = counter;
 
       // Clean up the timer on component unmount or re-render
       return () => clearTimeout(timer);
@@ -39,6 +42,7 @@ export default function Assessment() {
     if (counter === 0) {
       toggleTracking.current = !toggleTracking.current;
       setIsCount((prevCount) => !prevCount);
+      counterRef.current = counter;
     }
   }, [counter]);
 
@@ -53,34 +57,18 @@ export default function Assessment() {
     };
   }, []);
 
-  // Function to handle canvas drawing
-  function drawCounterOnCanvas(counter) {
-    if (isCount) {
-      const canvasElement = document.querySelector(".output_canvas");
-      const canvasCtx = canvasElement.getContext("2d");
-      const x = canvasElement.width / 2;
-      const y = canvasElement.height / 2;
-
-      // Draw the counter
-      canvasCtx.font = "100px Inter";
-      canvasCtx.textBaseline = "middle";
-      canvasCtx.textAlign = "center";
-      canvasCtx.fillStyle = "#fb8500";
-      canvasCtx.fillText(counter, x, y);
-    }
-  }
-
   // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
     holisticRef.current =
       contentData.assessment_id === 1
-        ? EnableStatic(toggleTracking, setAnswers)
-        : EnableHolistic(toggleTracking, setAnswers);
+        ? EnableStatic(toggleTracking, setAnswers, counterRef, isCounterRef)
+        : EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef);
     // holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {
     setIsCount((prevCount) => !prevCount);
+    isCounterRef.current = true;
 
     if (counter === 0) {
       setCounter(counter + 3);
@@ -97,7 +85,6 @@ export default function Assessment() {
         module={contentData.module_id}
         subtopic={contentData.lesson_title}
         counter={counter}
-        drawCounterOnCanvas={drawCounterOnCanvas}
       />
     </div>
   );
@@ -123,7 +110,6 @@ function MainBody(props) {
               START
             </button>
             {console.log(props.counter)}
-            {props.drawCounterOnCanvas(props.counter)}
             <h3>{props.counter}</h3>
           </div>
         </div>

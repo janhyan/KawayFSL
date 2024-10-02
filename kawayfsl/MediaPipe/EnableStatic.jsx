@@ -9,7 +9,12 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export default function EnableStatic(toggleTracking, setAnswers) {
+export default function EnableStatic(
+  toggleTracking,
+  setAnswers,
+  counter,
+  isCounterRef
+) {
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
   const canvasCtx = canvasElement.getContext("2d");
@@ -21,6 +26,10 @@ export default function EnableStatic(toggleTracking, setAnswers) {
     if (toggleTracking.current) {
       sequence.push(keypoints);
 
+      if (counter.current === 0) {
+        isCounterRef.current = false;
+      }
+
       if (sequence.length === 30) {
         console.log(sequence);
         sendSequenceToAPI(sequence);
@@ -28,19 +37,31 @@ export default function EnableStatic(toggleTracking, setAnswers) {
         toggleTracking.current = false;
       }
     }
-
     drawResults(results);
   }
 
   function extractKeypoints(results) {
-    const lh = results.leftHandLandmarks
-    const rh = results.rightHandLandmarks
-    return {lh, rh};
+    const lh = results.leftHandLandmarks;
+    const rh = results.rightHandLandmarks;
+    return { lh, rh };
   }
 
   function drawResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+    const x = canvasElement.width / 2;
+    const y = canvasElement.height / 2;
+
+    if (isCounterRef.current && counter.current >= 0) {
+      // Draw the counter
+      canvasCtx.font = "100px Inter";
+      canvasCtx.textBaseline = "middle";
+      canvasCtx.textAlign = "center";
+      canvasCtx.fillStyle = "#fb8500";
+      canvasCtx.fillText(counter.current, x, y);
+
+    }
 
     canvasCtx.globalCompositeOperation = "source-in";
     canvasCtx.fillStyle = "#00FF00";

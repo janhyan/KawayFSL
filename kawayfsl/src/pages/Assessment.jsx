@@ -19,12 +19,21 @@ export default function Assessment() {
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
   const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
 
+  // Countdown logic
   React.useEffect(() => {
     if (isCount && counter > 0) {
       const timer = setTimeout(() => setCounter(counter - 1), 1000);
+      
       return () => clearTimeout(timer); // Clean up only the timer
     }
   }, [counter, isCount]);
+
+  // Handle toggleTracking when counter reaches 0
+  React.useEffect(() => {
+    if (counter === 0) {
+      toggleTracking.current = !toggleTracking.current;
+    }
+  }, [counter]);
   
   // Effect for cleanup when component unmounts
   React.useEffect(() => {
@@ -44,7 +53,6 @@ export default function Assessment() {
   }
 
   function toggleRecord() {
-    toggleTracking.current = !toggleTracking.current;
     setIsCount((prevCount) => !prevCount)
   }
 

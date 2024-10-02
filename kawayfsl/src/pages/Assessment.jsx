@@ -13,15 +13,26 @@ export default function Assessment() {
   const contentData = location.state;
 
   const [answer, setAnswers] = React.useState([]);
+  const [counter, setCounter] = React.useState(3);
 
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
+  const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
 
+  React.useEffect(() => {
+    if (isCount && counter > 0) {
+      const timer = setTimeout(() => setCounter(counter - 1), 1000);
+      return () => clearTimeout(timer); // Clean up only the timer
+    }
+  }, [counter, isCount]);
+  
+  // Effect for cleanup when component unmounts
   React.useEffect(() => {
     return () => {
       if (holisticRef.current) {
         holisticRef.current.camera.stop();
         holisticRef.current.holistic.close();
+        holisticRef.current = null; 
       }
     };
   }, []);
@@ -34,6 +45,7 @@ export default function Assessment() {
 
   function toggleRecord() {
     toggleTracking.current = !toggleTracking.current;
+    setIsCount((prevCount) => !prevCount)
   }
 
   return (
@@ -45,6 +57,7 @@ export default function Assessment() {
         answers={answer}
         module={contentData.module_id}
         subtopic={contentData.lesson_title}
+        counter={counter}
       />
     </div>
   );
@@ -69,6 +82,8 @@ function MainBody(props) {
             <button className="record" onClick={props.toggle}>
               START
             </button>
+            {console.log(props.counter)}
+            <h3>{props.counter}</h3>
           </div>
         </div>
         <div className="right-body">

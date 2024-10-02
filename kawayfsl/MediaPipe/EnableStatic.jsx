@@ -5,7 +5,6 @@ import {
   Holistic,
 } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
-import nj from "@d4c/numjs/build/module/numjs.min.js";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;

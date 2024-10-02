@@ -12,19 +12,25 @@ export default function Assessment() {
   const location = useLocation();
   const contentData = location.state;
 
+  // Set answer and counter states
   const [answer, setAnswers] = React.useState([]);
   const [counter, setCounter] = React.useState(3);
 
+  // Set states and ref for triggering certain functions
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
   const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
 
-  // Countdown logic
+  // Countdown logic for state updates
   React.useEffect(() => {
     if (isCount && counter > 0) {
-      const timer = setTimeout(() => setCounter(counter - 1), 1000);
-      
-      return () => clearTimeout(timer); // Clean up only the timer
+      const timer = setTimeout(
+        () => setCounter((prevCounter) => prevCounter - 1),
+        1000
+      );
+
+      // Clean up the timer on component unmount or re-render
+      return () => clearTimeout(timer);
     }
   }, [counter, isCount]);
 
@@ -32,28 +38,53 @@ export default function Assessment() {
   React.useEffect(() => {
     if (counter === 0) {
       toggleTracking.current = !toggleTracking.current;
+      setIsCount((prevCount) => !prevCount);
     }
   }, [counter]);
-  
+
   // Effect for cleanup when component unmounts
   React.useEffect(() => {
     return () => {
       if (holisticRef.current) {
         holisticRef.current.camera.stop();
         holisticRef.current.holistic.close();
-        holisticRef.current = null; 
+        holisticRef.current = null;
       }
     };
   }, []);
 
+  // Function to handle canvas drawing
+  function drawCounterOnCanvas(counter) {
+    if (isCount) {
+      const canvasElement = document.querySelector(".output_canvas");
+      const canvasCtx = canvasElement.getContext("2d");
+      const x = canvasElement.width / 2;
+      const y = canvasElement.height / 2;
+
+      // Draw the counter
+      canvasCtx.font = "100px Inter";
+      canvasCtx.textBaseline = "middle";
+      canvasCtx.textAlign = "center";
+      canvasCtx.fillStyle = "#fb8500";
+      canvasCtx.fillText(counter, x, y);
+    }
+  }
+
   // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
-    holisticRef.current = contentData.assessment_id === 1 ? EnableStatic(toggleTracking, setAnswers) : EnableHolistic(toggleTracking, setAnswers);
+    holisticRef.current =
+      contentData.assessment_id === 1
+        ? EnableStatic(toggleTracking, setAnswers)
+        : EnableHolistic(toggleTracking, setAnswers);
     // holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {
-    setIsCount((prevCount) => !prevCount)
+    setIsCount((prevCount) => !prevCount);
+
+    if (counter === 0) {
+      setCounter(counter + 3);
+    }
   }
 
   return (
@@ -66,6 +97,7 @@ export default function Assessment() {
         module={contentData.module_id}
         subtopic={contentData.lesson_title}
         counter={counter}
+        drawCounterOnCanvas={drawCounterOnCanvas}
       />
     </div>
   );
@@ -74,7 +106,7 @@ export default function Assessment() {
 // Renders right side of the page
 function MainBody(props) {
   return (
-    <main id="body-container" style={{paddingRight: "0px"}}>
+    <main id="body-container" style={{ paddingRight: "0px" }}>
       <ModuleHeader module={props.module} subtopic={props.subtopic} />
       <div className="main-container">
         <div className="left-body">
@@ -91,6 +123,7 @@ function MainBody(props) {
               START
             </button>
             {console.log(props.counter)}
+            {props.drawCounterOnCanvas(props.counter)}
             <h3>{props.counter}</h3>
           </div>
         </div>
@@ -112,7 +145,14 @@ function Answers(props) {
 function ResultButton(props) {
   return (
     <div className="button-container">
-      <Button className={props.btnName} as={Link} to={props.page} state={props.state} >{props.btnText}</Button>
+      <Button
+        className={props.btnName}
+        as={Link}
+        to={props.page}
+        state={props.state}
+      >
+        {props.btnText}
+      </Button>
     </div>
-  )
+  );
 }

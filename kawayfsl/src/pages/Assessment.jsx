@@ -107,13 +107,13 @@ function MainBody(props) {
           <div className="video-container">
             <video className="video" autoPlay playsInline />
             <canvas className="output_canvas"></canvas>
-            <h1 className="gesture_output"></h1>
           </div>
           <div className="buttons-container">
             <button className="enable_fsl" onClick={props.enable}>
               CAMERA
             </button>
             <UserButton userAnswer={props.currentUserAnswer} dbAnswer={props.dbAnswer} toggle={props.toggle} />
+            <h3 className="attempt-counter">Attempt: 1</h3>
           </div>
         </div>
         <div className="right-body">

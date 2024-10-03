@@ -112,7 +112,6 @@ export default function EnableHolistic(
       canvasCtx.textAlign = "center";
       canvasCtx.fillStyle = "#fb8500";
       canvasCtx.fillText(counter.current, x, y);
-
     }
 
     canvasCtx.globalCompositeOperation = "destination-atop";

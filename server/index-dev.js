@@ -78,6 +78,7 @@ app.get("/v1/:module/lessons", cors(corsOptions), (req, res) => {
       l.video_url,
       l.lesson_content,
       l.assessment_id, 
+      l.answers,
       COALESCE(ulp.status, l.status) AS status
     FROM Lessons l
     LEFT JOIN UsersLessonsProgress ulp

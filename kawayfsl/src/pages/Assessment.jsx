@@ -67,6 +67,8 @@ export default function Assessment() {
   }
 
   function toggleRecord() {
+    console.log(contentData.answers)
+
     setIsCount((prevCount) => !prevCount);
     isCounterRef.current = true;
 
@@ -84,6 +86,7 @@ export default function Assessment() {
         answers={answer}
         module={contentData.module_id}
         subtopic={contentData.lesson_title}
+        dbAnswer={contentData.answers}
         counter={counter}
       />
     </div>
@@ -109,13 +112,11 @@ function MainBody(props) {
             <button className="record" onClick={props.toggle}>
               START
             </button>
-            {console.log(props.counter)}
-            <h3>{props.counter}</h3>
           </div>
         </div>
         <div className="right-body">
           {props.answers.map((answer, index) => (
-            <Answers key={index} answer={answer} />
+            <Answers userAnswer={answer} dbAnswer={props.dbAnswer} key={index} answer={answer} />
           ))}
         </div>
       </div>
@@ -125,7 +126,18 @@ function MainBody(props) {
 
 // Render divs for answers
 function Answers(props) {
-  return <div className="answer">{props.answer}</div>;
+  return <div className="answer" style={checkResult(props.userAnswer, props.dbAnswer) ? {backgroundColor: "#00CC00"} : {backgroundColor: "#CC0000"} }>{props.answer}</div>;
+}
+
+// Check if result is correct
+function checkResult(userAnswer, dbAnswer) {
+  console.log(userAnswer, dbAnswer);
+  if (userAnswer == dbAnswer) {
+    console.log("Correct");
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function ResultButton(props) {

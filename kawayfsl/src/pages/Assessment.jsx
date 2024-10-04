@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "semantic-ui-react";
+import axios from "axios";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
 import EnableHolistic from "../../MediaPipe/EnableHolistic.jsx";
@@ -16,6 +17,7 @@ export default function Assessment() {
   const [answer, setAnswers] = React.useState([]);
   const currentAnswer = React.useRef();
   const [counter, setCounter] = React.useState(3);
+  const [attempt, setAttempt] = React.useState(1);
 
   // Set states and ref for triggering certain functions
   const holisticRef = React.useRef(null);
@@ -26,7 +28,7 @@ export default function Assessment() {
 
   answer.map((currentUserAnswer) => {
     currentAnswer.current = currentUserAnswer;
-  })
+  });
 
   // Countdown logic for state updates
   React.useEffect(() => {
@@ -68,7 +70,6 @@ export default function Assessment() {
       contentData.assessment_id === 1
         ? EnableStatic(toggleTracking, setAnswers, counterRef, isCounterRef)
         : EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef);
-    // holisticRef.current = EnableHolistic(toggleTracking, setAnswers);
   }
 
   function toggleRecord() {
@@ -76,7 +77,8 @@ export default function Assessment() {
     isCounterRef.current = true;
 
     if (counter === 0) {
-      setCounter(counter + 3);
+      setCounter((prevCounter) => prevCounter + 3);
+      setAttempt((prevAttempt) => prevAttempt + 1);
     }
   }
 
@@ -90,8 +92,10 @@ export default function Assessment() {
         module={contentData.module_id}
         subtopic={contentData.lesson_title}
         dbAnswer={contentData.answers}
+        contentData={contentData}
         counter={counter}
         currentUserAnswer={currentAnswer.current}
+        attempt={attempt}
       />
     </div>
   );
@@ -112,8 +116,15 @@ function MainBody(props) {
             <button className="enable_fsl" onClick={props.enable}>
               CAMERA
             </button>
-            <UserButton userAnswer={props.currentUserAnswer} dbAnswer={props.dbAnswer} toggle={props.toggle} />
-            <h3 className="attempt-counter">Attempt: 1</h3>
+            <UserButton
+              userAnswer={props.currentUserAnswer}
+              dbAnswer={props.dbAnswer}
+              toggle={props.toggle}
+              contentData={props.contentData}
+              attempt={props.attempt}
+              answer={props.answers}
+            />
+            <h3 className="attempt-counter">Attempt: {props.attempt}</h3>
           </div>
         </div>
         <div className="right-body">
@@ -160,12 +171,21 @@ function UserButton(props) {
   if (checkResult(props.userAnswer, props.dbAnswer)) {
     return (
       <div className="button-container">
+        <Button className="next-lesson" as={Link} to="/lessons" state={props.contentData}>
+          Complete
+        </Button>
+      </div>
+    );
+  } else if (props.attempt === 3 && props.answer.length === 3) {
+    return (
+      <div className="button-container">
         <Button
-          className="next-lesson"
+          className="review-lesson"
           as={Link}
-          to={props.page}
+          to="/lesson-content"
+          state={props.contentData}
         >
-          Next Lesson
+          Review Again
         </Button>
       </div>
     );
@@ -178,6 +198,3 @@ function UserButton(props) {
   }
 }
 
-// function getNextLesson(props) {
-
-// }

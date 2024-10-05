@@ -1,6 +1,8 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "semantic-ui-react";
+import { AuthContext } from "../auth/authContext.jsx";
+import { useContext } from "react";
 import axios from "axios";
 import Navbar from "../../Components/Navbar.jsx";
 import ModuleHeader from "../../Components/ModuleHeader.jsx";
@@ -10,6 +12,8 @@ import "./css/Practice.css";
 
 // Main exported page
 export default function Assessment() {
+  const { user } = useContext(AuthContext);
+
   const location = useLocation();
   const contentData = location.state;
 
@@ -86,9 +90,11 @@ export default function Assessment() {
     <div id="page-container">
       <Navbar />
       <MainBody
+        user={user?.sub}
         enable={handleEnableHolistic}
         toggle={toggleRecord}
         answers={answer}
+        lesson={contentData.lesson_id}
         module={contentData.module_id}
         subtopic={contentData.lesson_title}
         dbAnswer={contentData.answers}
@@ -123,6 +129,9 @@ function MainBody(props) {
               contentData={props.contentData}
               attempt={props.attempt}
               answer={props.answers}
+              module={props.module}
+              lesson={props.lesson}
+              user={props.user}
             />
             <h3 className="attempt-counter">Attempt: {props.attempt}</h3>
           </div>
@@ -168,10 +177,21 @@ function checkResult(userAnswer, dbAnswer) {
 }
 
 function UserButton(props) {
+  React.useEffect(() => {
+    if (checkResult(props.userAnswer, props.dbAnswer)) {
+      unlockNextLesson(props.module, props.lesson, props.user); // Trigger API when result is true
+    }
+  }, [props.userAnswer, props.dbAnswer]); // Re-run when answers change
+
   if (checkResult(props.userAnswer, props.dbAnswer)) {
     return (
       <div className="button-container">
-        <Button className="next-lesson" as={Link} to="/lessons" state={props.contentData}>
+        <Button
+          className="next-lesson"
+          as={Link}
+          to="/lessons"
+          state={props.contentData}
+        >
           Complete
         </Button>
       </div>
@@ -198,3 +218,16 @@ function UserButton(props) {
   }
 }
 
+function unlockNextLesson(module_id, lesson_id, user) {
+  axios
+    .put(
+      `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/unlock/${module_id}/${lesson_id}?user=${user}`
+      // `http://localhost:6868/v1/unlock/${module_id}/${lesson_id}?user=${user}`
+    )
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}

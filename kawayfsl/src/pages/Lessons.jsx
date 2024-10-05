@@ -16,16 +16,18 @@ export default function Lessons() {
 
   // Fetch modules on component mount
   useEffect(() => {
-    getLessons(moduleData.module_id);
-  }, []);
+    if (user?.sub) { // Wait for user.sub to be initialized
+      getLessons(moduleData.module_id);
+    }
+  }, [user, moduleData.module_id]); // Add user and module_id to dependencies
 
   const getLessons = (module_id) => {
     axios
-      // .get(
-      //   `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`,
-      //   { params: { user: user.sub } }
-      // )
-      .get(`http://localhost:6868/v1/${module_id}/lessons`, { params: { user: user?.sub } })
+      .get(
+        `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`,
+        { params: { user: user?.sub } }
+      )
+      // .get(`http://localhost:6868/v1/${module_id}/lessons`, { params: { user: user?.sub } })
       .then((response) => {
         setFetchedLessons(response.data);
         console.log(response.data);

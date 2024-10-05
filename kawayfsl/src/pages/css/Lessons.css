@@ -1,6 +1,7 @@
 .lessons-container {
     display: flex;
-    gap: 20px;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
 .unlocked-lesson-card {
@@ -9,7 +10,7 @@
     padding: 10px;
     width: 300px;
     height: 300px;
-    box-shadow: 0 30px 80px -30px #535353;
+    box-shadow: 0 10px 80px -40px #535353;
     transition: margin 0.2s ease-in-out;
 }
 
@@ -19,12 +20,12 @@
 
 .locked-lesson-card {
     color: grey;
-    background-color: #8ecae660;
+    background-color: #cbebf6;
     border-radius: 20px;
     padding: 10px;
     width: 300px;
     height: 300px;
-    box-shadow: 0 30px 80px -30px #535353;
+    box-shadow: 0 10px 80px -40px #535353;
     transition: margin 0.2s ease-in-out;
 }
 

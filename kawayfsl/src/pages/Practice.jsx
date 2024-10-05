@@ -65,9 +65,9 @@ function MainBody(props) {
           </div>
         </div>
         <div className="right-body">
-          {/* {props.answers.map((answer, index) => (
+          {props.answers.map((answer, index) => (
             <Answers key={index} answer={answer} />
-          ))} */}
+          ))}
         </div>
       </div>
     </main>

@@ -37,30 +37,32 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  
 }
 
 .buttons-container button {
-    border: none;
-    background-color: #fb8500;
-    height: 80px;
-    width: 200px;
-    border-radius: 20px;
-    font-family: 'Poppins';
-    font-weight: 600;
-    font-size: 1.2rem;
-    cursor: pointer;
-    z-index: 2;
+  border: none;
+  background-color: #fb8500;
+  height: 80px;
+  width: 200px;
+  border-radius: 20px;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .buttons-container button:hover {
-    box-shadow: 0px 20px 50px -5px #fb8500;
+  box-shadow: 0px 20px 50px -5px #fb8500;
+}
+
+.attempt-counter {
+  margin-left: auto;
 }
 
 .buttons-container {
-    gap: 20px;
-    display: flex;    
+  gap: 20px;
+  display: flex;
 }
 
 .right-body {
@@ -72,16 +74,49 @@
 
 .answer {
   border: none;
-  background-color: #8ecae6;
   height: 80px;
   width: 90%;
   border-bottom-left-radius: 20px;
   border-top-left-radius: 20px;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-weight: 600;
   font-size: 1vw;
   box-shadow: 100px 20px 90px -20px #535353;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.next-lesson, .review-lesson {
+  display: block;
+  border: none;
+  height: 80px;
+  width: 200px;
+  border-radius: 20px;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-decoration: none;
+  justify-content: center;
+  color: black;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.review-lesson {
+  background-color: #cc0000;
+}
+
+.ui.button.next-lesson {
+  background-color: #00cc00;
+}
+
+.buttons-container .next-lesson:hover {
+  box-shadow: 0px 20px 50px -5px #00cc00;
+}
+
+.buttons-container .review-lesson:hover {
+  box-shadow: 0px 20px 50px -5px #cc0000;
 }

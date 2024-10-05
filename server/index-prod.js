@@ -30,6 +30,7 @@ app.get("/nodejs/health/check", (req, res, next) => {
 
 app.get("/v1/modules", cors(corsOptions), (req, res) => {
   const userId = req.query.user; // Extract user ID from the query parameter
+  console.log(userId);
 
   // Ensure the userId is provided
   if (!userId) {
@@ -52,9 +53,11 @@ app.get("/v1/modules", cors(corsOptions), (req, res) => {
     [userId]
   )
     .then((data) => {
+      console.log(data);
       return res.json(data); // Return the retrieved data as JSON
     })
     .catch((err) => {
+      console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
 });
@@ -90,11 +93,150 @@ app.get("/v1/:module/lessons", cors(corsOptions), (req, res) => {
     [moduleId, userId] // Pass moduleId and userId as parameters to the query
   )
     .then((data) => {
+      console.log(data);
       return res.json(data); // Return the retrieved data as JSON
     })
     .catch((err) => {
+      console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
+});
+
+app.options("/v1/unlock/:module/:lesson/", cors(corsOptions));
+app.put("/v1/unlock/:module/:lesson/", cors(corsOptions), async (req, res) => {
+  const userId = req.query.user; // Extract user ID from the query parameter
+  const moduleId = req.params.module;
+  const lessonId = req.params.lesson;
+
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  try {
+    // Find the next lesson in the same module
+    const nextLesson = await db.oneOrNone(
+      `
+      SELECT lesson_id 
+      FROM Lessons 
+      WHERE module_id = $1 
+      AND lesson_id > $2 
+      ORDER BY lesson_id ASC 
+      LIMIT 1;
+    `,
+      [moduleId, lessonId]
+    );
+
+    if (nextLesson) {
+      // Check if the next lesson is already unlocked
+      const lessonProgress = await db.oneOrNone(
+        `
+        SELECT status
+        FROM UsersLessonsProgress
+        WHERE user_id = $1 AND lesson_id = $2 AND status = TRUE;
+      `,
+        [userId, nextLesson.lesson_id]
+      );
+
+      if (!lessonProgress) {
+        // Unlock the next lesson if not already unlocked
+        await db.none(
+          `
+          INSERT INTO UsersLessonsProgress (user_id, lesson_id, status)
+          VALUES ($1, $2, TRUE);
+        `,
+          [userId, nextLesson.lesson_id]
+        );
+
+        return res.json({
+          message: "Next lesson unlocked",
+          lessonId: nextLesson.lesson_id,
+        });
+      } else {
+        return res.json({
+          message: "Lesson already unlocked",
+          lessonId: nextLesson.lesson_id,
+        });
+      }
+    } else {
+      // If no higher lesson, unlock the next module and its first lesson
+      const nextModule = await db.oneOrNone(
+        `
+        SELECT module_id 
+        FROM Modules 
+        WHERE module_order = (
+          SELECT module_order 
+          FROM Modules 
+          WHERE module_id = $1
+        ) + 1;
+      `,
+        [moduleId]
+      );
+
+      if (nextModule) {
+        // Unlock next module
+        const moduleProgress = await db.oneOrNone(
+          `
+          SELECT status
+          FROM UsersModuleProgress
+          WHERE user_id = $1 AND module_id = $2 AND status = TRUE;
+        `,
+          [userId, nextModule.module_id]
+        );
+
+        if (!moduleProgress) {
+          await db.none(
+            `
+            INSERT INTO UsersModuleProgress (user_id, module_id, status)
+            VALUES ($1, $2, TRUE);
+          `,
+            [userId, nextModule.module_id]
+          );
+        }
+
+        // Unlock the first lesson in the next module
+        const firstLesson = await db.one(
+          `
+          SELECT lesson_id 
+          FROM Lessons 
+          WHERE module_id = $1 
+          ORDER BY lesson_order ASC 
+          LIMIT 1;
+        `,
+          [nextModule.module_id]
+        );
+
+        const firstLessonProgress = await db.oneOrNone(
+          `
+          SELECT status
+          FROM UsersLessonsProgress
+          WHERE user_id = $1 AND lesson_id = $2 AND status = TRUE;
+        `,
+          [userId, firstLesson.lesson_id]
+        );
+
+        if (!firstLessonProgress) {
+          await db.none(
+            `
+            INSERT INTO UsersLessonsProgress (user_id, lesson_id, status)
+            VALUES ($1, $2, TRUE);
+          `,
+            [userId, firstLesson.lesson_id]
+          );
+        }
+
+        return res.json({
+          message: "Next module and first lesson unlocked",
+          moduleId: nextModule.module_id,
+          lessonId: firstLesson.lesson_id,
+        });
+      } else {
+        return res.status(400).json({ message: "No next module available" });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
 });
 
 app.listen(PORT, () => {

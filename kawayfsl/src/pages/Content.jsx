@@ -4,6 +4,7 @@ import { AuthContext } from "../auth/authContext";
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import NextPageBtn from "../../Components/NextPageBtn";
+import VideoPlayer from "../../Components/VideoPlayer";
 import "./css/Content.css"
 
 export default function Content() {
@@ -29,7 +30,7 @@ function ContentBody(props) {
     <main id="body-container">
       <div className="content">
         <ModuleHeader module={props.module} subtopic={props.subtopic} />
-        <VideoContent video={props.video} />
+        <VideoPlayer />
         <TextContent
           description={props.description}
           subtopic={props.subtopic}
@@ -38,10 +39,6 @@ function ContentBody(props) {
       </div>
     </main>
   );
-}
-
-function VideoContent(props) {
-  return <video src={props.video}></video>;
 }
 
 function TextContent(props) {

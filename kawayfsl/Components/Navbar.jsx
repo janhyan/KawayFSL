@@ -6,6 +6,7 @@ import { AuthContext } from "../src/auth/authContext";
 export default function Navbar() {
   const {user, signOut } = useContext(AuthContext);
 
+
   const navigate = useNavigate();
   const goSignOut = () => {
     signOut();

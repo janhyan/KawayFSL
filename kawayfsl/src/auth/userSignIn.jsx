@@ -4,7 +4,7 @@ import { userPool } from "./UserPool";
 
 export function userSignIn(email, password) {
   return new Promise((resolve, reject) => {
-    const authenticatinDetails = new AuthenticationDetails({
+    const authenticationDetails = new AuthenticationDetails({
       Username: email,
       Password: password,
     });
@@ -14,7 +14,7 @@ export function userSignIn(email, password) {
       Pool: userPool,
     });
 
-    cognitoUser.authenticateUser(authenticatinDetails, {
+    cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: (result) => {
         resolve(result);
       },

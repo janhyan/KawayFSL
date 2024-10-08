@@ -20,11 +20,11 @@ export default function Modules() {
   // Get data from the database
   const getModules = () => {
     axios
-      .get(
-        "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/modules",
-        { params: { user: user?.sub } }
-      )
-      // .get("http://localhost:6868/v1/modules", { params: { user: user?.sub } })
+      // .get(
+      //   "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/modules",
+      //   { params: { user: user?.sub } }
+      // )
+      .get("http://localhost:6868/v1/modules", { params: { user: user?.sub } })
       .then((response) => {
         console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules

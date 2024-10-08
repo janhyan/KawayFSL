@@ -4,12 +4,14 @@ import { AuthContext } from "../auth/authContext";
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import NextPageBtn from "../../Components/NextPageBtn";
+import VideoPlayer from "../../Components/VideoPlayer";
 import "./css/Content.css"
 
 export default function Content() {
   const location = useLocation();
   const contentData = location.state;
-  const { user } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
+  console.log(token);
   return (
     <div id="page-container">
       <Navbar />
@@ -19,6 +21,7 @@ export default function Content() {
         video={contentData.video_url}
         description={contentData.lesson_content}
         state={contentData}
+        token={token}
       />
     </div>
   );
@@ -29,7 +32,7 @@ function ContentBody(props) {
     <main id="body-container">
       <div className="content">
         <ModuleHeader module={props.module} subtopic={props.subtopic} />
-        <VideoContent video={props.video} />
+        <VideoPlayer token={props.token} />
         <TextContent
           description={props.description}
           subtopic={props.subtopic}
@@ -38,10 +41,6 @@ function ContentBody(props) {
       </div>
     </main>
   );
-}
-
-function VideoContent(props) {
-  return <video src={props.video}></video>;
 }
 
 function TextContent(props) {

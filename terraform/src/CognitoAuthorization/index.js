@@ -1,22 +1,24 @@
-const AWS = require('aws-sdk');
+const { CognitoIdentityProviderClient, ListUserPoolClientsCommand } = require("@aws-sdk/client-cognito-identity-provider");
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
 
-const cognito = new AWS.CognitoIdentityServiceProvider({ region: 'ap-northeast-1' });
-const userPoolId = 'ap-northeast-1_OGlyXCemj';
+const cognito = new CognitoIdentityProviderClient({ region: 'ap-northeast-1' });
+const userPoolId = '';
+const jwksUrl = `https://cognito-idp.ap-northeast-1.amazonaws.com/${userPoolId}/.well-known/jwks.json`;
 
 let cachedKeys;
 
 const getPublicKeys = async () => {
   if (!cachedKeys) {
-    const { Keys } = await cognito.listUserPoolClients({
-      UserPoolId: userPoolId
-    }).promise();
+    // Fetch the keys from the well-known JWKs URL
+    const { data } = await axios.get(jwksUrl);
+    const { keys } = data;
 
-    cachedKeys = Keys.reduce((agg, current) => {
-      const jwk = { kty: current.kty, n: current.n, e: current.e };
-      const key = jwkToPem(jwk);
-      agg[current.kid] = { instance: current, key };
+    // Transform the JWKs into PEM format and cache them
+    cachedKeys = keys.reduce((agg, current) => {
+      const pem = jwkToPem(current);
+      agg[current.kid] = { instance: current, key: pem };
       return agg;
     }, {});
   }
@@ -29,16 +31,19 @@ const isTokenValid = async (token) => {
     const tokenSections = (token || '').split('.');
     const headerJSON = Buffer.from(tokenSections[0], 'base64').toString('utf8');
     const { kid } = JSON.parse(headerJSON);
-
+    
     const key = publicKeys[kid];
-    if (key === undefined) {
+    if (!key) {
       throw new Error('Claim made for unknown kid');
     }
 
-    const claim = await jwt.verify(token, key.key, { algorithms: ['RS256'] });
-    if (claim['cognito:groups'].includes('VerifiedUsers') && claim.token_use === 'id') {
+    const claim = jwt.verify(token, key.key, { algorithms: ['RS256'] });
+
+    // Check if 'cognito:groups' is defined before calling .includes()
+    if (claim['cognito:groups'] && claim['cognito:groups'].includes('VerifiedUsers') && claim.token_use === 'id') {
       return true;
     }
+
     return false;
   } catch (error) {
     console.error(error);
@@ -49,11 +54,15 @@ const isTokenValid = async (token) => {
 exports.handler = async (event) => {
   const request = event.Records[0].cf.request;
   const headers = request.headers;
-
+  
+  console.log(headers.authorization, headers.authorization[0].value);
+  
   if (headers.authorization && headers.authorization[0].value) {
     const token = headers.authorization[0].value.split(' ')[1];
     const isValid = await isTokenValid(token);
 
+    console.log(token);
+    
     if (isValid) {
       return request;
     }

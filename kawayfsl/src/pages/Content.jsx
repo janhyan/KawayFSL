@@ -10,7 +10,8 @@ import "./css/Content.css"
 export default function Content() {
   const location = useLocation();
   const contentData = location.state;
-  const { user } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
+  console.log(token);
   return (
     <div id="page-container">
       <Navbar />
@@ -20,6 +21,7 @@ export default function Content() {
         video={contentData.video_url}
         description={contentData.lesson_content}
         state={contentData}
+        token={token}
       />
     </div>
   );
@@ -30,7 +32,7 @@ function ContentBody(props) {
     <main id="body-container">
       <div className="content">
         <ModuleHeader module={props.module} subtopic={props.subtopic} />
-        <VideoPlayer />
+        <VideoPlayer token={props.token} />
         <TextContent
           description={props.description}
           subtopic={props.subtopic}

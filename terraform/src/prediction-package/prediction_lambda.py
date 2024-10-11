@@ -28,7 +28,10 @@ def lambda_handler(event, context):
         }
 
     # Ensure that body exists and is properly decoded
-    body = event.get("body", "")
+    # body = event.get("body", "")
+    body = event["body"].get("sequence", "")
+    assessment_id = event["body"].get("assessment_id", "")
+
 
     if body:
         try:
@@ -41,7 +44,7 @@ def lambda_handler(event, context):
         parsed_body = {}
 
     print("Event:", event)
-    prediction = makePrediction(parsed_body)
+    prediction = makePrediction(parsed_body, assessment_id)
 
     return {
         "statusCode": 200,
@@ -50,7 +53,7 @@ def lambda_handler(event, context):
     }
 
 
-def makePrediction(sequence):
+def makePrediction(sequence, assessment_id):
     actions = np.array(["Ako si", "Ano ang pangalan mo", "Ilang taon ka na", "Sino"])
     model = Sequential()
     model.add(
@@ -58,7 +61,12 @@ def makePrediction(sequence):
     )
     model.add(Dense(16, activation="relu"))
     model.add(Dense(actions.shape[0], activation="softmax"))
-    model.load_weights("introduction.h5")
+    if assessment_id == 2:
+        model.load_weights("introduction.h5")
+    elif assessment_id == 3:
+        model.load_weights("greetings.h5")
+    else:
+        model.load_weights("vocab.h5")
 
     res = model.predict(np.expand_dims(sequence, axis=0))[0]
 

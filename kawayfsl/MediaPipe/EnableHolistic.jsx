@@ -15,7 +15,8 @@ export default function EnableHolistic(
   toggleTracking,
   setAnswers,
   counter,
-  isCounterRef
+  isCounterRef,
+  assessment_id
 ) {
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
@@ -34,7 +35,7 @@ export default function EnableHolistic(
 
       if (sequence.length === 40) {
         console.log(sequence);
-        sendSequenceToAPI(sequence);
+        sendSequenceToAPI(sequence, assessment_id);
         sequence = [];
         toggleTracking.current = false;
       }
@@ -79,11 +80,11 @@ export default function EnableHolistic(
     return nj.concatenate([pose, face, lh, rh]).tolist();
   }
 
-  function sendSequenceToAPI(sequence) {
+  function sendSequenceToAPI(sequence, assessment_id) {
     axios
       .post(
         "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage/",
-        sequence
+        { sequence, assessment_id } // Send both sequence and assessment_id in the body
       )
       .then((response) => {
         console.log("Sequence sent to API:", response.data);

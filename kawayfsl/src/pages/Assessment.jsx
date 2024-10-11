@@ -73,7 +73,7 @@ export default function Assessment() {
     holisticRef.current =
       contentData.assessment_id === 1
         ? EnableStatic(toggleTracking, setAnswers, counterRef, isCounterRef)
-        : EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef);
+        : EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef, contentData.assessment_id);
   }
 
   function toggleRecord() {

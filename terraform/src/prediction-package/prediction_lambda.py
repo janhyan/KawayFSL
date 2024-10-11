@@ -61,6 +61,7 @@ def makePrediction(sequence, assessment_id):
     )
     model.add(Dense(16, activation="relu"))
     model.add(Dense(actions.shape[0], activation="softmax"))
+    
     if assessment_id == 2:
         model.load_weights("introduction.h5")
     elif assessment_id == 3:

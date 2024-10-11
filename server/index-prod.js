@@ -78,7 +78,6 @@ app.get("/v1/:module/lessons", cors(corsOptions), (req, res) => {
       l.module_id,  
       l.lesson_title,
       l.lesson_description,
-      l.video_url,
       l.lesson_content,
       l.assessment_id, 
       l.answers,

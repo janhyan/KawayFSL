@@ -15,11 +15,13 @@ services:
   server:
     build:
       context: .
+      args:
+        NODE_ENV: development
     volumes:
       - .:/usr/src/app
     env_file: ./.env
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - DATABASE_HOST=db
       - PORT=$PORT
       - DATABASE=$DATABASE

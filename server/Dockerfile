@@ -9,8 +9,6 @@ FROM node:${NODE_VERSION}-alpine
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
-RUN npm i npm@latest -g
-
 # Run the application as a non-root user.
 USER node
 
@@ -32,7 +30,12 @@ WORKDIR /opt/node_app
 #     npm ci
 
 COPY --chown=node:node package.json package-lock.json* ./
-RUN npm ci && npm cache clean --force
+
+# If NODE_ENV is 'development', install dev dependencies as well
+RUN npm install && npm cache clean --force
+# Ensure nodemon is installed in dev mode or fallback to full install
+RUN if [ "$NODE_ENV" = "development" ]; then npm install nodemon; fi
+
 ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
 # check every 30s to ensure this service returns HTTP 200
@@ -47,5 +50,5 @@ COPY --chown=node:node . .
 EXPOSE 8080
 
 # Run the application.
-# CMD ["node", "index-dev.js"]
-CMD ["./node_modules/.bin/nodemon", "-L", "--watch", "index-dev.js", "index-dev.js"]
+CMD ["node", "index-prod.js"]
+# CMD ["nodemon", "-L", "--watch", "index-dev.js", "index-dev.js"]

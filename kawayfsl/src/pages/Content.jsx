@@ -11,14 +11,14 @@ export default function Content() {
   const location = useLocation();
   const contentData = location.state;
   const { token } = useContext(AuthContext);
-  console.log(token);
+
   return (
     <div id="page-container">
       <Navbar />
       <ContentBody
         module={contentData.module_id}
+        lesson={contentData.answers}
         subtopic={contentData.lesson_title}
-        video={contentData.video_url}
         description={contentData.lesson_content}
         state={contentData}
         token={token}
@@ -32,7 +32,7 @@ function ContentBody(props) {
     <main id="body-container">
       <div className="content">
         <ModuleHeader module={props.module} subtopic={props.subtopic} />
-        <VideoPlayer token={props.token} />
+        <VideoPlayer token={props.token} module={props.module} lesson={props.lesson} />
         <TextContent
           description={props.description}
           subtopic={props.subtopic}

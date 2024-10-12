@@ -51,4 +51,4 @@ EXPOSE 8080
 
 # Run the application.
 # CMD ["node", "index-prod.js"]
-CMD ["nodemon", "-L", "--watch", "index-dev.js", "index-dev.js"]
+CMD ["nodemon", "-L", "--legacy-watch", "index-dev.js", "index-dev.js"]

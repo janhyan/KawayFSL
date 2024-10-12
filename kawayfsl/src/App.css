@@ -471,3 +471,14 @@ h3 {
   height: 100%;
   width: 100%;
 }
+
+.auth-loader {
+  background-color: #219EBC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border-radius: 8px;
+  width: 100%;
+  border: 2px solid black;
+}

@@ -8,27 +8,67 @@ import "./css/Practice.css";
 
 // Main exported page
 export default function Practice() {
+  // Set answer and counter states
   const [answer, setAnswers] = React.useState([]);
+  const currentAnswer = React.useRef();
+  const [counter, setCounter] = React.useState(3);
 
+  let assessment_id = 2;
+
+  // Set states and ref for triggering certain functions
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
+  const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
+  const counterRef = React.useRef(counter);
+  const isCounterRef = React.useRef(false);
 
+  // Countdown logic for state updates
+  React.useEffect(() => {
+    if (isCount && counter > 0) {
+      const timer = setTimeout(
+        () => setCounter((prevCounter) => prevCounter - 1),
+        1000
+      );
+      counterRef.current = counter;
+
+      // Clean up the timer on component unmount or re-render
+      return () => clearTimeout(timer);
+    }
+  }, [counter, isCount]);
+
+  // Handle toggleTracking when counter reaches 0
+  React.useEffect(() => {
+    if (counter === 0) {
+      toggleTracking.current = !toggleTracking.current;
+      setIsCount((prevCount) => !prevCount);
+      counterRef.current = counter;
+    }
+  }, [counter]);
+
+  // Effect for cleanup when component unmounts
   React.useEffect(() => {
     return () => {
       if (holisticRef.current) {
         holisticRef.current.camera.stop();
         holisticRef.current.holistic.close();
+        holisticRef.current = null;
       }
     };
   }, []);
 
   // Takes camera and holistic objects from EnableHolistic
   function handleEnableHolistic() {
-    holisticRef.current = EnableStatic(toggleTracking, setAnswers);
+    holisticRef.current = EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef, assessment_id);
   }
 
   function toggleRecord() {
-    toggleTracking.current = !toggleTracking.current;
+    setIsCount((prevCount) => !prevCount);
+    isCounterRef.current = true;
+
+    if (counter === 0) {
+      setCounter((prevCounter) => prevCounter + 3);
+      setAttempt((prevAttempt) => prevAttempt + 1);
+    }
   }
 
   return (
@@ -38,6 +78,8 @@ export default function Practice() {
         enable={handleEnableHolistic}
         toggle={toggleRecord}
         answers={answer}
+        counter={counter}
+        currentUserAnswer={currentAnswer.current}
       />
     </div>
   );
@@ -46,7 +88,7 @@ export default function Practice() {
 // Renders right side of the page
 function MainBody(props) {
   return (
-    <main id="body-container" style={{paddingRight: "0px"}}>
+    <main id="body-container" style={{ paddingRight: "0px" }}>
       <ModuleHeader module="1" subtopic="A" />
       <div className="main-container">
         <div className="left-body">
@@ -76,5 +118,16 @@ function MainBody(props) {
 
 // Render divs for answers
 function Answers(props) {
-  return <div className="answer">{props.answer}</div>;
+  return (
+    <div
+      className="answer"
+      style={
+        checkResult(props.userAnswer, props.dbAnswer)
+          ? { backgroundColor: "#00CC00" }
+          : { backgroundColor: "#CC0000" }
+      }
+    >
+      {props.answer}
+    </div>
+  );
 }

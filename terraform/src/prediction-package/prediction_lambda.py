@@ -30,9 +30,7 @@ def lambda_handler(event, context):
 
     # Ensure that body exists and is properly decoded
     # body = event.get("body", "")
-    body = event["body"].get("sequence", "")
-    assessment_id = event["body"].get("assessment_id", "")
-
+    body = event.get("body", "")
 
     if body:
         try:
@@ -44,8 +42,12 @@ def lambda_handler(event, context):
     else:
         parsed_body = {}
 
+
+    prediction_data = parsed_body['sequence']
+    assessment_id = parsed_body['assessment_id']
+
     print("Event:", event)
-    prediction = makePrediction(parsed_body, assessment_id)
+    prediction = makePrediction(prediction_data, assessment_id)
 
     return {
         "statusCode": 200,

@@ -9,6 +9,7 @@ ALLOWED_ORIGINS = ["http://localhost:3000", "https://www.kawayfsl.com"]
 
 
 def lambda_handler(event, context):
+    print(event)
     origin = event["headers"].get("origin", "")
 
     headers = {

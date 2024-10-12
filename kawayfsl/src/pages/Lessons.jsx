@@ -23,11 +23,11 @@ export default function Lessons() {
 
   const getLessons = (module_id) => {
     axios
-      .get(
-        `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`,
-        { params: { user: user?.sub } }
-      )
-      // .get(`http://localhost:6868/v1/${module_id}/lessons`, { params: { user: user?.sub } })
+      // .get(
+      //   `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`,
+      //   { params: { user: user?.sub } }
+      // )
+      .get(`http://localhost:6868/v1/${module_id}/lessons`, { params: { user: user?.sub } })
       .then((response) => {
         setFetchedLessons(response.data);
         console.log(response.data);
@@ -60,6 +60,14 @@ function LessonList(props) {
 }
 
 function LessonsCard(props) {
+  if (!props.lessons || props.lessons.length === 0) {
+    return (
+      <div className="loader">
+        <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
+    ); // Handle case where data is not available
+  }
+
   return (
     <div className="lessons-container">
       {props.lessons.map((lesson) =>

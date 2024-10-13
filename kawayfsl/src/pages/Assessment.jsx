@@ -27,6 +27,7 @@ export default function Assessment() {
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
   const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
+  const [isLoading, setIsLoading] = React.useState(false);
   const counterRef = React.useRef(counter);
   const isCounterRef = React.useRef(false);
 
@@ -68,17 +69,43 @@ export default function Assessment() {
     };
   }, []);
 
+  // Inside Assessment component
+  React.useEffect(() => {
+    const isCorrectAnswer = checkResult(
+      currentAnswer.current,
+      contentData.answers
+    );
+    // if (isCorrectAnswer) {
+    //   setIsLoading(false); // Update the loading state after rendering
+    // }
+  }, [currentAnswer.current, contentData.answers]);
+
   // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
+    setIsLoading(true);
     holisticRef.current =
       contentData.assessment_id === 1
-        ? EnableStatic(toggleTracking, setAnswers, counterRef, isCounterRef)
-        : EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef, contentData.assessment_id);
+        ? EnableStatic(
+            toggleTracking,
+            setAnswers,
+            counterRef,
+            isCounterRef,
+            setIsLoading
+          )
+        : EnableHolistic(
+            toggleTracking,
+            setAnswers,
+            counterRef,
+            isCounterRef,
+            contentData.assessment_id,
+            setIsLoading
+          );
   }
 
   function toggleRecord() {
     setIsCount((prevCount) => !prevCount);
     isCounterRef.current = true;
+    setIsLoading(true);
 
     if (counter === 0) {
       setCounter((prevCounter) => prevCounter + 3);
@@ -102,6 +129,9 @@ export default function Assessment() {
         counter={counter}
         currentUserAnswer={currentAnswer.current}
         attempt={attempt}
+        holisticRef={holisticRef}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
       />
     </div>
   );
@@ -119,9 +149,6 @@ function MainBody(props) {
             <canvas className="output_canvas"></canvas>
           </div>
           <div className="buttons-container">
-            <button className="enable_fsl" onClick={props.enable}>
-              CAMERA
-            </button>
             <UserButton
               userAnswer={props.currentUserAnswer}
               dbAnswer={props.dbAnswer}
@@ -132,6 +159,10 @@ function MainBody(props) {
               module={props.module}
               lesson={props.lesson}
               user={props.user}
+              holisticRef={props.holisticRef}
+              isLoading={props.isLoading}
+              enable={props.enable}
+              setIsLoading={props.setIsLoading}
             />
             <h3 className="attempt-counter">Attempt: {props.attempt}</h3>
           </div>
@@ -183,7 +214,10 @@ function UserButton(props) {
     }
   }, [props.userAnswer, props.dbAnswer]); // Re-run when answers change
 
-  if (checkResult(props.userAnswer, props.dbAnswer)) {
+  const isCorrectAnswer = checkResult(props.userAnswer, props.dbAnswer);
+  console.log("Loading state:", props.isLoading);
+
+  if (isCorrectAnswer) {
     return (
       <div className="button-container">
         <Button
@@ -207,6 +241,18 @@ function UserButton(props) {
         >
           Review Again
         </Button>
+      </div>
+    );
+  } else if (!props.holisticRef.current) {
+    return (
+      <button className="enable_fsl" onClick={props.enable}>
+        CAMERA
+      </button>
+    );
+  } else if (props.isLoading) {
+    return (
+      <div className="assessment-loader">
+        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
       </div>
     );
   } else {

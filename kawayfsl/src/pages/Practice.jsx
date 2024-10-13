@@ -67,7 +67,6 @@ export default function Practice() {
 
     if (counter === 0) {
       setCounter((prevCounter) => prevCounter + 3);
-      setAttempt((prevAttempt) => prevAttempt + 1);
     }
   }
 

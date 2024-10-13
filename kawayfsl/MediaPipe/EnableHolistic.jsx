@@ -16,7 +16,8 @@ export default function EnableHolistic(
   setAnswers,
   counter,
   isCounterRef,
-  assessment_id
+  assessment_id,
+  setIsLoading
 ) {
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
@@ -28,6 +29,7 @@ export default function EnableHolistic(
 
     if (toggleTracking.current) {
       sequence.push(keypoints);
+      setIsLoading(true);
 
       if (counter.current === 0) {
         isCounterRef.current = false;
@@ -96,6 +98,10 @@ export default function EnableHolistic(
   }
 
   function drawResults(results) {
+    if (sequence.length === 0 && !isCounterRef.current) {
+      setIsLoading(false);
+    }
+    
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 

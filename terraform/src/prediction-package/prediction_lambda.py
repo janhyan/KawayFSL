@@ -57,21 +57,24 @@ def lambda_handler(event, context):
 
 
 def makePrediction(sequence, assessment_id):
-    actions = np.array(["Ako si", "Ano ang pangalan mo", "Ilang taon ka na", "Sino"])
+    if assessment_id == 2:
+        model_path = "introduction.h5"
+        actions = np.array(["Ako si", "Ano ang pangalan mo", "Ilang taon ka na", "Sino"])
+    elif assessment_id == 3:
+        model_path = "greetings.h5"
+        actions = np.array(['Ingat ka', 'Kumusta ka', 'Magandang Araw', 'Magandang Gabi', 'Magandang Hapon', 'Magandang Umaga', 'Maraming Salamat', 'Paalam', 'Pasensya na'])  
+    else:
+        model_path = "vocab.h5"
+        actions = np.array(['Bahay', 'Sala', 'Silid', 'Dilaw', 'Kusina', 'Ube', 'Guro', 'Kailan', 'Pinto']) 
+
     model = Sequential()
     model.add(
         LSTM(64, return_sequences=False, activation="relu", input_shape=(40, 1662))
     )
     model.add(Dense(16, activation="relu"))
-    model.add(Dense(actions.shape[0], activation="softmax"))
-    
-    if assessment_id == 2:
-        model.load_weights("introduction.h5")
-    elif assessment_id == 3:
-        model.load_weights("greetings.h5")
-    else:
-        model.load_weights("vocab.h5")
+    model.add(Dense(len(actions), activation="softmax"))  # Dynamically set output
+
+    model.load_weights(model_path)
 
     res = model.predict(np.expand_dims(sequence, axis=0))[0]
-
     return actions[np.argmax(res)]

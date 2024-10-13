@@ -13,7 +13,7 @@ export default function Practice() {
   const currentAnswer = React.useRef();
   const [counter, setCounter] = React.useState(3);
 
-  let assessment_id = 2;
+  const assessment_id = 2;
 
   // Set states and ref for triggering certain functions
   const holisticRef = React.useRef(null);
@@ -130,4 +130,12 @@ function Answers(props) {
       {props.answer}
     </div>
   );
+}
+
+function checkResult(userAnswer, dbAnswer) {
+  if (userAnswer == dbAnswer) {
+    return true;
+  } else {
+    return false;
+  }
 }

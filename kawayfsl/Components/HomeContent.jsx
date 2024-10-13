@@ -3,6 +3,8 @@ import moduleOne from "../src/data/moduleOne";
 import announcements from "../src/data/announcements";
 import UserHeader from "./UserHeader";
 import { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 import { AuthContext } from "../src/auth/authContext";
 import axios from "axios";
 
@@ -51,7 +53,7 @@ function MainCard(props) {
             Module: {moduleData.module_order} {moduleData.module_title}
           </h2>
           <p>{moduleData.module_description}</p>
-          <button className="learn-now">Learn Now</button>
+          <Button className="learn-now" as={Link} to="/lessons" state={moduleData} >Learn Now</Button>
         </div>
         <img src={"/home.gif"} alt="GIF on Home Page" />
       </div>

@@ -69,7 +69,7 @@ b {
   align-items: end;
 }
 
-.contents .buttons {
+.contents .buttons, .learn-now {
   border: none;
   height: 60px;
   width: 95%;
@@ -310,7 +310,7 @@ b {
   font-weight: 300;
 }
 
-.main-content button {
+.main-content button, .learn-now {
   border: none;
   background-color: azure;
   height: 80px;
@@ -320,6 +320,9 @@ b {
   font-weight: 600;
   font-size: 1.2rem;
   cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 /* SUBTOPIC CARD */
@@ -337,6 +340,7 @@ b {
   gap: 10px;
   max-width: 100%;
   position: relative;
+  height: 80%;
 }
 
 .subtopic.container.card > h2,
@@ -363,8 +367,8 @@ h3 {
 .cards-container > .card {
   border-radius: 30px;
   background-color: azure;
-  display: grid;
-  grid-template-rows: 50px 1fr;
+  display: flex;
+  flex-direction: column;
   max-height: 100%;
   padding: 15px;
   color: azure;

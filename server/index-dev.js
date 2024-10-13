@@ -249,6 +249,7 @@ app.get("/v1/latest-module", cors(corsOptions), (req, res) => {
     FROM Modules m
     JOIN UsersModuleProgress ump ON m.module_id = ump.module_id
     WHERE ump.user_id = $1
+    AND ump.status = TRUE
     ORDER BY module_order DESC
     LIMIT 1;
     `,
@@ -279,6 +280,7 @@ app.get("/v1/latest-lessons", cors(corsOptions), (req, res) => {
     FROM Lessons l
     JOIN UsersLessonsProgress ulp ON l.lesson_id = ulp.lesson_id
     WHERE ulp.user_id = $1
+    AND ulp.status = TRUE
     ORDER BY lesson_order DESC
     LIMIT 3;
     `,

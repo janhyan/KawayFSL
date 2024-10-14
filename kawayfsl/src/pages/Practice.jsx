@@ -12,8 +12,7 @@ export default function Practice() {
   const [answer, setAnswers] = React.useState([]);
   const currentAnswer = React.useRef();
   const [counter, setCounter] = React.useState(3);
-
-  const assessment_id = 2;
+  const [assessmentId, setassessmentId] = React.useState(1);
 
   // Set states and ref for triggering certain functions
   const holisticRef = React.useRef(null);
@@ -59,9 +58,10 @@ export default function Practice() {
 
   // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
+    console.log(assessmentId)
     setIsLoading(true);
     holisticRef.current =
-      assessment_id === 1
+      assessmentId === 1
         ? EnableStatic(
             toggleTracking,
             setAnswers,
@@ -74,7 +74,7 @@ export default function Practice() {
             setAnswers,
             counterRef,
             isCounterRef,
-            assessment_id,
+            assessmentId,
             setIsLoading
           );
   }
@@ -101,6 +101,8 @@ export default function Practice() {
         holisticRef={holisticRef}
         isLoading={isLoading}
         setIsLoading={setIsLoading}
+        assessmentId={assessmentId}
+        setassessmentId={setassessmentId}
       />
     </div>
   );
@@ -133,6 +135,7 @@ function MainBody(props) {
               enable={props.enable}
               setIsLoading={props.setIsLoading}
             />
+            <AssessmentDropdown assessmentId={props.assessmentId} setassessmentId={props.setassessmentId} />
           </div>
         </div>
         <div className="right-body">
@@ -176,4 +179,18 @@ function UserButton(props) {
       </button>
     );
   }
+}
+
+function AssessmentDropdown(props) {
+  const handleChange = (event) => {
+    props.setassessmentId(parseInt(event.target.value));
+  };
+  return (
+    <select value={props.assessmentId} onChange={handleChange}>
+      <option value={1}>Module 1</option>
+      <option value={2}>Module 2</option>
+      <option value={3}>Module 3</option>
+      <option value={4}>Module 4</option>
+    </select>
+  );
 }

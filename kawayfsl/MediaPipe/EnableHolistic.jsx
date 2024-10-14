@@ -37,6 +37,7 @@ export default function EnableHolistic(
 
       if (sequence.length === 40) {
         console.log(sequence);
+        console.log(assessment_id);
         sendSequenceToAPI(sequence, assessment_id);
         sequence = [];
         toggleTracking.current = false;

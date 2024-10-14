@@ -101,18 +101,14 @@ export default function EnableHolistic(
     if (sequence.length === 0 && !isCounterRef.current) {
       setIsLoading(false);
     }
-    
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-    canvasCtx.globalCompositeOperation = "source-in";
-    canvasCtx.fillStyle = "#00FF00";
-    canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
     const x = canvasElement.width / 2;
     const y = canvasElement.height / 2;
 
     if (isCounterRef.current && counter.current >= 0) {
+      console.log(isCounterRef.current, counter.current)
       // Draw the counter
       canvasCtx.font = "100px Inter";
       canvasCtx.textBaseline = "middle";
@@ -120,6 +116,10 @@ export default function EnableHolistic(
       canvasCtx.fillStyle = "#fb8500";
       canvasCtx.fillText(counter.current, x, y);
     }
+
+    canvasCtx.globalCompositeOperation = "source-in";
+    canvasCtx.fillStyle = "#00FF00";
+    canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
     canvasCtx.globalCompositeOperation = "destination-atop";
     canvasCtx.drawImage(

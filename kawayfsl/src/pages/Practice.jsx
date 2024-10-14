@@ -82,6 +82,7 @@ export default function Practice() {
   function toggleRecord() {
     setIsCount((prevCount) => !prevCount);
     isCounterRef.current = true;
+    setIsLoading(true);
 
     if (counter === 0) {
       setCounter((prevCounter) => prevCounter + 3);

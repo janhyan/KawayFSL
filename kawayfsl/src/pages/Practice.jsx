@@ -56,6 +56,16 @@ export default function Practice() {
     };
   }, []);
 
+  // Update the model if dropdown selection is changed
+  React.useEffect(() => {
+    if (holisticRef.current) {
+      holisticRef.current.camera.stop();
+      holisticRef.current.holistic.close();
+      holisticRef.current = null;
+      handleEnableHolistic();
+    }
+  }, [assessmentId]);
+
   // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
     console.log(assessmentId)
@@ -186,7 +196,7 @@ function AssessmentDropdown(props) {
     props.setassessmentId(parseInt(event.target.value));
   };
   return (
-    <select value={props.assessmentId} onChange={handleChange}>
+    <select className="select-module" value={props.assessmentId} onChange={handleChange}>
       <option value={1}>Module 1</option>
       <option value={2}>Module 2</option>
       <option value={3}>Module 3</option>

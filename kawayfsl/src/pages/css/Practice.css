@@ -128,3 +128,23 @@
   height: 80px;
   width: 200px;
 }
+
+.select-module {
+  display: block;
+  border: none;
+  height: 80px;
+  width: 200px;
+  background-color: #fb8500;
+  border-radius: 20px;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-decoration: none;
+  justify-content: center;
+  color: black;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
+}

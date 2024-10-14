@@ -19,6 +19,7 @@ export default function Practice() {
   const holisticRef = React.useRef(null);
   const toggleTracking = React.useRef(false); // For toggling if tracking starts
   const [isCount, setIsCount] = React.useState(false); // For triggering countdown when tracking starts
+  const [isLoading, setIsLoading] = React.useState(false);
   const counterRef = React.useRef(counter);
   const isCounterRef = React.useRef(false);
 
@@ -56,9 +57,26 @@ export default function Practice() {
     };
   }, []);
 
-  // Takes camera and holistic objects from EnableHolistic
+  // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
-    holisticRef.current = EnableHolistic(toggleTracking, setAnswers, counterRef, isCounterRef, assessment_id);
+    setIsLoading(true);
+    holisticRef.current =
+      assessment_id === 1
+        ? EnableStatic(
+            toggleTracking,
+            setAnswers,
+            counterRef,
+            isCounterRef,
+            setIsLoading
+          )
+        : EnableHolistic(
+            toggleTracking,
+            setAnswers,
+            counterRef,
+            isCounterRef,
+            assessment_id,
+            setIsLoading
+          );
   }
 
   function toggleRecord() {
@@ -79,6 +97,9 @@ export default function Practice() {
         answers={answer}
         counter={counter}
         currentUserAnswer={currentAnswer.current}
+        holisticRef={holisticRef}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
       />
     </div>
   );
@@ -97,12 +118,20 @@ function MainBody(props) {
             <h1 className="gesture_output"></h1>
           </div>
           <div className="buttons-container">
-            <button className="enable_fsl" onClick={props.enable}>
-              CAMERA
-            </button>
-            <button className="record" onClick={props.toggle}>
-              START
-            </button>
+            <UserButton
+              userAnswer={props.currentUserAnswer}
+              dbAnswer={props.dbAnswer}
+              toggle={props.toggle}
+              attempt={props.attempt}
+              answer={props.answers}
+              module={props.module}
+              lesson={props.lesson}
+              user={props.user}
+              holisticRef={props.holisticRef}
+              isLoading={props.isLoading}
+              enable={props.enable}
+              setIsLoading={props.setIsLoading}
+            />
           </div>
         </div>
         <div className="right-body">
@@ -118,23 +147,32 @@ function MainBody(props) {
 // Render divs for answers
 function Answers(props) {
   return (
-    <div
-      className="answer"
-      style={
-        checkResult(props.userAnswer, props.dbAnswer)
-          ? { backgroundColor: "#00CC00" }
-          : { backgroundColor: "#CC0000" }
-      }
-    >
+    <div className="answer" style={{ backgroundColor: "#00CC00" }}>
       {props.answer}
     </div>
   );
 }
 
-function checkResult(userAnswer, dbAnswer) {
-  if (userAnswer == dbAnswer) {
-    return true;
+function UserButton(props) {
+  console.log("Loading state:", props.isLoading);
+
+  if (!props.holisticRef.current) {
+    return (
+      <button className="enable_fsl" onClick={props.enable}>
+        CAMERA
+      </button>
+    );
+  } else if (props.isLoading) {
+    return (
+      <div className="assessment-loader">
+        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
+    );
   } else {
-    return false;
+    return (
+      <button className="record" onClick={props.toggle}>
+        START
+      </button>
+    );
   }
 }

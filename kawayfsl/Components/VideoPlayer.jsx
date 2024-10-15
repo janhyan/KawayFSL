@@ -38,7 +38,7 @@ export default function VideoPlayer(props) {
   } else {
     return (
       <ReactPlayer
-        width="100%"
+        width="70%"
         height="100%"
         url={videoUrl} // Use the fetched blob URL
         controls

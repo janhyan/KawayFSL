@@ -68,8 +68,9 @@
 .right-body {
   display: flex;
   align-items: end;
+  justify-content: start;
   gap: 20px;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 
 .answer {

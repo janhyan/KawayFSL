@@ -102,9 +102,9 @@ function LessonCard(props) {
     let items = lessonData.map((item) => {
       return (
         <div className="card" key={item.lesson_id}>
-          <h3 className="card title">
+          <Link className="card title" to="/lesson-content" state={item} >
             Subtopic {item.lesson_order}: {item.lesson_title}
-          </h3>
+          </Link>
           <p className="card-description">{item.lesson_content}</p>
         </div>
       );

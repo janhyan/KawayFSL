@@ -344,11 +344,13 @@ b {
 }
 
 .subtopic.container.card > h2,
-h3 {
+h3,a {
   color: black;
   font-family: "Inter";
   font-size: 2rem;
   margin-top: 0;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .cards-container h3 {

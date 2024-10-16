@@ -68,7 +68,6 @@ export default function Practice() {
 
   // Takes camera and holistic objects from EnableHolistic or EnableStatic depending on the lesson
   function handleEnableHolistic() {
-    console.log(assessmentId)
     setIsLoading(true);
     holisticRef.current =
       assessmentId === 1
@@ -168,8 +167,6 @@ function Answers(props) {
 }
 
 function UserButton(props) {
-  console.log("Loading state:", props.isLoading);
-
   if (!props.holisticRef.current) {
     return (
       <button className="enable_fsl" onClick={props.enable}>

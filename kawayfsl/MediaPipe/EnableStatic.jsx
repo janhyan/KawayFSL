@@ -33,7 +33,6 @@ export default function EnableStatic(
       }
 
       if (sequence.length === 30) {
-        console.log(sequence);
         sendSequenceToAPI(sequence);
         sequence = [];
         toggleTracking.current = false;
@@ -115,7 +114,6 @@ export default function EnableStatic(
         sequence
       )
       .then((response) => {
-        console.log("Sequence sent to API:", response.data);
         setAnswers((prevAnswer) => [...prevAnswer, response.data]);
       })
       .catch((error) => {

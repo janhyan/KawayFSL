@@ -215,7 +215,6 @@ function UserButton(props) {
   }, [props.userAnswer, props.dbAnswer]); // Re-run when answers change
 
   const isCorrectAnswer = checkResult(props.userAnswer, props.dbAnswer);
-  console.log("Loading state:", props.isLoading);
 
   if (isCorrectAnswer) {
     return (

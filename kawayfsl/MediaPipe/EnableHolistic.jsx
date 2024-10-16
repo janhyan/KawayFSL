@@ -36,8 +36,6 @@ export default function EnableHolistic(
       }
 
       if (sequence.length === 40) {
-        console.log(sequence);
-        console.log(assessment_id);
         sendSequenceToAPI(sequence, assessment_id);
         sequence = [];
         toggleTracking.current = false;
@@ -90,7 +88,6 @@ export default function EnableHolistic(
         { sequence, assessment_id } // Send both sequence and assessment_id in the body
       )
       .then((response) => {
-        console.log("Sequence sent to API:", response.data);
         setAnswers((prevAnswer) => [...prevAnswer, response.data]);
       })
       .catch((error) => {
@@ -109,7 +106,6 @@ export default function EnableHolistic(
     const y = canvasElement.height / 2;
 
     if (isCounterRef.current && counter.current >= 0) {
-      console.log(isCounterRef.current, counter.current)
       // Draw the counter
       canvasCtx.font = "100px Inter";
       canvasCtx.textBaseline = "middle";

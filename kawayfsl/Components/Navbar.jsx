@@ -4,13 +4,15 @@ import { useContext } from "react";
 import { AuthContext } from "../src/auth/authContext";
 
 export default function Navbar() {
-  const {user, signOut } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
+
+  console.log(user);
 
   const navigate = useNavigate();
   const goSignOut = () => {
     signOut();
     navigate("/signin");
-  }
+  };
 
   return (
     <nav className="side-nav container">
@@ -31,9 +33,6 @@ export default function Navbar() {
         </Button>
         <Button className="settings buttons" as={Link} to="/settings">
           Settings
-        </Button>
-        <Button className="signout buttons" onClick={() => goSignOut()}>
-          Sign Out
         </Button>
       </div>
       <div className="side-nav footer">
@@ -57,9 +56,13 @@ export default function Navbar() {
         </div>
         <div className="footer content">
           <p>
-            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            Name: {user?.given_name} {user?.family_name}
+            <br />
+            E-mail: {user?.email}
           </p>
+          <Button className="signout buttons" onClick={() => goSignOut()}>
+            Sign Out
+          </Button>
         </div>
       </div>
     </nav>
@@ -100,5 +103,3 @@ function slideFooter() {
     }
   }
 }
-
-

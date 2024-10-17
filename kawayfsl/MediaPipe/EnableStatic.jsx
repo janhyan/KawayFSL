@@ -13,7 +13,8 @@ export default function EnableStatic(
   toggleTracking,
   setAnswers,
   counter,
-  isCounterRef
+  isCounterRef,
+  setIsLoading
 ) {
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
@@ -25,13 +26,13 @@ export default function EnableStatic(
 
     if (toggleTracking.current) {
       sequence.push(keypoints);
+      setIsLoading(true);
 
       if (counter.current === 0) {
         isCounterRef.current = false;
       }
 
       if (sequence.length === 30) {
-        console.log(sequence);
         sendSequenceToAPI(sequence);
         sequence = [];
         toggleTracking.current = false;
@@ -47,6 +48,10 @@ export default function EnableStatic(
   }
 
   function drawResults(results) {
+    if (sequence.length === 0 && !isCounterRef.current) {
+      setIsLoading(false);
+    }
+    
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
@@ -109,7 +114,6 @@ export default function EnableStatic(
         sequence
       )
       .then((response) => {
-        console.log("Sequence sent to API:", response.data);
         setAnswers((prevAnswer) => [...prevAnswer, response.data]);
       })
       .catch((error) => {
@@ -126,9 +130,9 @@ export default function EnableStatic(
     smoothLandmarks: true,
     enableSegmentation: false,
     smoothSegmentation: true,
-    refineFaceLandmarks: true,
-    minDetectionConfidence: 0.1,
-    minTrackingConfidence: 0.1,
+    refineFaceLandmarks: false,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
   });
   holistic.onResults(onResults);
 

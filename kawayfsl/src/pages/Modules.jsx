@@ -4,6 +4,7 @@ import { AuthContext } from "../auth/authContext";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "ldrs/quantum";
 import "./css/Modules.css";
 
 export default function Modules() {
@@ -12,7 +13,8 @@ export default function Modules() {
 
   // Fetch modules on component mount
   useEffect(() => {
-    if (user?.sub) { // Wait for user.sub to be initialized
+    if (user?.sub) {
+      // Wait for user.sub to be initialized
       getModules();
     }
   }, [user]); // Add user and module_id to dependencies
@@ -20,11 +22,11 @@ export default function Modules() {
   // Get data from the database
   const getModules = () => {
     axios
-      .get(
-        "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/modules",
-        { params: { user: user?.sub } }
-      )
-      // .get("http://localhost:6868/v1/modules", { params: { user: user?.sub } })
+      // .get(
+      //   "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/modules",
+      //   { params: { user: user?.sub } }
+      // )
+      .get("http://localhost:6868/v1/modules", { params: { user: user?.sub } })
       .then((response) => {
         console.log(response.data);
         setFetchedModules(response.data); // Update state with fetched modules
@@ -60,7 +62,11 @@ function ModuleList(props) {
 // Maps all modules into cards
 function ModulesCard(props) {
   if (!props.fetchedData || props.fetchedData.length === 0) {
-    return <p>No modules available</p>; // Handle case where data is not available
+    return (
+      <div className="loader">
+        <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
+    ); // Handle case where data is not available
   }
 
   // Map the fetched modules into cards

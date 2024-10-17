@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { Navigate, Link } from 'react-router-dom';
+import { useState, useContext, useRef, useEffect } from "react";
+import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../src/auth/authContext";
 
 export default function SignIn(props) {
@@ -7,10 +7,16 @@ export default function SignIn(props) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  // useEffect(() => {
+    
+  // }, [isLoading.current]);
 
   const { user, signIn } = useContext(AuthContext);
 
   const onSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     setError("");
 
@@ -24,7 +30,7 @@ export default function SignIn(props) {
   };
 
   if (user || success) {
-    return <Navigate to="/" />
+    return <Navigate to="/" />;
   }
 
   return (
@@ -60,9 +66,16 @@ export default function SignIn(props) {
             <p className="result-message" style={{ color: "red" }}>
               {error}
             </p>
-            <button className="submit-button" type="submit">
-              Sign in
-            </button>
+            {!isLoading ? (
+              <button className="submit-button" type="submit">
+                {" "}
+                Sign in{" "}
+              </button>
+            ) : (
+              <div className="auth-loader">
+                <l-quantum size="40" speed="1.75" color="azure"></l-quantum>
+              </div>
+            )}
           </form>
         </fieldset>
         <div className="signin-options">
@@ -80,5 +93,3 @@ export default function SignIn(props) {
     </div>
   );
 }
-
-

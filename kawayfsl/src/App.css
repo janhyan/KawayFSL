@@ -69,7 +69,7 @@ b {
   align-items: end;
 }
 
-.contents .buttons {
+.contents .buttons, .learn-now {
   border: none;
   height: 60px;
   width: 95%;
@@ -85,7 +85,22 @@ b {
   align-items: center;
 }
 
-.contents .buttons:hover {
+.signout {
+  height: 60px;
+  background-color: transparent;
+  font-family: "Inter";
+  font-size: 1rem;
+  text-align: right;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contents .buttons:hover, .signout:hover {
   background-color: #fb8500;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -310,7 +325,7 @@ b {
   font-weight: 300;
 }
 
-.main-content button {
+.main-content button, .learn-now {
   border: none;
   background-color: azure;
   height: 80px;
@@ -320,6 +335,9 @@ b {
   font-weight: 600;
   font-size: 1.2rem;
   cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 /* SUBTOPIC CARD */
@@ -337,14 +355,17 @@ b {
   gap: 10px;
   max-width: 100%;
   position: relative;
+  height: 80%;
 }
 
 .subtopic.container.card > h2,
-h3 {
+h3,a {
   color: black;
   font-family: "Inter";
   font-size: 2rem;
   margin-top: 0;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .cards-container h3 {
@@ -363,12 +384,12 @@ h3 {
 .cards-container > .card {
   border-radius: 30px;
   background-color: azure;
-  display: grid;
-  grid-template-rows: 50px 1fr;
+  display: flex;
+  flex-direction: column;
   max-height: 100%;
   padding: 15px;
   color: azure;
-  gap: 0px;
+  gap: 10px;
   box-sizing: border-box;
   overflow: hidden;
   transition: margin 0.2s ease-in-out;
@@ -454,4 +475,31 @@ h3 {
   height: 2.5em;
   vertical-align: -0.125em;
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' fill-rule='evenodd' d='M13 3a1 1 0 1 0-2 0v.75h-.557A4.214 4.214 0 0 0 6.237 7.7l-.221 3.534a7.4 7.4 0 0 1-1.308 3.754a1.617 1.617 0 0 0 1.135 2.529l3.407.408V19a2.75 2.75 0 1 0 5.5 0v-1.075l3.407-.409a1.617 1.617 0 0 0 1.135-2.528a7.4 7.4 0 0 1-1.308-3.754l-.221-3.533a4.214 4.214 0 0 0-4.206-3.951H13zm-2.557 2.25a2.714 2.714 0 0 0-2.709 2.544l-.22 3.534a8.9 8.9 0 0 1-1.574 4.516a.117.117 0 0 0 .082.183l3.737.449c1.489.178 2.993.178 4.482 0l3.737-.449a.117.117 0 0 0 .082-.183a8.9 8.9 0 0 1-1.573-4.516l-.221-3.534a2.714 2.714 0 0 0-2.709-2.544zm1.557 15c-.69 0-1.25-.56-1.25-1.25v-.75h2.5V19c0 .69-.56 1.25-1.25 1.25' clip-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 100%;
+}
+
+.home-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.auth-loader {
+  background-color: #219EBC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border-radius: 8px;
+  width: 100%;
+  border: 2px solid black;
 }

@@ -68,8 +68,9 @@
 .right-body {
   display: flex;
   align-items: end;
+  justify-content: start;
   gap: 20px;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 
 .answer {
@@ -119,4 +120,32 @@
 
 .buttons-container .review-lesson:hover {
   box-shadow: 0px 20px 50px -5px #cc0000;
+}
+
+.assessment-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 200px;
+}
+
+.select-module {
+  display: block;
+  border: none;
+  height: 80px;
+  width: 200px;
+  background-color: #fb8500;
+  border-radius: 20px;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-decoration: none;
+  justify-content: center;
+  color: black;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
 }

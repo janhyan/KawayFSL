@@ -15,7 +15,9 @@ export default function EnableHolistic(
   toggleTracking,
   setAnswers,
   counter,
-  isCounterRef
+  isCounterRef,
+  assessment_id,
+  setIsLoading
 ) {
   const videoElement = document.getElementsByTagName("video")[0];
   const canvasElement = document.querySelector(".output_canvas");
@@ -27,14 +29,14 @@ export default function EnableHolistic(
 
     if (toggleTracking.current) {
       sequence.push(keypoints);
+      setIsLoading(true);
 
       if (counter.current === 0) {
         isCounterRef.current = false;
       }
 
       if (sequence.length === 40) {
-        console.log(sequence);
-        sendSequenceToAPI(sequence);
+        sendSequenceToAPI(sequence, assessment_id);
         sequence = [];
         toggleTracking.current = false;
       }
@@ -79,14 +81,13 @@ export default function EnableHolistic(
     return nj.concatenate([pose, face, lh, rh]).tolist();
   }
 
-  function sendSequenceToAPI(sequence) {
+  function sendSequenceToAPI(sequence, assessment_id) {
     axios
       .post(
         "https://kb02bv2ra8.execute-api.ap-northeast-1.amazonaws.com/stage/",
-        sequence
+        { sequence, assessment_id } // Send both sequence and assessment_id in the body
       )
       .then((response) => {
-        console.log("Sequence sent to API:", response.data);
         setAnswers((prevAnswer) => [...prevAnswer, response.data]);
       })
       .catch((error) => {
@@ -95,12 +96,11 @@ export default function EnableHolistic(
   }
 
   function drawResults(results) {
+    if (sequence.length === 0 && !isCounterRef.current) {
+      setIsLoading(false);
+    }
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-    canvasCtx.globalCompositeOperation = "source-in";
-    canvasCtx.fillStyle = "#00FF00";
-    canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
     const x = canvasElement.width / 2;
     const y = canvasElement.height / 2;
@@ -113,6 +113,10 @@ export default function EnableHolistic(
       canvasCtx.fillStyle = "#fb8500";
       canvasCtx.fillText(counter.current, x, y);
     }
+
+    canvasCtx.globalCompositeOperation = "source-in";
+    canvasCtx.fillStyle = "#00FF00";
+    canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
     canvasCtx.globalCompositeOperation = "destination-atop";
     canvasCtx.drawImage(

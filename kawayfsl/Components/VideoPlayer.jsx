@@ -6,15 +6,18 @@ export default function VideoPlayer(props) {
   const [videoUrl, setVideoUrl] = useState(null);
   const accessToken = props.token; // Retrieve your access token
 
-  let lesson = props.lesson.split(' ').join('+');
+  let lesson = props.lesson.split(" ").join("+");
 
   useEffect(() => {
     const fetchVideo = async () => {
       try {
-        const response = await axios.get(`https://d3soyatq5ls79q.cloudfront.net/${props.module}/${lesson}.mp4`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          responseType: 'blob',
-        });
+        const response = await axios.get(
+          `https://d3soyatq5ls79q.cloudfront.net/${props.module}/${lesson}.mp4`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            responseType: "blob",
+          }
+        );
 
         const blobUrl = URL.createObjectURL(response.data);
         setVideoUrl(blobUrl); // Set the video URL from the blob
@@ -26,14 +29,22 @@ export default function VideoPlayer(props) {
     fetchVideo();
   }, [accessToken]);
 
-  return (
-    <ReactPlayer
-      width="100%"
-      height="100%"
-      url={videoUrl} // Use the fetched blob URL
-      controls
-    />
-  );
+  if (!videoUrl) {
+    return (
+      <div className="loader">
+        <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
+    ); // Handle case where data is not available
+  } else {
+    return (
+      <ReactPlayer
+        width="70%"
+        height="100%"
+        url={videoUrl} // Use the fetched blob URL
+        controls
+      />
+    );
+  }
 }
 
 // HLS STREAMING OPTION
@@ -72,4 +83,3 @@ export default function VideoPlayer(props) {
 //     )
 //   );
 // }
-

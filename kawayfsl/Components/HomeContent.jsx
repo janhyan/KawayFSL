@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { AuthContext } from "../src/auth/authContext";
 import axios from "axios";
-import Loaders from "./Loaders";
 
 export default function HomeContent() {
   const { user } = useContext(AuthContext);
@@ -92,7 +91,7 @@ function LessonCard(props) {
 
   if (!lessonData) {
     return (
-      <Loaders size={50} />
+      <l-spiral color="coral"></l-spiral>
     );
   } else {
     // LISTS THE ITEMS INSIDE

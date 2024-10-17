@@ -6,7 +6,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./css/Lessons.css";
-import "ldrs/quantum";
+import Loaders from "../../Components/Loaders";
 
 export default function Lessons() {
   const { user } = useContext(AuthContext);
@@ -63,9 +63,7 @@ function LessonList(props) {
 function LessonsCard(props) {
   if (!props.lessons || props.lessons.length === 0) {
     return (
-      <div className="loader">
-        <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
-      </div>
+      <Loaders size={100} />
     ); // Handle case where data is not available
   }
 

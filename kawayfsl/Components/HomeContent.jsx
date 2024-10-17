@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { AuthContext } from "../src/auth/authContext";
 import axios from "axios";
-import "ldrs/quantum";
+import Loaders from "./Loaders";
 
 export default function HomeContent() {
   const { user } = useContext(AuthContext);
@@ -40,9 +40,7 @@ function MainCard(props) {
 
   if (!moduleData) {
     return (
-      <div className="home-loader">
-        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
-      </div>
+      <Loaders size={50} />
     );
   }
 
@@ -94,9 +92,7 @@ function LessonCard(props) {
 
   if (!lessonData) {
     return (
-      <div className="home-loader">
-        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
-      </div>
+      <Loaders size={50} />
     );
   } else {
     // LISTS THE ITEMS INSIDE

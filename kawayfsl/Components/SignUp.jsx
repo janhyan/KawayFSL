@@ -1,7 +1,7 @@
 import React from "react";
 import userSignUp from "../src/auth/userSignUp";
 import ConfirmSignUp from "./ConfirmSignUp";
-import "ldrs/quantum";
+import Loaders from "./Loaders";
 
 export default function SignUp(props) {
   const [password, setPassword] = React.useState("");
@@ -97,7 +97,7 @@ export default function SignUp(props) {
               </button>
             ) : (
               <div className="auth-loader">
-                <l-quantum size="40" speed="1.75" color="azure"></l-quantum>
+                <Loaders size={40} />
               </div>
             )}
           </form>

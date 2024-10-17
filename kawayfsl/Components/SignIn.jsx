@@ -1,6 +1,7 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../src/auth/authContext";
+import "ldrs/quantum";
 
 export default function SignIn(props) {
   const [email, setEmail] = useState("");

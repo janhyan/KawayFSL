@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { AuthContext } from "../src/auth/authContext";
 import axios from "axios";
+import "ldrs/quantum";
 
 export default function HomeContent() {
   const { user } = useContext(AuthContext);

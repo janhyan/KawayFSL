@@ -39,7 +39,7 @@ function MainCard(props) {
 
   if (!moduleData) {
     return (
-      <Loaders size={50} />
+      <l-spiral color="coral"></l-spiral>
     );
   }
 

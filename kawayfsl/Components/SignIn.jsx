@@ -1,7 +1,6 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../src/auth/authContext";
-import Loaders from "./Loaders";
 
 export default function SignIn(props) {
   const [email, setEmail] = useState("");
@@ -70,7 +69,7 @@ export default function SignIn(props) {
               </button>
             ) : (
               <div className="auth-loader">
-                <Loaders size={40} />
+                <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
               </div>
             )}
           </form>

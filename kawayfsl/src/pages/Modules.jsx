@@ -4,7 +4,6 @@ import { AuthContext } from "../auth/authContext";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Loaders from "../../Components/Loaders";
 import "./css/Modules.css";
 
 export default function Modules() {
@@ -63,7 +62,9 @@ function ModuleList(props) {
 function ModulesCard(props) {
   if (!props.fetchedData || props.fetchedData.length === 0) {
     return (
-      <Loaders size={100} />
+      <div className="loader">
+        <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
     ); // Handle case where data is not available
   }
 

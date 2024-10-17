@@ -7,8 +7,10 @@ export default function ConfirmSignUp(props) {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const onSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     setError("");
 
@@ -23,7 +25,7 @@ export default function ConfirmSignUp(props) {
 
   if (success) {
     return (
-      <div className="signup-container" style={{ display: "flex", justifyContent: "center"}}>
+      <div className="signup-container" style={{ display: "flex", justifyContent: "center" }}>
         <div className="greetings">
           <h1 className="greetings welcome">Account Verified!</h1>
           <h2 className="greetings details">
@@ -65,7 +67,16 @@ export default function ConfirmSignUp(props) {
             value={code}
             onChange={(event) => setCode(event.target.value)}
           />
-          <button className="submit-button" type="submit">Submit</button>
+          {!isLoading ? (
+            <button className="submit-button" type="submit">
+              {" "}
+              Sign in{" "}
+            </button>
+          ) : (
+            <div className="auth-loader">
+              <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+            </div>
+          )}
         </form>
         <p className="result-message" style={{ color: "red" }}>
           {error}

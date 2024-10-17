@@ -9,6 +9,7 @@ export default function SignIn(props) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   // Check if user is logged in, redirect to home page
   const { user } = useContext(AuthContext);
@@ -17,6 +18,7 @@ export default function SignIn(props) {
   }
 
   const onSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     setError("");
 
@@ -55,9 +57,16 @@ export default function SignIn(props) {
             <p className="result-message" style={{ color: "red" }}>
               {error}
             </p>
-            <button className="submit-button" type="submit">
-              Reset Password
-            </button>
+            {!isLoading ? (
+              <button className="submit-button" type="submit">
+                {" "}
+                Sign in{" "}
+              </button>
+            ) : (
+              <div className="auth-loader">
+                <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+              </div>
+            )}
           </form>
         </fieldset>
         <div className="signin-options">

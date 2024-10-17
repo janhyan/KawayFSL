@@ -10,6 +10,7 @@ export default function SignIn() {
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   // Check if user is logged in, redirect to home page
   const { user } = useContext(AuthContext);
@@ -18,6 +19,7 @@ export default function SignIn() {
   }
 
   const onSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     setError("");
 
@@ -80,9 +82,16 @@ export default function SignIn() {
             value={newPassword}
             onChange={(event) => setNewPassword(event.target.value)}
           />
-          <button className="submit-button" type="submit">
-            Submit
-          </button>
+           {!isLoading ? (
+              <button className="submit-button" type="submit">
+                {" "}
+                Sign in{" "}
+              </button>
+            ) : (
+              <div className="auth-loader">
+                <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+              </div>
+            )}
         </form>
         <p className="result-message" style={{ color: "red" }}>
           {error}

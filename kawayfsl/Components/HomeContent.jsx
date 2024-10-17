@@ -39,7 +39,9 @@ function MainCard(props) {
 
   if (!moduleData) {
     return (
-      <l-spiral color="coral"></l-spiral>
+      <div className="home-loader">
+        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
     );
   }
 
@@ -91,7 +93,9 @@ function LessonCard(props) {
 
   if (!lessonData) {
     return (
-      <l-spiral color="coral"></l-spiral>
+      <div className="home-loader">
+        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
+      </div>
     );
   } else {
     // LISTS THE ITEMS INSIDE

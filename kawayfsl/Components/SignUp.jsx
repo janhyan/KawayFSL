@@ -1,6 +1,7 @@
 import React from "react";
 import userSignUp from "../src/auth/userSignUp";
 import ConfirmSignUp from "./ConfirmSignUp";
+import "ldrs/quantum";
 
 export default function SignUp(props) {
   const [password, setPassword] = React.useState("");
@@ -10,8 +11,10 @@ export default function SignUp(props) {
   const [middleName, setMiddleName] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const onSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     setError("");
 
@@ -87,9 +90,16 @@ export default function SignUp(props) {
             <p className="result-message" style={{ color: "red" }}>
               {error}
             </p>
-            <button className="submit-button" type="submit">
-              Sign Up
-            </button>
+            {!isLoading ? (
+              <button className="submit-button" type="submit">
+                {" "}
+                Sign in{" "}
+              </button>
+            ) : (
+              <div className="auth-loader">
+                <l-quantum size="40" speed="1.75" color="azure"></l-quantum>
+              </div>
+            )}
           </form>
         </fieldset>
         <div className="signin-options">

@@ -10,10 +10,6 @@ export default function SignIn(props) {
   const [success, setSuccess] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  // useEffect(() => {
-    
-  // }, [isLoading.current]);
-
   const { user, signIn } = useContext(AuthContext);
 
   const onSubmit = async (event) => {

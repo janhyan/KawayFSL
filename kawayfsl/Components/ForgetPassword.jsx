@@ -64,7 +64,7 @@ export default function SignIn(props) {
               </button>
             ) : (
               <div className="auth-loader">
-                <l-quantum size="100" speed="1.75" color="#219ebc"></l-quantum>
+                <l-quantum size="40" speed="1.75" color="azure"></l-quantum>
               </div>
             )}
           </form>

@@ -238,6 +238,68 @@ app.put("/v1/unlock/:module/:lesson/", cors(corsOptions), async (req, res) => {
   }
 });
 
+app.get("/v1/latest-module", cors(corsOptions), (req, res) => {
+  userId = req.query.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.one(
+    `
+    SELECT *
+    FROM Modules m
+    JOIN UsersModuleProgress ump ON m.module_id = ump.module_id
+    WHERE ump.user_id = $1
+    AND ump.status = TRUE
+    ORDER BY module_order DESC
+    LIMIT 1;
+    `,
+    [userId]
+  )
+
+  .then((data) => {
+    console.log(data);
+    return res.json(data); // Return the retrieved data as JSON
+  })
+  .catch((err) => {
+    console.log(err);
+    return res.status(500).send(err); // Return an error message on failure
+  });
+});
+
+app.get("/v1/latest-lessons", cors(corsOptions), (req, res) => {
+  userId = req.query.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.any(
+    `
+    SELECT *
+    FROM Lessons l
+    JOIN UsersLessonsProgress ulp ON l.lesson_id = ulp.lesson_id
+    WHERE ulp.user_id = $1
+    AND ulp.status = TRUE
+    ORDER BY lesson_order DESC
+    LIMIT 3;
+    `,
+    [userId]
+  )
+
+  .then((data) => {
+    console.log(data);
+    return res.json(data); // Return the retrieved data as JSON
+  })
+  .catch((err) => {
+    console.log(err);
+    return res.status(500).send(err); // Return an error message on failure
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

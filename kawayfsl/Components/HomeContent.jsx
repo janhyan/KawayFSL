@@ -133,7 +133,7 @@ function ToDoCard() {
 
 function getModule(user) {
   return axios
-    .get("https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/latest-module", {
+    .get("https://alb.kawayfsl.com/v1/latest-module", {
       params: { user: user?.sub },
     })
     .then((response) => {
@@ -146,7 +146,7 @@ function getModule(user) {
 
 function getLessons(user) {
   return axios
-    .get("https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/latest-lessons", {
+    .get("https://alb.kawayfsl.com/v1/latest-lessons", {
       params: { user: user?.sub },
     })
     .then((response) => {

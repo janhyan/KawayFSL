@@ -24,7 +24,7 @@ export default function Lessons() {
   const getLessons = (module_id) => {
     axios
       .get(
-        `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/${module_id}/lessons`,
+        `https://alb.kawayfsl.com/v1/${module_id}/lessons`,
         { params: { user: user?.sub } }
       )
       // .get(`http://localhost:6868/v1/${module_id}/lessons`, { params: { user: user?.sub } })

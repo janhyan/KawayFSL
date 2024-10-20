@@ -256,14 +256,14 @@ app.get("/v1/latest-module", cors(corsOptions), (req, res) => {
     [userId]
   )
 
-  .then((data) => {
-    console.log(data);
-    return res.json(data); // Return the retrieved data as JSON
-  })
-  .catch((err) => {
-    console.log(err);
-    return res.status(500).send(err); // Return an error message on failure
-  });
+    .then((data) => {
+      console.log(data);
+      return res.json(data); // Return the retrieved data as JSON
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
 });
 
 app.get("/v1/latest-lessons", cors(corsOptions), (req, res) => {
@@ -287,15 +287,44 @@ app.get("/v1/latest-lessons", cors(corsOptions), (req, res) => {
     [userId]
   )
 
-  .then((data) => {
-    console.log(data);
-    return res.json(data); // Return the retrieved data as JSON
-  })
-  .catch((err) => {
-    console.log(err);
-    return res.status(500).send(err); // Return an error message on failure
-  });
+    .then((data) => {
+      console.log(data);
+      return res.json(data); // Return the retrieved data as JSON
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
 });
+
+app.get("/v1/notifications", cors(corsOptions), (req, res) => {
+  userId = req.query.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.any(
+    `
+    SELECT *
+    FROM Notifications
+    WHERE user_id = $1
+    AND status = TRUE
+    ORDER BY notification_id DESC
+    LIMIT 10;
+    `,
+    [userId]
+  )
+    .then((data) => {
+      console.log(data);
+      return res.json(data); // Return the retrieved data as JSON
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+  });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

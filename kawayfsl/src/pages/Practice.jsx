@@ -121,7 +121,7 @@ export default function Practice() {
 function MainBody(props) {
   return (
     <main id="body-container" style={{ paddingRight: "0px" }}>
-      <ModuleHeader module="1" subtopic="A" />
+      <ModuleHeader module="Practice" subtopic="Choose your lesson below." />
       <div className="main-container">
         <div className="left-body">
           <div className="video-container">

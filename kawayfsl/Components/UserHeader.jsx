@@ -79,18 +79,28 @@ function DisplayNotif(props) {
     console.log(notifications);
     return (
       <div className="notif-menu-container">
-        {notifications?.map((notifMsg) => (
+        <button
+          id="close-popup"
+          onClick={(e) => {
+            e.preventDefault();
+            location.href = "#";
+          }}
+        >
+          &times;
+        </button>
+        {notifications?.map((notifMsg, i, arr) => (
           <div className="notif-content" key={notifMsg.notification_id}>
             <p>{notifMsg.notif_message}</p>
             <button
               className="close"
-              onClick={(e) => {
-                e.preventDefault();
-                location.href = "#";
+              onClick={() => {
+                updateNotif(props.user, notifMsg.notification_id);
+                setLoading(true)
               }}
             >
-              &times;
+              &#10003;
             </button>
+            {!(i + 1 === arr.length) ? <hr className="break" /> : null}
           </div>
         ))}
       </div>
@@ -100,17 +110,23 @@ function DisplayNotif(props) {
       <div className="notif-menu-container">
         <div className="notif-content">
           <p>No notifications available.</p>
-          <button
-            className="close"
-            onClick={(e) => {
-              e.preventDefault();
-              location.href = "#";
-            }}
-          >
-            &times;
-          </button>
         </div>
       </div>
     );
+  }
+}
+
+function updateNotif(user, notification_id) {
+  if (user.sub) {
+    axios
+      .patch(`http://localhost:6868/v1/notifications/${notification_id}`, {
+        user: user.sub,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }

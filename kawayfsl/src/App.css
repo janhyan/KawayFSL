@@ -333,14 +333,51 @@ b {
   height: 40px;
 }
 
+#close-popup {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #023047;
+  background-color: #fb8500;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border-radius: 50%;
+  border: none;
+  width: 40px;
+  height: 40px;
+}
+
+#close-popup:hover {
+  color: azure;
+  margin-top: -4px;
+}
+
 .popup .close:hover {
   color: #fb8500;
+  margin-top: -3px;
+}
+
+.notif-menu-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .notif-content {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
+  flex: 1 0 50%;
+}
+
+.break {
+  flex-basis: 80%;
+  opacity: 0.3;
 }
 
 .card {

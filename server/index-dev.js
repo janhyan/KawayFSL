@@ -6,6 +6,8 @@ const dbConfig = require("./db.config");
 
 const corsOptions = {
   origin: "http://localhost:3000",
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],  
+  allowedHeaders: ['Content-Type', 'Authorization'],  
   optionSuccessStatus: 200,
   credentials: true,
 };
@@ -20,6 +22,8 @@ const connection = {
 };
 const db = pgp(connection);
 const PORT = process.env.SERVER_PORT;
+
+app.use(express.json());
 
 app.get("/nodejs/health/check", (req, res, next) => {
   res.send("Health check confirmed");
@@ -324,7 +328,35 @@ app.get("/v1/notifications", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
-  });
+});
+
+app.options("/v1/notifications/:id", cors(corsOptions));
+app.patch("/v1/notifications/:id", cors(corsOptions), (req, res) => {
+  const notificationId = req.params.id;
+  const userId = req.body.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    UPDATE Notifications
+    SET status = FALSE
+    WHERE notification_id = $1
+    AND user_id = $2;
+    `,
+    [notificationId, userId]
+  )
+    .then(() => {
+      return res.status(200).send("Notification marked as read");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

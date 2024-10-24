@@ -54,19 +54,19 @@ function DisplayNotif(props) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const notif = await getNotif(props.user);
-        console.log("notif", notif);
-        setNotifications(notif);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-        setLoading(false);
-      }
-    };
+  const fetchNotifications = async () => {
+    try {
+      const notif = await getNotif(props.user);
+      console.log("notif", notif);
+      setNotifications(notif);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchNotifications();
   }, [props.user]);
 
@@ -74,7 +74,6 @@ function DisplayNotif(props) {
     return <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>;
   }
 
-  // Render the notification contents
   if (!loading) {
     console.log(notifications);
     return (
@@ -94,8 +93,8 @@ function DisplayNotif(props) {
             <button
               className="close"
               onClick={() => {
-                updateNotif(props.user, notifMsg.notification_id);
-                setLoading(true)
+                updateNotif(props.user, notifMsg.notification_id, fetchNotifications);
+                setLoading(true);
               }}
             >
               &#10003;
@@ -116,7 +115,7 @@ function DisplayNotif(props) {
   }
 }
 
-function updateNotif(user, notification_id) {
+function updateNotif(user, notification_id, fetchNotifications) {
   if (user.sub) {
     axios
       .patch(`http://localhost:6868/v1/notifications/${notification_id}`, {
@@ -124,6 +123,7 @@ function updateNotif(user, notification_id) {
       })
       .then((response) => {
         console.log(response.data);
+        fetchNotifications();
       })
       .catch((error) => {
         console.error(error);

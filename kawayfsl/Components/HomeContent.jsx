@@ -3,9 +3,8 @@ import ToDoCard from "./ToDoCard";
 import UserHeader from "./UserHeader";
 import MainCard from "./MainCard";
 import LessonCard from "./LessonsCard";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../src/auth/authContext";
-
 
 export default function HomeContent() {
   const { user } = useContext(AuthContext);

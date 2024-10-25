@@ -71,7 +71,20 @@ function DisplayNotif(props) {
   }, [props.user]);
 
   if (loading) {
-    return <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>;
+    return (
+      <div className="notif-menu-container">
+        <l-quantum size="50" speed="1.75" color="#219ebc"></l-quantum>
+        <button
+          id="close-popup"
+          onClick={(e) => {
+            e.preventDefault();
+            location.href = "#";
+          }}
+        >
+          &times;
+        </button>
+      </div>
+    );
   }
 
   if (!loading) {
@@ -93,7 +106,11 @@ function DisplayNotif(props) {
             <button
               className="close"
               onClick={() => {
-                updateNotif(props.user, notifMsg.notification_id, fetchNotifications);
+                updateNotif(
+                  props.user,
+                  notifMsg.notification_id,
+                  fetchNotifications
+                );
                 setLoading(true);
               }}
             >

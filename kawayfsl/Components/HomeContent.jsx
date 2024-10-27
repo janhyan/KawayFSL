@@ -19,7 +19,7 @@ export default function HomeContent() {
         <MainCard user={user} />
         <AnnouncementCard />
         <LessonCard user={user} />
-        <ToDoCard />
+        <ToDoCard user={user} />
       </div>
     </main>
   );

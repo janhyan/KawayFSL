@@ -8,7 +8,6 @@ export default function DisplayNotif(props) {
   const fetchNotifications = async () => {
     try {
       const notif = await getNotif(props.user);
-      console.log("notif", notif);
       setNotifications(notif);
       setLoading(false);
     } catch (error) {
@@ -39,7 +38,6 @@ export default function DisplayNotif(props) {
   }
 
   if (!loading) {
-    console.log(notifications);
     return (
       <div className="notif-menu-container">
         <button

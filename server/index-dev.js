@@ -358,7 +358,7 @@ app.patch("/v1/notifications/:id", cors(corsOptions), (req, res) => {
     });
 });
 
-app.get("v1/tasks", cors(corsOptions), (req, res) => {
+app.get("/v1/tasks", cors(corsOptions), (req, res) => {
   userId = req.query.user;
 
   // Ensure the userId is provided

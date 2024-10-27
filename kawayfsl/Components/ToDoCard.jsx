@@ -40,9 +40,10 @@ export default function ToDoCard(props) {
 }
 
 function Task(props) {
+  console.log(props.tasks);
   const checklist = props.tasks.map((task) => {
     return (
-      <label className="container" key={task.task_id}>
+      <label className="task-container" key={task.task_id}>
         {task.task_message}
         <input
           type="checkbox"

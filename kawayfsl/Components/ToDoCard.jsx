@@ -51,7 +51,7 @@ function Task(props) {
           onChange={() =>
             props.setTasks((prevTasks) =>
               prevTasks.map((t) =>
-                t.id === task.id ? { ...t, status: !t.status } : t
+                t.task_id === task.task_id ? { ...t, status: !t.status } : t
               )
             )
           }

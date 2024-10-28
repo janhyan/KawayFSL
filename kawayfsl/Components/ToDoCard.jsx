@@ -40,7 +40,8 @@ export default function ToDoCard(props) {
 }
 
 function Task(props) {
-  console.log(props.tasks);
+  const [newTask, setNewTask] = useState("");
+
   const checklist = props.tasks.map((task) => {
     return (
       <label className="task-container" key={task.task_id}>
@@ -61,5 +62,28 @@ function Task(props) {
     );
   });
 
-  return <div>{checklist}</div>;
-}
+  const addTask = () => {
+    if (newTask.trim()) {
+      props.setTasks((prevTasks) => [
+        ...prevTasks,
+        { task_id: Date.now(), task_message: newTask, status: false },
+      ]);
+      setNewTask(""); // Clear the input field
+    }
+  };
+
+  return (
+    <div>
+      {checklist}
+      <div className="input-task">
+        <label htmlFor="new-task">New Task:</label>
+        <input
+          type="text"
+          id="new-task"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+    </div>
+  )};

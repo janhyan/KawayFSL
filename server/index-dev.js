@@ -6,8 +6,8 @@ const dbConfig = require("./db.config");
 
 const corsOptions = {
   origin: "http://localhost:3000",
-  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],  
-  allowedHeaders: ['Content-Type', 'Authorization'],  
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   optionSuccessStatus: 200,
   credentials: true,
 };
@@ -383,7 +383,7 @@ app.get("/v1/tasks", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
-})
+});
 
 app.options("/v1/tasks/:id", cors(corsOptions));
 app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
@@ -410,7 +410,32 @@ app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
-})
+});
+
+app.post("/v1/tasks", cors(corsOptions), (req, res) => {
+  const userId = req.body.user;
+  const task = req.body.task;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    INSERT INTO Tasks(user_id, task_message)
+    VALUES($1, $2);
+    `,
+    [userId, task]
+  )
+    .then(() => {
+      return res.status(200).send("Task added");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

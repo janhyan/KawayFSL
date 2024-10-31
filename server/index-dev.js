@@ -437,6 +437,34 @@ app.post("/v1/tasks", cors(corsOptions), (req, res) => {
     });
 });
 
+app.put("/v1/task/:id", cors(corsOptions), (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.body.user;
+  const task = req.body.task;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    UPDATE Tasks
+    SET task_message = $1
+    WHERE task_id = $2
+    AND user_id = $3;
+    `,
+    [task, taskId, userId]
+  )
+    .then(() => {
+      return res.status(200).send("Task updated");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -80,6 +80,7 @@ b {
   text-decoration: none;
   color: black;
   cursor: pointer;
+  transition: all 0.2s ease-out;
 
   display: flex;
   align-items: center;
@@ -272,12 +273,116 @@ b {
   justify-self: end;
   justify-content: center;
   align-items: center;
+  transition: margin 0.2s ease-in-out;
 }
 
 .notif-button {
   border: none;
   background-color: transparent;
   cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.notif-container:hover {
+  margin-top: -6px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 1;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  position: relative;
+  margin: 70px auto;
+  padding: 20px;
+  background: azure;
+  border-radius: 20px;
+  width: 30%;
+  transition: all 5s ease-in-out;
+}
+
+.popup .close {
+  /* position: absolute;
+  top: 20px;
+  right: 30px; */
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #023047;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+}
+
+#close-popup {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #023047;
+  background-color: #fb8500;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border-radius: 50%;
+  border: none;
+  width: 40px;
+  height: 40px;
+}
+
+#close-popup:hover {
+  color: azure;
+  margin-top: -4px;
+}
+
+.popup .close:hover {
+  color: #fb8500;
+  margin-top: -3px;
+}
+
+.notif-menu-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.notif-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex: 1 0 50%;
+}
+
+.break {
+  flex-basis: 80%;
+  opacity: 0.3;
+}
+
+.card {
+  position: relative;
+  z-index: 0;
 }
 
 /* MAIN CONTENT CARD */
@@ -373,6 +478,7 @@ h3 {
   font-size: 1.5rem;
   font-weight: 500;
   text-decoration: none;
+  color: black;
 }
 
 .cards-container p {
@@ -451,7 +557,7 @@ h3 {
   padding: 0 15px;
   color: black;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: auto;
 
   box-shadow: 0 30px 80px -20px #535353;
 }
@@ -506,3 +612,74 @@ h3 {
   border: 2px solid black;
   z-index: 2;
 }
+
+/* TODO CARD */
+/* Customize the label (the container) */
+.task-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.task-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 8px;
+}
+
+/* On mouse-over, add a grey background color */
+.task-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.task-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.task-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.task-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+

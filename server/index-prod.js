@@ -300,6 +300,142 @@ app.get("/v1/latest-lessons", cors(corsOptions), (req, res) => {
   });
 });
 
+app.get("/v1/notifications", cors(corsOptions), (req, res) => {
+  userId = req.query.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.any(
+    `
+    SELECT *
+    FROM Notifications
+    WHERE user_id = $1
+    AND status = TRUE
+    ORDER BY notification_id DESC
+    LIMIT 10;
+    `,
+    [userId]
+  )
+    .then((data) => {
+      console.log(data);
+      return res.json(data); // Return the retrieved data as JSON
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
+
+app.options("/v1/notifications/:id", cors(corsOptions));
+app.patch("/v1/notifications/:id", cors(corsOptions), (req, res) => {
+  const notificationId = req.params.id;
+  const userId = req.body.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    UPDATE Notifications
+    SET status = FALSE
+    WHERE notification_id = $1
+    AND user_id = $2;
+    `,
+    [notificationId, userId]
+  )
+    .then(() => {
+      return res.status(200).send("Notification marked as read");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
+
+app.get("/v1/tasks", cors(corsOptions), (req, res) => {
+  userId = req.query.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.any(
+    `
+    SELECT *
+    FROM Tasks
+    WHERE user_id = $1
+    ORDER BY task_id DESC
+    `,
+    [userId]
+  )
+    .then((data) => {
+      console.log(data);
+      return res.json(data); // Return the retrieved data as JSON
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
+
+app.options("/v1/tasks/:id", cors(corsOptions));
+app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.body.user;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    DELETE FROM Tasks
+    WHERE task_id = $1
+    AND user_id = $2;
+    `,
+    [taskId, userId]
+  )
+    .then(() => {
+      return res.status(200).send("Task deleted");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
+
+app.post("/v1/tasks", cors(corsOptions), (req, res) => {
+  const userId = req.body.user;
+  const task = req.body.task;
+
+  // Ensure the userId is provided
+  if (!userId) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    INSERT INTO Tasks(user_id, task_message)
+    VALUES($1, $2);
+    `,
+    [userId, task]
+  )
+    .then(() => {
+      return res.status(200).send("Task added");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -31,7 +31,7 @@ export default function ToDoCard(props) {
     <div className="todo card">
       <h2 className="todo-title">To-do</h2>
       {tasks.length > 0 ? (
-        <Task tasks={tasks} setTasks={setTasks} />
+        <Task tasks={tasks} setTasks={setTasks} user={props.user.sub} getTasks={getTasks} />
       ) : (
         <p>Add your tasks for today.</p>
       )}
@@ -64,10 +64,18 @@ function Task(props) {
 
   const addTask = () => {
     if (newTask.trim()) {
-      props.setTasks((prevTasks) => [
-        ...prevTasks,
-        { task_id: Date.now(), task_message: newTask, status: false },
-      ]);
+      axios
+      .post("http://localhost:6868/v1/tasks", {
+          user: props.user,
+          task: newTask,
+      })
+      .then((res) => {
+        console.log(res.data);
+        props.getTasks(props.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
       setNewTask(""); // Clear the input field
     }
   };

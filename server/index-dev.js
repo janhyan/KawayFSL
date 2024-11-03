@@ -412,6 +412,7 @@ app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
     });
 });
 
+app.options("/v1/tasks", cors(corsOptions));
 app.post("/v1/tasks", cors(corsOptions), (req, res) => {
   const userId = req.body.user;
   const task = req.body.task;

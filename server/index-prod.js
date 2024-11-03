@@ -6,6 +6,8 @@ const dbConfig = require("./db.config");
 
 const corsOptions = {
   origin: "https://www.kawayfsl.com",
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   optionSuccessStatus: 200,
   credentials: true,
 };

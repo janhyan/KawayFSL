@@ -69,7 +69,8 @@ b {
   align-items: end;
 }
 
-.contents .buttons, .learn-now {
+.contents .buttons,
+.learn-now {
   border: none;
   height: 60px;
   width: 95%;
@@ -101,7 +102,8 @@ b {
   justify-content: center;
 }
 
-.contents .buttons:hover, .signout:hover {
+.contents .buttons:hover,
+.signout:hover {
   background-color: #fb8500;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -430,7 +432,8 @@ b {
   font-weight: 300;
 }
 
-.main-content button, .learn-now {
+.main-content button,
+.learn-now {
   border: none;
   background-color: azure;
   height: 80px;
@@ -614,6 +617,29 @@ h3 {
   border-radius: 10px;
 }
 
+.task-parent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-task:hover {
+  color: #fb8500;
+}
+
+.delete-task {
+  flex: 1 1 20%;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  font-family: "Inter";
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
 /* RIGHT BODY ICONS */
 
 .notif-button::after {
@@ -641,7 +667,7 @@ h3 {
 }
 
 .auth-loader {
-  background-color: #219EBC;
+  background-color: #219ebc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -655,7 +681,8 @@ h3 {
 /* TODO CARD */
 /* Customize the label (the container) */
 .task-container {
-  display: block;
+  display: flex;
+  flex: 1 0 80%;
   position: relative;
   padding-left: 35px;
   margin-bottom: 12px;
@@ -694,7 +721,7 @@ h3 {
 
 /* When the checkbox is checked, add a blue background */
 .task-container input:checked ~ .checkmark {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -721,4 +748,3 @@ h3 {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-

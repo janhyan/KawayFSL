@@ -105,7 +105,7 @@ b {
   background-color: #fb8500;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  box-shadow: 20px 20px 50px -5px #fb8500;
+  box-shadow: 0px 10px 30px -5px #fb8500;
 }
 
 .side-nav.footer {
@@ -573,6 +573,45 @@ h3 {
   font-size: 1.2rem;
   margin-top: 0;
   line-height: 1.5em;
+}
+
+.input-task {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  gap: 5px;
+}
+
+.input-label {
+  flex: 0 0 100%;
+}
+
+.input-task-button {
+  flex: 1 1 20%;
+  height: 50px;
+  border-radius: 10px;
+  background-color: transparent;
+  font-family: "Inter";
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+.input-task-button:hover {
+  background-color: #fb8500;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-shadow: 0px 10px 30px -5px #fb8500;
+}
+
+#new-task {
+  flex: 1 1 70%;
+  margin: 0;
+  height: 50px;
+  border-radius: 10px;
 }
 
 /* RIGHT BODY ICONS */

@@ -84,14 +84,14 @@ function Task(props) {
     <div>
       {checklist}
       <div className="input-task">
-        <label htmlFor="new-task">New Task:</label>
+        <label htmlFor="new-task" className="input-label">New Task:</label>
         <input
           type="text"
           id="new-task"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
         />
-        <button onClick={addTask}>Add Task</button>
+        <button onClick={addTask} className="input-task-button">Add Task</button>
       </div>
     </div>
   )};

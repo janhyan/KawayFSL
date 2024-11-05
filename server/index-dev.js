@@ -388,7 +388,7 @@ app.get("/v1/tasks", cors(corsOptions), (req, res) => {
 app.options("/v1/tasks/:id", cors(corsOptions));
 app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
   const taskId = req.params.id;
-  const userId = req.body.user;
+  const userId = req.query.user;
 
   // Ensure the userId is provided
   if (!userId) {

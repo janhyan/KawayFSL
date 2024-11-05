@@ -65,10 +65,29 @@ function Task(props) {
           />
           <span className="checkmark"></span>
         </label>
-        <button className="delete-task">&times;</button>
+        <button
+          className="delete-task"
+          onClick={() => removeTask(task.task_id)}
+        >
+          &times;
+        </button>
       </div>
     );
   });
+
+  function removeTask(taskId) {
+    axios
+      .delete(`http://localhost:6868/v1/tasks/${taskId}`, {
+        params: { user: props.user },
+      })
+      .then((res) => {
+        console.log(res.data);
+        props.getTasks(props.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const addTask = () => {
     if (newTask.trim()) {

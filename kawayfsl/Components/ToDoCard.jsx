@@ -55,12 +55,13 @@ function Task(props) {
           <input
             type="checkbox"
             checked={task.status}
-            onChange={() =>
+            onChange={() => {
+              updateTask(task.task_id);
               props.setTasks((prevTasks) =>
                 prevTasks.map((t) =>
                   t.task_id === task.task_id ? { ...t, status: !t.status } : t
                 )
-              )
+              )}
             }
           />
           <span className="checkmark"></span>
@@ -88,6 +89,20 @@ function Task(props) {
         console.log(err);
       });
   }
+
+  function updateTask(taskId) {
+    axios
+      .put(`http://localhost:6868/v1/tasks/${taskId}`, {
+        user: props.user,
+      })
+      .then((res) => {
+        console.log(res.data);
+        // props.getTasks(props.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }  
 
   const addTask = () => {
     if (newTask.trim()) {

@@ -615,11 +615,13 @@ h3 {
   margin: 0;
   height: 50px;
   border-radius: 10px;
+  border: 0.5px solid rgba(0, 0, 0, 0.288);
 }
 
 .task-parent {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .delete-task:hover {
@@ -685,7 +687,7 @@ h3 {
   flex: 1 0 80%;
   position: relative;
   padding-left: 35px;
-  margin-bottom: 12px;
+  padding-bottom: 0;
   cursor: pointer;
   font-size: 22px;
   -webkit-user-select: none;

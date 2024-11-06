@@ -18,7 +18,6 @@ export default function VideoPlayer(props) {
             responseType: "blob",
           }
         );
-
         const blobUrl = URL.createObjectURL(response.data);
         setVideoUrl(blobUrl); // Set the video URL from the blob
       } catch (err) {

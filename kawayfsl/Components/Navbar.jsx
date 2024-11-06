@@ -1,11 +1,13 @@
 import { Button } from "semantic-ui-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../src/auth/authContext";
+import axios from "axios";
 
 export default function Navbar() {
-  const { user, signOut } = useContext(AuthContext);
-
+  const { user, signOut, token } = useContext(AuthContext);
+  const [userImage, setUserImage] = useState(null);
+  const accessToken = token;
   console.log(user);
 
   const navigate = useNavigate();
@@ -13,6 +15,26 @@ export default function Navbar() {
     signOut();
     navigate("/signin");
   };
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const response = await axios.get(
+          `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.mp4`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            responseType: "blob",
+          }
+        );
+        const blobUrl = URL.createObjectURL(response.data);
+        setUserImage(blobUrl); // Set the video URL from the blob
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchVideo();
+  }, [accessToken, user.sub]);
 
   return (
     <nav className="side-nav container">
@@ -38,7 +60,7 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
-            <img className="user-img" src="/intro-img.png" alt="User image" />
+            <img className="user-img" src={userImage} alt="User image" />
           </div>
           <div className="user-details">
             <p className="username">{user?.given_name}</p>

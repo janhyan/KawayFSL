@@ -6,7 +6,7 @@ export default function ToDoCard(props) {
 
   function getTasks(user) {
     axios
-      .get("http://localhost:6868/v1/tasks", {
+      .get("https://alb.kawayfsl.com/v1/tasks", {
         params: {
           user: user,
         },
@@ -78,7 +78,7 @@ function Task(props) {
 
   function removeTask(taskId) {
     axios
-      .delete(`http://localhost:6868/v1/tasks/${taskId}`, {
+      .delete(`https://alb.kawayfsl.com/v1/tasks/${taskId}`, {
         params: { user: props.user },
       })
       .then((res) => {
@@ -92,7 +92,7 @@ function Task(props) {
 
   function updateTask(taskId) {
     axios
-      .put(`http://localhost:6868/v1/tasks/${taskId}`, {
+      .put(`https://alb.kawayfsl.com/v1/tasks/${taskId}`, {
         user: props.user,
       })
       .then((res) => {
@@ -107,7 +107,7 @@ function Task(props) {
   const addTask = () => {
     if (newTask.trim()) {
       axios
-        .post("http://localhost:6868/v1/tasks", {
+        .post("https://alb.kawayfsl.com/v1/tasks", {
           user: props.user,
           task: newTask,
         })

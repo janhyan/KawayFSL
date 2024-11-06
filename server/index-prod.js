@@ -389,7 +389,7 @@ app.get("/v1/tasks", cors(corsOptions), (req, res) => {
 app.options("/v1/tasks/:id", cors(corsOptions));
 app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
   const taskId = req.params.id;
-  const userId = req.body.user;
+  const userId = req.query.user;
 
   // Ensure the userId is provided
   if (!userId) {
@@ -413,6 +413,7 @@ app.delete("/v1/tasks/:id", cors(corsOptions), (req, res) => {
     });
 });
 
+app.options("/v1/tasks", cors(corsOptions));
 app.post("/v1/tasks", cors(corsOptions), (req, res) => {
   const userId = req.body.user;
   const task = req.body.task;
@@ -438,10 +439,9 @@ app.post("/v1/tasks", cors(corsOptions), (req, res) => {
     });
 });
 
-app.put("/v1/task/:id", cors(corsOptions), (req, res) => {
+app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
   const taskId = req.params.id;
   const userId = req.body.user;
-  const task = req.body.task;
 
   // Ensure the userId is provided
   if (!userId) {
@@ -451,11 +451,11 @@ app.put("/v1/task/:id", cors(corsOptions), (req, res) => {
   db.none(
     `
     UPDATE Tasks
-    SET task_message = $1
-    WHERE task_id = $2
-    AND user_id = $3;
+    SET status = NOT status
+    WHERE task_id = $1
+    AND user_id = $2;
     `,
-    [task, taskId, userId]
+    [taskId, userId]
   )
     .then(() => {
       return res.status(200).send("Task updated");
@@ -464,7 +464,7 @@ app.put("/v1/task/:id", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

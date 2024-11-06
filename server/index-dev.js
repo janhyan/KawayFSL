@@ -463,7 +463,7 @@ app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

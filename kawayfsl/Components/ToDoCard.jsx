@@ -4,6 +4,7 @@ import axios from "axios";
 export default function ToDoCard(props) {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+  const userId = props.user.sub;
 
   function getTasks(user) {
     axios
@@ -25,19 +26,19 @@ export default function ToDoCard(props) {
   }
 
   useEffect(() => {
-    getTasks(props.user.sub);
-  }, [props.user.sub]);
+    getTasks(userId);
+  }, [userId]);
 
   const addTask = () => {
     if (newTask.trim()) {
       axios
         .post("https://alb.kawayfsl.com/v1/tasks", {
-          user: props.user,
+          user: userId,
           task: newTask,
         })
         .then((res) => {
           console.log(res.data);
-          getTasks(props.user);
+          getTasks(userId);
         })
         .catch((err) => {
           console.log(err);
@@ -53,7 +54,7 @@ export default function ToDoCard(props) {
         <Task
           tasks={tasks}
           setTasks={setTasks}
-          user={props.user.sub}
+          user={userId}
           getTasks={getTasks}
           newTask={newTask}
           setNewTask={setNewTask}

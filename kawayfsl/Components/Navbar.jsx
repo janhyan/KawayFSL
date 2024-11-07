@@ -8,7 +8,6 @@ export default function Navbar() {
   const { user, signOut, token } = useContext(AuthContext);
   const [userImage, setUserImage] = useState(null);
   const accessToken = token;
-  console.log(user);
 
   const navigate = useNavigate();
   const goSignOut = () => {
@@ -17,23 +16,23 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const fetchVideo = async () => {
+    const fetchImage = async () => {
       try {
         const response = await axios.get(
-          `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.mp4`,
+          `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.png`,
           {
             headers: { Authorization: `Bearer ${accessToken}` },
-            responseType: "blob",
+            responseType: "blob", // Required to handle the image binary data
           }
         );
         const blobUrl = URL.createObjectURL(response.data);
-        setUserImage(blobUrl); // Set the video URL from the blob
+        setUserImage(blobUrl); // Set the image URL as the user's profile photo
       } catch (err) {
         console.error(err);
       }
     };
 
-    fetchVideo();
+    fetchImage();
   }, [accessToken, user.sub]);
 
   return (
@@ -47,7 +46,7 @@ export default function Navbar() {
         <Button className="home buttons" as={Link} to="/">
           Home
         </Button>
-        <Button className="lessons buttons " as={Link} to="/modules">
+        <Button className="lessons buttons" as={Link} to="/modules">
           Lessons
         </Button>
         <Button className="practice buttons" as={Link} to="/practice">
@@ -60,7 +59,7 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
-            <img className="user-img" src={userImage} alt="User image" />
+            <img className="user-img" src={userImage} alt="User profile" />
           </div>
           <div className="user-details">
             <p className="username">{user?.given_name}</p>
@@ -82,7 +81,7 @@ export default function Navbar() {
             <br />
             E-mail: {user?.email}
           </p>
-          <Button className="signout buttons" onClick={() => goSignOut()}>
+          <Button className="signout buttons" onClick={goSignOut}>
             Sign Out
           </Button>
         </div>
@@ -101,14 +100,14 @@ function slideFooter() {
   let initialDown = 0;
   clearInterval(id);
 
-  if (footerToggle.checked == true) {
+  if (footerToggle.checked === true) {
     id = setInterval(slideUp, 10);
   } else {
     id = setInterval(slideDown, 10);
   }
 
   function slideUp() {
-    if (initialUp == 0) {
+    if (initialUp === 0) {
       clearInterval(id);
     } else {
       initialUp++;
@@ -117,7 +116,7 @@ function slideFooter() {
   }
 
   function slideDown() {
-    if (initialDown == -60) {
+    if (initialDown === -60) {
       clearInterval(id);
     } else {
       initialDown--;

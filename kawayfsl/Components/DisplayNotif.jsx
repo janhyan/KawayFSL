@@ -85,7 +85,7 @@ async function getNotif(user) {
   if (user) {
     try {
       const response = await axios.get(
-        "http://localhost:6868/v1/notifications",
+        "https://alb.kawayfsl.com/v1/notifications",
         {
           params: { user: user.sub },
         }
@@ -102,7 +102,7 @@ async function getNotif(user) {
 function updateNotif(user, notification_id, fetchNotifications) {
   if (user.sub) {
     axios
-      .patch(`http://localhost:6868/v1/notifications/${notification_id}`, {
+      .patch(`https://alb.kawayfsl.com/v1/notifications/${notification_id}`, {
         user: user.sub,
       })
       .then((response) => {

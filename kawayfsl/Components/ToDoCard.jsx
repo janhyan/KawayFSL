@@ -6,7 +6,7 @@ export default function ToDoCard(props) {
 
   function getTasks(user) {
     axios
-      .get("http://localhost:6868/v1/tasks", {
+      .get("https://alb.kawayfsl.com/v1/tasks", {
         params: {
           user: user,
         },
@@ -31,7 +31,12 @@ export default function ToDoCard(props) {
     <div className="todo card">
       <h2 className="todo-title">To-do</h2>
       {tasks.length > 0 ? (
-        <Task tasks={tasks} setTasks={setTasks} />
+        <Task
+          tasks={tasks}
+          setTasks={setTasks}
+          user={props.user.sub}
+          getTasks={getTasks}
+        />
       ) : (
         <p>Add your tasks for today.</p>
       )}
@@ -44,30 +49,75 @@ function Task(props) {
 
   const checklist = props.tasks.map((task) => {
     return (
-      <label className="task-container" key={task.task_id}>
-        {task.task_message}
-        <input
-          type="checkbox"
-          checked={task.status}
-          onChange={() =>
-            props.setTasks((prevTasks) =>
-              prevTasks.map((t) =>
-                t.task_id === task.task_id ? { ...t, status: !t.status } : t
-              )
-            )
-          }
-        />
-        <span className="checkmark"></span>
-      </label>
+      <div className="task-parent" key={task.task_id}>
+        <label className="task-container">
+          {task.task_message}
+          <input
+            type="checkbox"
+            checked={task.status}
+            onChange={() => {
+              updateTask(task.task_id);
+              props.setTasks((prevTasks) =>
+                prevTasks.map((t) =>
+                  t.task_id === task.task_id ? { ...t, status: !t.status } : t
+                )
+              )}
+            }
+          />
+          <span className="checkmark"></span>
+        </label>
+        <button
+          className="delete-task"
+          onClick={() => removeTask(task.task_id)}
+        >
+          &times;
+        </button>
+      </div>
     );
   });
 
+  function removeTask(taskId) {
+    axios
+      .delete(`https://alb.kawayfsl.com/v1/tasks/${taskId}`, {
+        params: { user: props.user },
+      })
+      .then((res) => {
+        console.log(res.data);
+        props.getTasks(props.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function updateTask(taskId) {
+    axios
+      .put(`https://alb.kawayfsl.com/v1/tasks/${taskId}`, {
+        user: props.user,
+      })
+      .then((res) => {
+        console.log(res.data);
+        // props.getTasks(props.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }  
+
   const addTask = () => {
     if (newTask.trim()) {
-      props.setTasks((prevTasks) => [
-        ...prevTasks,
-        { task_id: Date.now(), task_message: newTask, status: false },
-      ]);
+      axios
+        .post("https://alb.kawayfsl.com/v1/tasks", {
+          user: props.user,
+          task: newTask,
+        })
+        .then((res) => {
+          console.log(res.data);
+          props.getTasks(props.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       setNewTask(""); // Clear the input field
     }
   };
@@ -76,14 +126,19 @@ function Task(props) {
     <div>
       {checklist}
       <div className="input-task">
-        <label htmlFor="new-task">New Task:</label>
+        <label htmlFor="new-task" className="input-label">
+          New Task:
+        </label>
         <input
           type="text"
           id="new-task"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
         />
-        <button onClick={addTask}>Add Task</button>
+        <button onClick={addTask} className="input-task-button">
+          Add Task
+        </button>
       </div>
     </div>
-  )};
+  );
+}

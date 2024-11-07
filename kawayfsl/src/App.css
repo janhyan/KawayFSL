@@ -69,7 +69,8 @@ b {
   align-items: end;
 }
 
-.contents .buttons, .learn-now {
+.contents .buttons,
+.learn-now {
   border: none;
   height: 60px;
   width: 95%;
@@ -101,11 +102,12 @@ b {
   justify-content: center;
 }
 
-.contents .buttons:hover, .signout:hover {
+.contents .buttons:hover,
+.signout:hover {
   background-color: #fb8500;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  box-shadow: 20px 20px 50px -5px #fb8500;
+  box-shadow: 0px 10px 30px -5px #fb8500;
 }
 
 .side-nav.footer {
@@ -430,7 +432,8 @@ b {
   font-weight: 300;
 }
 
-.main-content button, .learn-now {
+.main-content button,
+.learn-now {
   border: none;
   background-color: azure;
   height: 80px;
@@ -575,6 +578,70 @@ h3 {
   line-height: 1.5em;
 }
 
+.input-task {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  gap: 5px;
+}
+
+.input-label {
+  flex: 0 0 100%;
+}
+
+.input-task-button {
+  flex: 1 1 20%;
+  height: 50px;
+  border-radius: 10px;
+  background-color: transparent;
+  font-family: "Inter";
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+.input-task-button:hover {
+  background-color: #fb8500;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-shadow: 0px 10px 30px -5px #fb8500;
+}
+
+#new-task {
+  flex: 1 1 70%;
+  margin: 0;
+  height: 50px;
+  border-radius: 10px;
+  border: 0.5px solid rgba(0, 0, 0, 0.288);
+}
+
+.task-parent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-task:hover {
+  color: #fb8500;
+}
+
+.delete-task {
+  flex: 1 1 20%;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  font-family: "Inter";
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
 /* RIGHT BODY ICONS */
 
 .notif-button::after {
@@ -602,7 +669,7 @@ h3 {
 }
 
 .auth-loader {
-  background-color: #219EBC;
+  background-color: #219ebc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -616,10 +683,11 @@ h3 {
 /* TODO CARD */
 /* Customize the label (the container) */
 .task-container {
-  display: block;
+  display: flex;
+  flex: 1 0 80%;
   position: relative;
   padding-left: 35px;
-  margin-bottom: 12px;
+  padding-bottom: 0;
   cursor: pointer;
   font-size: 22px;
   -webkit-user-select: none;
@@ -655,7 +723,7 @@ h3 {
 
 /* When the checkbox is checked, add a blue background */
 .task-container input:checked ~ .checkmark {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -682,4 +750,3 @@ h3 {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-

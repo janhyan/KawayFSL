@@ -15,29 +15,27 @@ export default function Navbar() {
     navigate("/signin");
   };
 
-  const getBase64Image = async (res) => {
-    const blob = await res.blob();
-
-    const reader = new FileReader();
-
-    await new Promise((resolve, reject) => {
-      reader.onload = resolve;
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-    return reader.result;
-  };
-
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        await axios
-          .get(`https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.png`, {
+        const response = await axios.get(
+          `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.png`,
+          {
             headers: { Authorization: `Bearer ${accessToken}` },
             responseType: "arraybuffer",
-          })
-          .then(getBase64Image)
-          .then((imgString) => setUserImage(imgString));
+          }
+        );
+
+        // Convert arraybuffer to base64
+        const base64String = btoa(
+          new Uint8Array(response.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+          )
+        );
+
+        // Set userImage as a data URL
+        setUserImage(`data:image/png;base64,${base64String}`);
       } catch (err) {
         console.error(err);
       }

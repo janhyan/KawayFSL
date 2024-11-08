@@ -26,6 +26,8 @@ const connection = {
 const db = pgp(connection);
 const PORT = process.env.SERVER_PORT;
 
+app.use(express.json());
+
 app.get("/nodejs/health/check", (req, res, next) => {
   res.send("Health check confirmed");
 });

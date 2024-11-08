@@ -417,6 +417,8 @@ app.post("/v1/tasks", cors(corsOptions), (req, res) => {
   const userId = req.body.user;
   const task = req.body.task;
 
+  console.log(userId);
+
   // Ensure the userId is provided
   if (!userId) {
     return res.status(400).send("Missing user ID");

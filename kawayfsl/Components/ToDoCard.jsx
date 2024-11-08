@@ -8,7 +8,7 @@ export default function ToDoCard(props) {
 
   function getTasks(user) {
     axios
-      .get("https://alb.kawayfsl.com/v1/tasks", {
+      .get("http://localhost:6868/v1/tasks", {
         params: {
           user: user,
         },
@@ -29,10 +29,10 @@ export default function ToDoCard(props) {
     getTasks(userId);
   }, [userId]);
 
-  const addTask = () => {
+  const addTask = (userId) => {
     if (newTask.trim()) {
       axios
-        .post("https://alb.kawayfsl.com/v1/tasks", {
+        .post("http://localhost:6868/v1/tasks", {
           user: userId,
           task: newTask,
         })
@@ -72,7 +72,7 @@ export default function ToDoCard(props) {
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
             />
-            <button onClick={addTask} className="input-task-button">
+            <button onClick={() => addTask(userId)} className="input-task-button">
               Add Task
             </button>
           </div>
@@ -92,7 +92,7 @@ function Task(props) {
             type="checkbox"
             checked={task.status}
             onChange={() => {
-              updateTask(task.task_id);
+              updateTask(task.task_id, props.user);
               props.setTasks((prevTasks) =>
                 prevTasks.map((t) =>
                   t.task_id === task.task_id ? { ...t, status: !t.status } : t
@@ -114,7 +114,7 @@ function Task(props) {
 
   function removeTask(taskId) {
     axios
-      .delete(`https://alb.kawayfsl.com/v1/tasks/${taskId}`, {
+      .delete(`http://localhost:6868/v1/tasks/${taskId}`, {
         params: { user: props.user },
       })
       .then((res) => {
@@ -126,10 +126,10 @@ function Task(props) {
       });
   }
 
-  function updateTask(taskId) {
+  function updateTask(taskId, userId) {
     axios
-      .put(`https://alb.kawayfsl.com/v1/tasks/${taskId}`, {
-        user: props.user,
+      .put(`http://localhost:6868/v1/tasks/${taskId}`, {
+        user: userId,
       })
       .then((res) => {
         console.log(res.data);
@@ -153,7 +153,7 @@ function Task(props) {
           value={props.newTask}
           onChange={(e) => props.setNewTask(e.target.value)}
         />
-        <button onClick={props.addTask} className="input-task-button">
+        <button onClick={() => props.addTask(props.user)} className="input-task-button">
           Add Task
         </button>
       </div>

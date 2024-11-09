@@ -16,32 +16,38 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const response = await axios.get(
-          `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.png`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            responseType: "arraybuffer",
-          }
-        );
-
-        // Convert arraybuffer to base64
-        const base64String = btoa(
-          new Uint8Array(response.data).reduce(
-            (data, byte) => data + String.fromCharCode(byte),
-            ""
-          )
-        );
-        // Set userImage as a data URL
-        setUserImage(`data:image/png;base64,${base64String}`);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchImage();
+    const cachedImage = sessionStorage.getItem("userImage");
+  
+    if (cachedImage) {
+      setUserImage(cachedImage);
+    } else {
+      const fetchImage = async () => {
+        try {
+          const response = await axios.get(
+            `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.png`,
+            {
+              headers: { Authorization: `Bearer ${accessToken}` },
+              responseType: "arraybuffer",
+            }
+          );
+  
+          const base64String = btoa(
+            new Uint8Array(response.data).reduce(
+              (data, byte) => data + String.fromCharCode(byte),
+              ""
+            )
+          );
+          const imageSrc = `data:image/png;base64,${base64String}`;
+          setUserImage(imageSrc);
+          sessionStorage.setItem("userImage", imageSrc);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      fetchImage();
+    }
   }, [accessToken, user?.sub]);
+  
 
   return (
     <nav className="side-nav container">

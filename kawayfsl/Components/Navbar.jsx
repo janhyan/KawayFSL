@@ -33,7 +33,6 @@ export default function Navbar() {
             ""
           )
         );
-
         // Set userImage as a data URL
         setUserImage(`data:image/png;base64,${base64String}`);
       } catch (err) {
@@ -42,7 +41,7 @@ export default function Navbar() {
     };
 
     fetchImage();
-  }, [accessToken, user.sub]);
+  }, [accessToken, user?.sub]);
 
   return (
     <nav className="side-nav container">
@@ -68,7 +67,11 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
-            <img className="user-img" src={userImage} alt="User profile" />
+            {(userImage) ? (
+              <img className="user-img" src={userImage} alt="User profile" />
+            ) : (
+              <l-quantum size="40" speed="1.75" color="azure"></l-quantum>
+            )}
           </div>
           <div className="user-details">
             <p className="username">{user?.given_name}</p>

@@ -353,7 +353,7 @@ app.post("/v1/notifications", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
-});)
+});
 
 app.options("/v1/notifications/:id", cors(corsOptions));
 app.patch("/v1/notifications/:id", cors(corsOptions), (req, res) => {

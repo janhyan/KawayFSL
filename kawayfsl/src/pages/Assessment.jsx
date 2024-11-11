@@ -163,6 +163,7 @@ function MainBody(props) {
               isLoading={props.isLoading}
               enable={props.enable}
               setIsLoading={props.setIsLoading}
+              subtopic={props.subtopic}
             />
             <h3 className="attempt-counter">Attempt: {props.attempt}</h3>
           </div>
@@ -210,7 +211,7 @@ function checkResult(userAnswer, dbAnswer) {
 function UserButton(props) {
   React.useEffect(() => {
     if (checkResult(props.userAnswer, props.dbAnswer)) {
-      unlockNextLesson(props.module, props.lesson, props.user); // Trigger API when result is true
+      unlockNextLesson(props.module, props.lesson, props.user, props.subtopic); // Trigger API when result is true
     }
   }, [props.userAnswer, props.dbAnswer]); // Re-run when answers change
 
@@ -263,7 +264,7 @@ function UserButton(props) {
   }
 }
 
-function unlockNextLesson(module_id, lesson_id, user) {
+function unlockNextLesson(module_id, lesson_id, user, subtopic) {
   axios
     .put(
       `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/unlock/${module_id}/${lesson_id}?user=${user}`
@@ -275,4 +276,17 @@ function unlockNextLesson(module_id, lesson_id, user) {
     .catch((error) => {
       console.error(error);
     });
+
+  axios.post(
+    "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/notifications",
+    {
+      user: user,
+      message: `Congratulations! You have completed Module: ${module_id}, Lesson: ${subtopic}!`,
+    }
+  ).then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 }

@@ -166,6 +166,7 @@ b {
 }
 
 .avatar {
+  position: relative;
   overflow: hidden;
   height: 100%;
   width: 100%;
@@ -181,6 +182,24 @@ b {
   object-fit: cover;
   margin: auto;
   display: block;
+}
+
+.add-image {
+  border: none;
+  width: 80%;
+  height: 80%;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 6px 0 6px;
+  padding: 0px;
+  display: none;
+  position: absolute;
+  background-color: #53535375;
+}
+
+.avatar:hover .add-image {
+  display: inline-block;
 }
 
 /* SIDE NAV ICONS */

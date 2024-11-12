@@ -73,6 +73,7 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
+            <button className="add-image">+</button>
             {(userImage) ? (
               <img className="user-img" src={userImage} alt="User profile" />
             ) : (
@@ -81,7 +82,7 @@ export default function Navbar() {
           </div>
           <div className="user-details">
             <p className="username">{user?.given_name}</p>
-            <p className="role">Admin</p>
+            <p className="role">Student</p>
           </div>
           <div className="footer-toggle">
             <input

@@ -41,6 +41,7 @@ export default function Navbar() {
           setUserImage(imageSrc);
           sessionStorage.setItem("userImage", imageSrc);
         } catch (err) {
+          setUserImage("../public/user.png")
           console.error(err);
         }
       };
@@ -77,7 +78,7 @@ export default function Navbar() {
             {(userImage) ? (
               <img className="user-img" src={userImage} alt="User profile" />
             ) : (
-              <l-quantum size="40" speed="1.75" color="azure"></l-quantum>
+              <img className="user-img" src="public" alt="User profile" />
             )}
           </div>
           <div className="user-details">

@@ -1,6 +1,6 @@
 import { Button } from "semantic-ui-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "../src/auth/authContext";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ export default function Navbar() {
   const { user, signOut, token } = useContext(AuthContext);
   const [userImage, setUserImage] = useState(null);
   const accessToken = token;
+  const [file, setFile] = useState()
 
   const navigate = useNavigate();
   const goSignOut = () => {
@@ -17,7 +18,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const cachedImage = sessionStorage.getItem("userImage");
-  
+
     if (cachedImage) {
       setUserImage(cachedImage);
     } else {
@@ -30,7 +31,7 @@ export default function Navbar() {
               responseType: "arraybuffer",
             }
           );
-  
+
           const base64String = btoa(
             new Uint8Array(response.data).reduce(
               (data, byte) => data + String.fromCharCode(byte),
@@ -41,14 +42,34 @@ export default function Navbar() {
           setUserImage(imageSrc);
           sessionStorage.setItem("userImage", imageSrc);
         } catch (err) {
-          setUserImage("../public/user.png")
+          setUserImage("../public/user.png");
           console.error(err);
         }
       };
       fetchImage();
     }
   }, [accessToken, user?.sub]);
-  
+
+  function handleChange(event) {
+    setFile(event.target.files[0])
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    const url = 'http://localhost:3000/uploadFile';
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('fileName', file.name);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+    axios.post(url, formData, config).then((response) => {
+      console.log(response.data);
+    });
+
+  }
 
   return (
     <nav className="side-nav container">
@@ -74,8 +95,12 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
-            <button className="add-image">+</button>
-            {(userImage) ? (
+            <form>
+              <label htmlFor="profile-input" className="add-image">+</label>
+              <input type="file" className="add-image-input" id="profile-input" onChange={handleSubmit}/>
+              {/* <button className="image-button" type="submit">+</button> */}
+            </form>
+            {userImage ? (
               <img className="user-img" src={userImage} alt="User profile" />
             ) : (
               <img className="user-img" src="public" alt="User profile" />

@@ -196,7 +196,17 @@ b {
   display: none;
   position: absolute;
   background-color: #53535375;
+  text-align: center;
+  align-content: center;
 }
+
+.add-image-input {
+  display: none;
+}
+
+/* .image-button {
+  display: none;
+} */
 
 .avatar:hover .add-image {
   display: inline-block;

@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const dbConfig = require("./db.config");
+const bodyParser = require("body-parser");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -491,6 +492,28 @@ app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
       return res.status(500).send(err); // Return an error message on failure
     });
 });
+
+app.options("/v1/uploadUserImage", cors(corsOptions));
+app.post(
+  "/v1/uploadUserImage",
+  cors(corsOptions),
+  bodyParser.raw({ type: ["image/jpeg", "image/png"], limit: "5mb" }),
+  (req, res) => {
+    try {
+      if (!req.body || req.body.length === 0) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      console.log("File received:", req.body); // Logs raw image buffer
+      // Upload to S3
+
+      res.status(200).json({ message: "File uploaded successfully!" });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      res.status(500).json({ error: "Failed to process the file" });
+    }
+  }
+);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

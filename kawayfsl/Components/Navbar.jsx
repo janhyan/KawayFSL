@@ -8,7 +8,7 @@ export default function Navbar() {
   const { user, signOut, token } = useContext(AuthContext);
   const [userImage, setUserImage] = useState(null);
   const accessToken = token;
-  const [file, setFile] = useState()
+  const [file, setFile] = useState();
 
   const navigate = useNavigate();
   const goSignOut = () => {
@@ -51,24 +51,23 @@ export default function Navbar() {
   }, [accessToken, user?.sub]);
 
   function handleChange(event) {
-    setFile(event.target.files[0])
+    setFile(event.target.files[0]);
   }
 
   function handleSubmit(event) {
-    event.preventDefault()
-    const url = 'http://localhost:3000/uploadFile';
+    event.preventDefault();
+    const url = "http://localhost:6868/v1/uploadUserImage";
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('fileName', file.name);
+    formData.append("file", file);
+    formData.append("fileName", user.sub);
     const config = {
       headers: {
-        'content-type': 'multipart/form-data',
+        "content-type": "multipart/form-data",
       },
     };
     axios.post(url, formData, config).then((response) => {
       console.log(response.data);
     });
-
   }
 
   return (
@@ -96,8 +95,15 @@ export default function Navbar() {
         <div className="heading">
           <div className="avatar">
             <form>
-              <label htmlFor="profile-input" className="add-image">+</label>
-              <input type="file" className="add-image-input" id="profile-input" onChange={handleSubmit}/>
+              <label htmlFor="profile-input" className="add-image">
+                +
+              </label>
+              <input
+                type="file"
+                className="add-image-input"
+                id="profile-input"
+                onChange={handleSubmit}
+              />
               {/* <button className="image-button" type="submit">+</button> */}
             </form>
             {userImage ? (

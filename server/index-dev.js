@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const dbConfig = require("./db.config");
 const bodyParser = require("body-parser");
+const S3 = require("react-aws-s3");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -23,6 +24,16 @@ const connection = {
 };
 const db = pgp(connection);
 const PORT = process.env.SERVER_PORT;
+
+const configS3 = {
+  bucketName: "kawayfsl-lessons",
+  dirName: "user",
+  region: "ap-northeast-1",
+  accessKeyId: "",
+  secretAccessKey: "",
+  s3Url: "https://",
+};
+const ReactS3Client = new S3(configS3);
 
 app.use(express.json());
 
@@ -506,6 +517,9 @@ app.post(
 
       console.log("File received:", req.body); // Logs raw image buffer
       // Upload to S3
+      ReactS3Client.uploadFile(file, req.body)
+        .then((data) => console.log(data))
+        .catch((err) => console.error(err));
 
       res.status(200).json({ message: "File uploaded successfully!" });
     } catch (error) {

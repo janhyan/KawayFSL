@@ -35,6 +35,10 @@ const configS3 = {
 };
 const ReactS3Client = new S3(configS3);
 
+// Configure multer to store files in memory
+const storage = multer.memoryStorage(); // Stores files as Buffer
+const upload = multer({ storage });
+
 app.use(express.json());
 
 app.get("/nodejs/health/check", (req, res, next) => {
@@ -505,29 +509,36 @@ app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
 });
 
 app.options("/v1/uploadUserImage", cors(corsOptions));
-app.post(
-  "/v1/uploadUserImage",
-  cors(corsOptions),
-  bodyParser.raw({ type: ["image/jpeg", "image/png"], limit: "5mb" }),
-  (req, res) => {
-    try {
-      if (!req.body || req.body.length === 0) {
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+app.post("/v1/uploadUserImage", upload.single("file"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
 
-      console.log("File received:", req.body); // Logs raw image buffer
-      // Upload to S3
-      ReactS3Client.uploadFile(file, req.body)
+    // Log file details
+    console.log("File uploaded:", {
+      originalName: req.file.originalname,
+      mimeType: req.file.mimetype,
+      size: req.file.size,
+    });
+
+    // Log the buffer (raw file data)
+    console.log("File buffer:", req.file.buffer);
+
+    ReactS3Client.uploadFile(file, req.body)
         .then((data) => console.log(data))
         .catch((err) => console.error(err));
 
-      res.status(200).json({ message: "File uploaded successfully!" });
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      res.status(500).json({ error: "Failed to process the file" });
-    }
+    // Send a success response
+    res.status(200).json({
+      message: "File uploaded successfully",
+      fileName: req.file.originalname,
+    });
+  } catch (error) {
+    console.error("Error handling file upload:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-);
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

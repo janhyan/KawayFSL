@@ -51,24 +51,43 @@ export default function Navbar() {
   }, [accessToken, user?.sub]);
 
   function handleChange(event) {
-    setFile(event.target.files[0]);
+    setFile(event.target.files[0]); 
+    const form = event.target.closest("form");
+    if (form) {
+      console.log("Form found:", form);
+      form.requestSubmit(); 
+    }
   }
 
   function handleSubmit(event) {
     event.preventDefault();
+  
     const url = "http://localhost:6868/v1/uploadUserImage";
     const formData = new FormData();
     formData.append("file", file);
     formData.append("fileName", user.sub);
-    const config = {
+  
+    fetch(url, {
+      method: "POST",
+      body: formData,
       headers: {
-        "content-type": "multipart/form-data",
+        // Note: 'Content-Type' should NOT be set when using FormData with fetch.
       },
-    };
-    axios.post(url, formData, config).then((response) => {
-      console.log(response.data);
-    });
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to upload file");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("File uploaded successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error uploading file:", error);
+      });
   }
+  
 
   return (
     <nav className="side-nav container">
@@ -94,7 +113,7 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
-            <form>
+            <form onSubmit={handleSubmit}>
               <label htmlFor="profile-input" className="add-image">
                 +
               </label>
@@ -102,7 +121,7 @@ export default function Navbar() {
                 type="file"
                 className="add-image-input"
                 id="profile-input"
-                onChange={handleSubmit}
+                onChange={handleChange}
               />
               {/* <button className="image-button" type="submit">+</button> */}
             </form>

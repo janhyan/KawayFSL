@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const dbConfig = require("./db.config");
 const bodyParser = require("body-parser");
+const multer = require("multer");
 const S3 = require("react-aws-s3");
 
 const corsOptions = {
@@ -525,7 +526,7 @@ app.post("/v1/uploadUserImage", upload.single("file"), (req, res) => {
     // Log the buffer (raw file data)
     console.log("File buffer:", req.file.buffer);
 
-    ReactS3Client.uploadFile(file, req.body)
+    ReactS3Client.uploadFile(file, req.file)
         .then((data) => console.log(data))
         .catch((err) => console.error(err));
 

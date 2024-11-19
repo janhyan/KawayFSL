@@ -515,7 +515,7 @@ app.post("/v1/uploadUserImage", upload.single("file"), (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-
+    console.log(req.file);
     // Log file details
     console.log("File uploaded:", {
       originalName: req.file.originalname,
@@ -526,9 +526,9 @@ app.post("/v1/uploadUserImage", upload.single("file"), (req, res) => {
     // Log the buffer (raw file data)
     console.log("File buffer:", req.file.buffer);
 
-    ReactS3Client.uploadFile(file, req.file)
-        .then((data) => console.log(data))
-        .catch((err) => console.error(err));
+    ReactS3Client.uploadFile(req.file, req.file.originalname)
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
 
     // Send a success response
     res.status(200).json({

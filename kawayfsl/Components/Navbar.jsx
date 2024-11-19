@@ -50,44 +50,38 @@ export default function Navbar() {
     }
   }, [accessToken, user?.sub]);
 
-  function handleChange(event) {
-    setFile(event.target.files[0]); 
-    const form = event.target.closest("form");
-    if (form) {
-      console.log("Form found:", form);
-      form.requestSubmit(); 
+  // Submit the form when the file state is updated
+  useEffect(() => {
+    if (file) {
+      const form = document.getElementById("user-upload");
+      if (form) {
+        form.requestSubmit();
+      }
     }
+  }, [file]);
+
+  function handleChange(event) {
+    setFile(event.target.files[0]);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-  
     const url = "http://localhost:6868/v1/uploadUserImage";
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("fileName", user.sub);
-  
-    fetch(url, {
-      method: "POST",
-      body: formData,
-      headers: {
-        // Note: 'Content-Type' should NOT be set when using FormData with fetch.
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to upload file");
-        }
-        return response.json();
+    formData.append("file", file); // Ensure `file` is defined
+    formData.append("fileName", user.sub); // Ensure `user.sub` is valid
+
+    axios
+      .post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .then((data) => {
-        console.log("File uploaded successfully:", data);
+      .then((response) => {
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error uploading file:", error);
       });
   }
-  
 
   return (
     <nav className="side-nav container">
@@ -113,7 +107,7 @@ export default function Navbar() {
       <div className="side-nav footer">
         <div className="heading">
           <div className="avatar">
-            <form onSubmit={handleSubmit}>
+            <form id="user-upload" onSubmit={handleSubmit}>
               <label htmlFor="profile-input" className="add-image">
                 +
               </label>
@@ -123,7 +117,9 @@ export default function Navbar() {
                 id="profile-input"
                 onChange={handleChange}
               />
-              {/* <button className="image-button" type="submit">+</button> */}
+              {/* <button className="image-button" type="submit">
+                +
+              </button> */}
             </form>
             {userImage ? (
               <img className="user-img" src={userImage} alt="User profile" />

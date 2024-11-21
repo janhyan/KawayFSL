@@ -1,9 +1,9 @@
+import { generateWebFormS3URL } from "./generateWebFormS3URL";
 const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const dbConfig = require("./db.config");
-const bodyParser = require("body-parser");
 const multer = require("multer");
 const S3 = require("react-aws-s3");
 

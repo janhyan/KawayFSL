@@ -1,4 +1,5 @@
-import { generateWebFormS3URL } from "./generateWebFormS3URL";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -509,34 +510,29 @@ app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
     });
 });
 
-app.options("/v1/uploadUserImage", cors(corsOptions));
-app.post("/v1/uploadUserImage", upload.single("file"), (req, res) => {
+app.options("/v1/generateWebFormS3URL", cors(corsOptions));
+app.post("/v1/generateWebFormS3URL", cors(corsOptions), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
+    const REGION = "ap-northeast-1"; // Replace with  region
+    const BUCKET = "kawayfsl-user-img"; // Replace with  bucket name
+    const KEY = req.query.key; // The file key (e.g., "user-uploads/image.jpg")
+
+    if (!KEY) {
+      return res.status(400).json({ error: "Key is required" });
     }
-    console.log(req.file);
-    // Log file details
-    console.log("File uploaded:", {
-      originalName: req.file.originalname,
-      mimeType: req.file.mimetype,
-      size: req.file.size,
+
+    const client = new S3Client({ region: REGION });
+    const command = new PutObjectCommand({ Bucket: BUCKET, Key: KEY });
+    const presignedUrl = await getSignedUrl(client, command, {
+      expiresIn: 360,
     });
 
-    // Log the buffer (raw file data)
-    console.log("File buffer:", req.file.buffer);
-
-    ReactS3Client.uploadFile(req.file, req.file.originalname)
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
-
-    // Send a success response
     res.status(200).json({
-      message: "File uploaded successfully",
-      fileName: req.file.originalname,
+      status: "Success",
+      presignedUrl,
     });
   } catch (error) {
-    console.error("Error handling file upload:", error);
+    console.error("Error generating presigned URL:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

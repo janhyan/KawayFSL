@@ -64,23 +64,25 @@ export default function Navbar() {
     setFile(event.target.files[0]);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const url = "http://localhost:6868/v1/uploadUserImage";
-    const formData = new FormData();
-    formData.append("file", file); // Ensure `file` is defined
-    formData.append("fileName", user.sub); // Ensure `user.sub` is valid
 
-    axios
-      .post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error uploading file:", error);
-      });
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
+    try {
+      // Get the presigned URL
+      const presignedUrl = await getPresignedUrl(`user-uploads/${file.name}`);
+
+      // Upload the file to S3 using the presigned URL
+      await uploadFileToUrl(file, presignedUrl);
+
+      console.log("File uploaded successfully.");
+    } catch (error) {
+      console.error("Error during file upload:", error.message);
+    }
   }
 
   return (
@@ -188,5 +190,48 @@ function slideFooter() {
       initialDown--;
       footer.style.bottom = initialDown + "%";
     }
+  }
+}
+
+async function getPresignedUrl(fileName) {
+  try {
+    const params = { key: fileName };
+
+    const config = {
+      method: "post",
+      url: "http://localhost:6868/v1/generateWebFormS3URL",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: params,
+    };
+
+    const result = await axios.request(config);
+
+    if (result.data.status === "Success") {
+      return result.data.message; // Presigned URL
+    } else {
+      throw new Error(
+        `Failed to obtain presigned URL. Status: ${result.data.status}`
+      );
+    }
+  } catch (error) {
+    console.error("Error obtaining presigned URL:", error.message);
+    throw error;
+  }
+}
+
+async function uploadFileToUrl(file, url) {
+  try {
+    const response = await axios.put(url, file, {
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+
+    console.log("File upload successful. Response:", response.status);
+  } catch (error) {
+    console.error("Error uploading file:", error.message);
+    throw error;
   }
 }

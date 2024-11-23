@@ -267,7 +267,7 @@ function UserButton(props) {
 function unlockNextLesson(module_id, lesson_id, user, subtopic) {
   axios
     .put(
-      `https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/unlock/${module_id}/${lesson_id}?user=${user}`
+      `https://alb.kawayfsl.com/v1/unlock/${module_id}/${lesson_id}?user=${user}`
       // `http://localhost:6868/v1/unlock/${module_id}/${lesson_id}?user=${user}`
     )
     .then((response) => {
@@ -278,7 +278,7 @@ function unlockNextLesson(module_id, lesson_id, user, subtopic) {
     });
 
   axios.post(
-    "https://server-node-lb-285857511.ap-northeast-1.elb.amazonaws.com/v1/notifications",
+    "https://alb.kawayfsl.com/v1/notifications",
     {
       user: user,
       message: `Congratulations! You have completed Module: ${module_id}, Lesson: ${subtopic}!`,

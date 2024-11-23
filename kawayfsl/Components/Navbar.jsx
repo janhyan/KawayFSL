@@ -74,8 +74,8 @@ export default function Navbar() {
 
     try {
       // Get the presigned URL
-      const presignedUrl = await getPresignedUrl(`user-uploads/${file.name}`);
-
+      const presignedUrl = await getPresignedUrl(`${user.sub}.png`);
+      console.log(presignedUrl);
       // Upload the file to S3 using the presigned URL
       await uploadFileToUrl(file, presignedUrl);
 
@@ -209,7 +209,7 @@ async function getPresignedUrl(fileName) {
     const result = await axios.request(config);
 
     if (result.data.status === "Success") {
-      return result.data.message; // Presigned URL
+      return result.data.presignedUrl; // Presigned URL
     } else {
       throw new Error(
         `Failed to obtain presigned URL. Status: ${result.data.status}`

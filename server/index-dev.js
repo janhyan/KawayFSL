@@ -1,12 +1,11 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const dbConfig = require("./db.config");
 const multer = require("multer");
-const S3 = require("react-aws-s3");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -26,16 +25,6 @@ const connection = {
 };
 const db = pgp(connection);
 const PORT = process.env.SERVER_PORT;
-
-const configS3 = {
-  bucketName: "kawayfsl-lessons",
-  dirName: "user",
-  region: "ap-northeast-1",
-  accessKeyId: "",
-  secretAccessKey: "",
-  s3Url: "https://",
-};
-const ReactS3Client = new S3(configS3);
 
 // Configure multer to store files in memory
 const storage = multer.memoryStorage(); // Stores files as Buffer
@@ -513,15 +502,21 @@ app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
 app.options("/v1/generateWebFormS3URL", cors(corsOptions));
 app.post("/v1/generateWebFormS3URL", cors(corsOptions), async (req, res) => {
   try {
-    const REGION = "ap-northeast-1"; // Replace with  region
-    const BUCKET = "kawayfsl-user-img"; // Replace with  bucket name
-    const KEY = req.query.key; // The file key (e.g., "user-uploads/image.jpg")
+    const REGION = "ap-northeast-1"; // Replace with your region
+    const BUCKET = "kawayfsl-user-img"; // Replace with your bucket name
+    const KEY = req.body.key; // Read the key from the request body
 
     if (!KEY) {
       return res.status(400).json({ error: "Key is required" });
     }
 
-    const client = new S3Client({ region: REGION });
+    const client = new S3Client({
+      region: REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
     const command = new PutObjectCommand({ Bucket: BUCKET, Key: KEY });
     const presignedUrl = await getSignedUrl(client, command, {
       expiresIn: 360,
@@ -536,6 +531,7 @@ app.post("/v1/generateWebFormS3URL", cors(corsOptions), async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

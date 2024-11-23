@@ -25,7 +25,7 @@ export default function Navbar() {
       const fetchImage = async () => {
         try {
           const response = await axios.get(
-            `https://d3soyatq5ls79q.cloudfront.net/user/${user.sub}.png`,
+            `https://d3soyatq5ls79q.cloudfront.net/${user.sub}.png`,
             {
               headers: { Authorization: `Bearer ${accessToken}` },
               responseType: "arraybuffer",
@@ -199,7 +199,7 @@ async function getPresignedUrl(fileName) {
 
     const config = {
       method: "post",
-      url: "http://localhost:6868/v1/generateWebFormS3URL",
+      url: "https://alb.kawayfsl.com/v1/generateWebFormS3URL",
       headers: {
         "Content-Type": "application/json",
       },

@@ -532,7 +532,6 @@ app.post("/v1/generateWebFormS3URL", cors(corsOptions), async (req, res) => {
   }
 });
 
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

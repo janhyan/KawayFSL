@@ -1,8 +1,11 @@
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const dbConfig = require("./db.config");
+const multer = require("multer");
 
 const corsOptions = {
   origin: "https://www.kawayfsl.com",
@@ -25,6 +28,10 @@ const connection = {
 };
 const db = pgp(connection);
 const PORT = process.env.SERVER_PORT;
+
+// Configure multer to store files in memory
+const storage = multer.memoryStorage(); // Stores files as Buffer
+const upload = multer({ storage });
 
 app.use(express.json());
 
@@ -466,6 +473,39 @@ app.put("/v1/tasks/:id", cors(corsOptions), (req, res) => {
       console.log(err);
       return res.status(500).send(err); // Return an error message on failure
     });
+});
+
+app.options("/v1/generateWebFormS3URL", cors(corsOptions));
+app.post("/v1/generateWebFormS3URL", cors(corsOptions), async (req, res) => {
+  try {
+    const REGION = "ap-northeast-1"; // Replace with your region
+    const BUCKET = "kawayfsl-user-img"; // Replace with your bucket name
+    const KEY = req.body.key; // Read the key from the request body
+
+    if (!KEY) {
+      return res.status(400).json({ error: "Key is required" });
+    }
+
+    const client = new S3Client({
+      region: REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
+    const command = new PutObjectCommand({ Bucket: BUCKET, Key: KEY });
+    const presignedUrl = await getSignedUrl(client, command, {
+      expiresIn: 360,
+    });
+
+    res.status(200).json({
+      status: "Success",
+      presignedUrl,
+    });
+  } catch (error) {
+    console.error("Error generating presigned URL:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 app.listen(PORT, () => {

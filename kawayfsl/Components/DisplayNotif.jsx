@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function DisplayNotif(props) {
-  const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchNotifications = async () => {
     try {
       const notif = await getNotif(props.user);
-      setNotifications(notif);
+      props.setNotifications(notif);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -49,7 +48,7 @@ export default function DisplayNotif(props) {
         >
           &times;
         </button>
-        {notifications?.map((notifMsg, i, arr) => (
+        {props.notifications?.map((notifMsg, i, arr) => (
           <div className="notif-content" key={notifMsg.notification_id}>
             <p>{notifMsg.notif_message}</p>
             <button

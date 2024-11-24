@@ -340,6 +340,31 @@ app.get("/v1/notifications", cors(corsOptions), (req, res) => {
     });
 });
 
+app.options("/v1/notifications", cors(corsOptions));
+app.post("/v1/notifications", cors(corsOptions), (req, res) => {
+  const { user, message } = req.body;
+
+  // Ensure the userId is provided
+  if (!user) {
+    return res.status(400).send("Missing user ID");
+  }
+
+  db.none(
+    `
+    INSERT INTO Notifications (user_id, notif_message, status)
+    VALUES ($1, $2, TRUE);
+    `,
+    [user, message]
+  )
+    .then(() => {
+      return res.status(200).send("Notification created");
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err); // Return an error message on failure
+    });
+});
+
 app.options("/v1/notifications/:id", cors(corsOptions));
 app.patch("/v1/notifications/:id", cors(corsOptions), (req, res) => {
   const notificationId = req.params.id;

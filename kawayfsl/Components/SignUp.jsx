@@ -27,9 +27,7 @@ export default function SignUp(props) {
   };
 
   if (success) {
-    return (
-      <ConfirmSignUp setIsSignUp={props.setIsSignUp} />
-    )
+    return <ConfirmSignUp setIsSignUp={props.setIsSignUp} />;
   }
 
   return (
@@ -86,6 +84,13 @@ export default function SignUp(props) {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
+            <p>
+              Password requirements: <br />
+              Contains at least 1 number <br />
+              Contains at least 1 special character <br />
+              Contains at least 1 uppercase letter <br />
+              Contains at least 1 lowercase letter
+            </p>
             <p className="result-message" style={{ color: "red" }}>
               {error}
             </p>
@@ -116,4 +121,3 @@ export default function SignUp(props) {
     </div>
   );
 }
-

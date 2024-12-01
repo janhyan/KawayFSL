@@ -10,7 +10,7 @@ export default function SignUp(props) {
   const [middleName, setMiddleName] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = React.useState(false);
 
   const onSubmit = async (event) => {
     setLoading(true);

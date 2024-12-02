@@ -76,28 +76,37 @@ export default function SignUp(props) {
               onChange={(event) => setMiddleName(event.target.value)}
             />
             <label htmlFor="user-password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="user-password"
-              placeholder="********"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <p>
+            <div className="password-container">
+              <input
+                type="password"
+                name="password"
+                id="user-password"
+                placeholder="********"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <span className="tooltip">
+                Password requirements: <br />
+                Contains at least 1 number <br />
+                Contains at least 1 special character <br />
+                Contains at least 1 uppercase letter <br />
+                Contains at least 1 lowercase letter <br />
+              </span>
+            </div>
+            {/* <p className="password-req">
               Password requirements: <br />
               Contains at least 1 number <br />
               Contains at least 1 special character <br />
               Contains at least 1 uppercase letter <br />
               Contains at least 1 lowercase letter
-            </p>
+            </p> */}
             <p className="result-message" style={{ color: "red" }}>
               {error}
             </p>
             {!isLoading ? (
               <button className="submit-button" type="submit">
                 {" "}
-                Sign in{" "}
+                Sign up{" "}
               </button>
             ) : (
               <div className="auth-loader">

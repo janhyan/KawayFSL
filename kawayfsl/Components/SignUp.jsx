@@ -22,6 +22,7 @@ export default function SignUp(props) {
       setSuccess(true);
     } catch (err) {
       console.log(err);
+      setLoading(false);
       setError(err.message);
     }
   };

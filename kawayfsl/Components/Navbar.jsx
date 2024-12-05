@@ -42,7 +42,7 @@ export default function Navbar() {
           setUserImage(imageSrc);
           sessionStorage.setItem("userImage", imageSrc);
         } catch (err) {
-          setUserImage("../public/user.png");
+          setUserImage("user.png");
           console.error(err);
         }
       };
@@ -78,7 +78,7 @@ export default function Navbar() {
       console.log(presignedUrl);
       // Upload the file to S3 using the presigned URL
       await uploadFileToUrl(file, presignedUrl);
-
+      sessionStorage.removeItem("userImage");
       console.log("File uploaded successfully.");
     } catch (error) {
       console.error("Error during file upload:", error.message);

@@ -106,7 +106,7 @@ export default function Navbar() {
           Settings
         </Button>
       </div>
-      <div className="side-nav footer">
+      <div className="side-nav footer" style={{bottom: "-60%"}}>
         <div className="heading">
           <div className="avatar">
             <form id="user-upload" onSubmit={handleSubmit}>
@@ -119,9 +119,6 @@ export default function Navbar() {
                 id="profile-input"
                 onChange={handleChange}
               />
-              {/* <button className="image-button" type="submit">
-                +
-              </button> */}
             </form>
             {userImage ? (
               <img className="user-img" src={userImage} alt="User profile" />
@@ -162,6 +159,7 @@ export default function Navbar() {
 function slideFooter() {
   const footerToggle = document.getElementById("footer-caret");
   const footer = document.querySelector(".side-nav.footer");
+  const sideNav = document.querySelector(".side-nav.container");
 
   let id = null;
   let initialUp = -60;
@@ -175,10 +173,11 @@ function slideFooter() {
   }
 
   function slideUp() {
-    if (initialUp === 0) {
+    if (initialUp === 30) {
       clearInterval(id);
     } else {
       initialUp++;
+      footer.style.height = (sideNav.offsetHeight/3 + 1) + "px";
       footer.style.bottom = initialUp + "%";
     }
   }
@@ -188,6 +187,7 @@ function slideFooter() {
       clearInterval(id);
     } else {
       initialDown--;
+      footer.style.height = (sideNav.offsetHeight/5 - 1) + "px";
       footer.style.bottom = initialDown + "%";
     }
   }

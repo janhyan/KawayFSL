@@ -102,8 +102,8 @@ export default function Navbar() {
         <Button className="practice buttons" as={Link} to="/practice">
           Practice
         </Button>
-        <Button className="settings buttons" as={Link} to="/settings">
-          Settings
+        <Button className="tutorial buttons" as={Link} to="/tutorial">
+          Tutorial
         </Button>
       </div>
       <div className="side-nav footer" style={{bottom: "-60%"}}>
